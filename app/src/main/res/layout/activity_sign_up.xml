@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#151515"
+    tools:context=".View.SignUpActivity">
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#151515"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="@+id/fadeOutOverlay3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/lucid_realism_a_surreal_and_vibrant_cinematic_photo_of_a_barbe_21" />
+
+    <ImageView
+        android:id="@+id/btnVoltarSignUp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtEsqueceuSenha"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtEsqueceuSenha"
+        app:srcCompat="@drawable/ico_voltar" />
+
+    <View
+        android:id="@+id/fadeOutOverlay3"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="560dp"
+        android:background="@drawable/gradient_fade_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtEditNome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="476dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Nome Completo"
+        android:inputType="text|textLongMessage"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/txtEditEmail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/edittext_background"
+        android:hint="E-mail"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/txtEditNome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEditNome" />
+
+    <EditText
+        android:id="@+id/txtSenha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Senha"
+        android:inputType="text|textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEditEmail" />
+
+    <EditText
+        android:id="@+id/txtConfirmarSenha"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/edittext_background"
+        android:hint="Confirmar Senha"
+        android:inputType="text|textPassword"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtSenha" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btninscreverSignUp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:background="@drawable/btn_fundo_transparente_borda_amarelo"
+        android:text="Inscrever-se"
+        android:textAlignment="center"
+        android:textColor="@color/AmareloPadrao"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtConfirmarSenha" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtEsqueceuSenha"
+        android:layout_width="177dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="64dp"
+        android:background="@color/transparente"
+        android:text="Bem - vindo !"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView4" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="28dp"
+        android:background="@color/transparente"
+        android:text="Preencha os dados para continuar"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txtEditNome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/appCompatTextView"
+        android:layout_width="136dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/transparente"
+        android:text="Já tem uma conta ?"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btninscreverSignUp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/txtEntreSuaCinta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"
+        android:accessibilityPaneTitle="entre com sua conta"
+        android:background="@color/transparente"
+        android:text="Entre com sua conta"
+        android:textAlignment="center"
+        android:textColor="@color/AmareloPadrao"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.184"
+        app:layout_constraintStart_toEndOf="@+id/appCompatTextView"
+        app:layout_constraintTop_toBottomOf="@+id/btninscreverSignUp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
