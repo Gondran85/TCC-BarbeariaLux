@@ -1,7 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Tcc_BarbeariaLux" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+
+    <style name="Base.Theme.Barbearia" parent="Theme.Material3.DayNight.NoActionBar"> </style>
+
+    <style name="SpinnerTextStyle">
+        <item name="android:textColor">#FFFFFF</item> <!-- Texto branco -->
+        <item name="android:textSize">16sp</item> <!-- Tamanho do texto -->
+        <item name="android:padding">8dp</item> <!-- Espaçamento interno -->
     </style>
+
 </resources>
