@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "748154328218",
+    "project_id": "tcc-barbearialux",
+    "storage_bucket": "tcc-barbearialux.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748154328218:android:1e9afbcbbcccbd7b30fb23",
+        "android_client_info": {
+          "package_name": "com.jeffersongondran.tcc_barbearialux"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB43u0m98Qd3dKwbnvgwsplvRQZH7mzZ0s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
