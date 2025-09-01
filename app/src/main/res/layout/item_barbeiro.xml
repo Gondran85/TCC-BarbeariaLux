@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="160dp"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spacing_md"
+    android:layout_marginBottom="@dimen/spacing_sm"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="@dimen/corner_radius_medium"
+    app:cardElevation="@dimen/elevation_card"
+    app:strokeColor="@color/AmareloPadrao"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_md">
+
+        <ImageView
+            android:id="@+id/imageBarbeiro"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginBottom="@dimen/spacing_sm"
+            android:background="@color/surface_variant"
+            android:contentDescription="Foto do barbeiro"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ico_menu" />
+
+        <TextView
+            android:id="@+id/textNomeBarbeiro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_xs"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            tools:text="João Silva" />
+
+        <TextView
+            android:id="@+id/textEspecialidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_sm"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="@color/on_surface_variant"
+            tools:text="Corte e Barba" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAgendar"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:text="Agendar"
+            android:textColor="@color/AmareloPadrao"
+            android:textSize="12sp"
+            app:cornerRadius="@dimen/corner_radius_small"
+            app:rippleColor="@color/ripple_color"
+            app:strokeColor="@color/AmareloPadrao" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -22,13 +22,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater) // Infla o layout usando View Binding
         setContentView(binding.root) // Define o conteúdo da atividade como o layout inflado
 
-        // Configurar o botão "Card" para navegar para a tela de escolha de serviço
-        binding.btnCard.setOnClickListener {
+        // Configurar o botão "Reserve Agora" para navegar para a tela de escolha de serviço
+        binding.btnReserveAgora.setOnClickListener {
             startActivity(Intent(this, EscolhaServicoActivity::class.java)) // Navega para a EscolhaServicoActivity <button class="citation-flag" data-index="1">
         }
 
         // Configurar o botão de voltar
-        binding.btnVoltarHome.setOnClickListener {
+        binding.btnVoltarHome?.setOnClickListener {
             onBackPressedDispatcher.onBackPressed() // Fecha a atividade ou volta para a tela anterior <button class="citation-flag" data-index="4">
         }
 
@@ -39,15 +39,15 @@ class MainActivity : AppCompatActivity() {
     // Método para configurar o RecyclerView
     private fun setupRecyclerView() {
         // Configura o LinearLayoutManager para orientação horizontal
-        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerView.setHasFixedSize(true) // Otimiza o desempenho ao informar que o tamanho do RecyclerView não muda
+        binding.recyclerViewBarbeiros.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerViewBarbeiros.setHasFixedSize(true) // Otimiza o desempenho ao informar que o tamanho do RecyclerView não muda
     }
 
     // Método para observar mudanças nos dados fornecidos pelo ViewModel
     private fun observeViewModel() {
         viewModel.barberItems.observe(this) { items ->
             // Atualiza o adapter do RecyclerView com os itens observados
-            binding.recyclerView.adapter = BarberAdapter(items) { clickedItem ->
+            binding.recyclerViewBarbeiros.adapter = BarberAdapter(items) { clickedItem ->
                 // Navegar para a EscolhaServicoActivity ao clicar em um item
                 val intent = Intent(this, EscolhaServicoActivity::class.java).apply {
                     putExtra(

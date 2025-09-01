@@ -21,7 +21,7 @@ class IntroActivity : AppCompatActivity() {
         }
 
         // Configurar o botão "Inscrever-se"
-        binding.btnIncrever.setOnClickListener {
+        binding.btnInscrever.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java)) // Navega para a tela de inscrição <button class="citation-flag" data-index="1">
         }
     }

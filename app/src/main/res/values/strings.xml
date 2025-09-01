@@ -1,51 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- base das strings do aplicativo -->
-    <string name="app_name">Hairdress</string>
-    <string name="email">E-mail</string>
-    <string name="cadastro">CADASTRO</string>
-    <string name="registra_se">INSCREVER-SE</string>
-    <string name="senha">Senha</string>
-    <string name="confirmar_senha">Confirmar Senha</string>
-    <string name="cadstro_hint">Crie uma nova conta</string>
+    <string name="app_name">Barbearia Lux</string>
+
+    <!-- Login Screen -->
     <string name="entrar">Entrar</string>
-    <string name="entrar_hint">Já tem uma conta? Faça login</string>
-    <string name="bem_vindo">Bem-vindo(a)!</string>
-    <string name="criar_conta">Criar uma conta</string>
+    <string name="email">Email</string>
+    <string name="senha">Senha</string>
     <string name="esqueceu_da_senha">Esqueceu da senha?</string>
-    <string name="esqueceu_senha">Esqueceu a senha?</string>
-    <string name="descricao_hairdress">Hairdress é o seu aplicativo para tudo relacionado a cabelo. Desde agendar compromissos até explorar as últimas tendências, temos tudo o que você precisa.</string>
-    <string name="slogan_hairdress">Transforme seu visual com Hairdress.</string>
-    <string name="motto_hairdress">Onde estilo encontra elegância.</string>
-    <string name="bem_vindo_hairdress">Bem-vindo ao Hairdress!</string>
-    <string name="login_hairdress">Por favor, faça login para continuar.</string>
-    <string name="registro_hairdress">Não tem uma conta? Registre-se agora!</string>
-    <string name="esqueci_senha_hairdress">Esqueceu sua senha? Sem problemas, podemos ajudá-lo a redefini-la.</string>
-    <string name="redefinir_senha_hairdress">Redefinir Senha</string>
-    <string name="redefinir_senha_hint_hairdress">Digite seu e-mail para receber instruções de redefinição de senha.</string>
-    <string name="redefinir_senha_botao_hairdress">Enviar Link de Redefinição</string>
-    <string name="redefinicao_senha_sucesso_hairdress">Link de redefinição de senha enviado para o seu e-mail.</string>
-    <string name="erro_redefinicao_senha_hairdress">Erro ao enviar link de redefinição. Por favor, tente novamente.</string>
-    <string name="termos_servico_hairdress">Termos de Serviço</string>
-    <string name="politica_privacidade_hairdress">Política de Privacidade</string>
-    <string name="contato_hairdress">Contato</string>
-    <string name="sobre_nos_hairdress">Sobre Nós</string>
-    <string name="faq_hairdress">Perguntas Frequentes</string>
-    <string name="feedback_hairdress">Valorizamos seu feedback! Deixe-nos saber como podemos melhorar sua experiência.</string>
-    <string name="suporte_hairdress">Suporte</string>
-    <string name="centro_ajuda_hairdress">Centro de Ajuda</string>
-    <string name="versao_app_hairdress">Versão do App: 1.0.0</string>
-    <string name="atualizacao_disponivel_hairdress">Uma atualização está disponível! Por favor, atualize para a versão mais recente para a melhor experiência.</string>
-    <string name="atualizar_agora_hairdress">Atualizar Agora</string>
-    <string name="atualizar_depois_hairdress">Lembrar Mais Tarde</string>
-    <string name="erro_atualizacao_hairdress">Erro ao verificar atualizações. Por favor, tente novamente mais tarde.</string>
-    <string name="modo_manutencao_hairdress">O aplicativo está atualmente em manutenção. Por favor, volte mais tarde.</string>
-    <string name="mensagem_manutencao_hairdress">Estamos trabalhando duro para melhorar sua experiência. Obrigado pela paciência!</string>
-    <string name="contato_suporte_manutencao_hairdress">Se você tiver algum problema urgente, entre em contato com nossa equipe de suporte.</string>
-    <string name="email_suporte_manutencao_hairdress">suporte@hairdress.com</string>
-    <string name="_30k_nclients">+30K \nClientes</string>
-    <string name="aproveite_os_beneficos_com_servi_os_exclusivos_e_promo_es_especiais">Aproveite os benefícios da nossa barbearia, com serviços exclusivos e promoções especiais.</string>
-    <string name="digite_email_recuperacao">Digite seu email para receber as instruções de recuperação de senha</string>
-    <string name="enviar_recuperacao">Enviar email de recuperação</string>
-    <string name="voltar_para_login">Voltar para o login</string>
-    <string name="enviando">Enviando…</string>
+    <string name="nao_tem_conta">Não tem conta? Cadastre-se</string>
+
+    <!-- Welcome and Service Screen -->
+    <string name="bem_vindo">Bem-vindo à Barbearia Lux</string>
+    <string name="_30k_nclients">+30K Clientes Satisfeitos</string>
+    <string name="aproveite_os_beneficos_com_servi_os_exclusivos_e_promo_es_especiais">Aproveite os benefícios com serviços exclusivos e promoções especiais</string>
+
+    <!-- Forgot Password Screen -->
+    <string name="voltar_para_login">Voltar para Login</string>
+    <string name="esqueceu_senha">Esqueceu sua Senha?</string>
+    <string name="digite_email_recuperacao">Digite seu email para recuperação</string>
+    <string name="enviar_recuperacao">Enviar Email de Recuperação</string>
+    <string name="enviando">Enviando...</string>
+
+    <!-- Intro Screen -->
+    <string name="imagem_principal">Imagem Principal</string>
+    <string name="registra_se">Registre-se</string>
+    <string name="ou_continue_com">Ou continue com</string>
+    <string name="login_facebook">Continuar com Facebook</string>
+    <string name="login_google">Continuar com Google</string>
+
+    <!-- Accessibility Descriptions -->
+    <string name="voltar_description">Voltar para tela anterior</string>
+    <string name="background_image_description">Imagem de fundo da barbearia</string>
+    <string name="email_input_description">Campo para inserir email</string>
+    <string name="password_input_description">Campo para inserir senha</string>
+    <string name="login_button_description">Botão para fazer login</string>
+    <string name="forgot_password_description">Link para recuperar senha esquecida</string>
+    <string name="signup_link_description">Link para criar nova conta</string>
+
+    <!-- Error Messages -->
+    <string name="error_email_required">Email é obrigatório</string>
+    <string name="error_email_invalid">Email inválido</string>
+    <string name="error_password_required">Senha é obrigatória</string>
+    <string name="error_login_failed">Falha no login. Verifique suas credenciais.</string>
+
+    <!-- Success Messages -->
+    <string name="login_success">Login realizado com sucesso</string>
+
+    <!-- Main Activity -->
+    <string name="menu">Menu</string>
+    <string name="bem_vindo_usuario">Bem-vindo Jefferson</string>
+    <string name="subtitulo_barbearia">Afiado e estiloso! Agende seu horário agora mesmo!</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="imagem_promocional_desc">Imagem promocional da barbearia</string>
+    <string name="reserve_agora">Reserve Agora</string>
+    <string name="barbeiros_disponiveis">Barbeiros Disponíveis</string>
 </resources>

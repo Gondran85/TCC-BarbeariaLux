@@ -8,177 +8,236 @@
     android:background="@color/black"
     tools:context=".View.MainActivity">
 
-    <ScrollView
-        android:id="@+id/scViewDasbord"
+    <!-- App Bar com Material Design -->
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/app_bar_height"
+        android:background="@color/transparent_black"
+        android:elevation="@dimen/elevation_card"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ico_voltar"
+        app:navigationIconTint="@color/white"
+        app:navigationContentDescription="@string/voltar_para_login"
+        app:title="@string/bem_vindo"
+        app:titleTextColor="@color/white">
+
+        <!-- Botão de voltar para Home -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnVoltarHome"
+            style="@style/Widget.Material3.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="@dimen/spacing_md"
+            android:text="Home"
+            android:textColor="@color/AmareloPadrao"
+            android:visibility="gone"
+            app:icon="@drawable/ico_home"
+            app:iconTint="@color/AmareloPadrao"
+            app:rippleColor="@color/ripple_color" />
+
+        <ImageView
+            android:id="@+id/btnMenu"
+            android:layout_width="@dimen/touch_target_size"
+            android:layout_height="@dimen/touch_target_size"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/spacing_md"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/menu"
+            android:padding="@dimen/spacing_sm"
+            app:srcCompat="@drawable/ico_menu"
+            app:tint="@color/white" />
+
+    </com.google.android.material.appbar.MaterialToolbar>
+
+    <!-- ScrollView Principal com Nested Scrolling -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/transparent_black"
-        android:importantForAccessibility="no"
+        android:fillViewport="true"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/topAppBar">
 
         <LinearLayout
-            android:id="@+id/linearLayoutVertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:paddingTop="@dimen/spacing_lg"
+            android:paddingBottom="@dimen/spacing_xl">
 
-            <!-- Header Section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Header de Boas-vindas com Material Design -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="24dp"
-                android:paddingBottom="16dp">
+                android:layout_marginBottom="@dimen/spacing_lg"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                app:cardElevation="@dimen/elevation_card"
+                app:strokeColor="@color/AmareloPadrao"
+                app:strokeWidth="1dp">
 
-                <ImageView
-                    android:id="@+id/btnVoltarMain"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="Voltar"
-                    app:layout_constraintBottom_toBottomOf="@+id/textEsqueceuSenha"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textEsqueceuSenha"
-                    app:srcCompat="@drawable/ico_voltar" />
-
-                <ImageView
-                    android:id="@+id/imageView7"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="Menu"
-                    app:layout_constraintBottom_toBottomOf="@+id/textEsqueceuSenha"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textEsqueceuSenha"
-                    app:srcCompat="@drawable/ico_menu" />
-
-                <TextView
-                    android:id="@+id/textEsqueceuSenha"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Bem-vindo Jefferson"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_lg">
 
-                <TextView
-                    android:id="@+id/textContinue"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="32dp"
-                    android:gravity="center"
-                    android:text="Afiado e estiloso! Agende seu horario agora mesmo!"
-                    android:textColor="@color/white"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textEsqueceuSenha" />
+                    <TextView
+                        android:id="@+id/textWelcome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/bem_vindo_usuario"
+                        android:textAppearance="?attr/textAppearanceHeadlineSmall"
+                        android:textColor="@color/white"
+                        android:textStyle="bold" />
 
-                <EditText
+                    <TextView
+                        android:id="@+id/textSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_sm"
+                        android:gravity="center"
+                        android:text="@string/subtitulo_barbearia"
+                        android:textAppearance="?attr/textAppearanceBodyMedium"
+                        android:textColor="@color/on_surface_variant" />
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Campo de Pesquisa com Material Design -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/searchInputLayout"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_lg"
+                android:hint="@string/pesquisar"
+                app:boxBackgroundColor="@color/transparent_black"
+                app:boxStrokeColor="@color/AmareloPadrao"
+                app:hintTextColor="@color/on_surface_variant"
+                app:startIconDrawable="@drawable/ico_pesquisar"
+                app:startIconTint="@color/AmareloPadrao">
+
+                <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editTextPesquisa"
-                    android:layout_width="0dp"
-                    android:layout_height="48dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:autofillHints="search"
-                    android:background="@drawable/btn_fundo_transparente_borda_amarelo"
-                    android:drawableStart="@drawable/ico_pesquisar"
-                    android:ems="10"
-                    android:hint="Pesquisar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textContinue" />
+                    android:textColorHint="@color/on_surface_variant" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Featured Image Section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <!-- Seção de Imagem Promocional -->
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginBottom="@dimen/spacing_lg"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="@dimen/corner_radius_medium"
+                app:cardElevation="@dimen/elevation_card">
 
-                <ImageView
-                    android:id="@+id/imageView8"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:contentDescription="Imagem promocional"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/default_artistic_portrait_photography_of_image_is_a_rectangula_1" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/btnCard"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginBottom="16dp"
-                    android:contentDescription="Reserve agora"
-                    app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-                    app:layout_constraintStart_toStartOf="@+id/imageView8"
-                    app:srcCompat="@drawable/img_reserve_agora" />
+                    <ImageView
+                        android:id="@+id/imagePromo"
+                        android:layout_width="0dp"
+                        android:layout_height="200dp"
+                        android:contentDescription="@string/imagem_promocional_desc"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/default_artistic_portrait_photography_of_image_is_a_rectangula_1" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!-- Overlay com gradiente para melhor legibilidade -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:background="@drawable/gradient_fade_out"
+                        app:layout_constraintBottom_toBottomOf="@+id/imagePromo"
+                        app:layout_constraintEnd_toEndOf="@+id/imagePromo"
+                        app:layout_constraintStart_toStartOf="@+id/imagePromo"
+                        app:layout_constraintTop_toTopOf="@+id/imagePromo" />
 
-            <!-- Barbeiros Section -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnReserveAgora"
+                        style="@style/Widget.Material3.Button.UnelevatedButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacing_lg"
+                        android:layout_marginBottom="@dimen/spacing_lg"
+                        android:text="@string/reserve_agora"
+                        android:textColor="@color/black"
+                        app:backgroundTint="@color/AmareloPadrao"
+                        app:cornerRadius="@dimen/corner_radius_medium"
+                        app:icon="@drawable/ico_favoritos"
+                        app:iconTint="@color/black"
+                        app:layout_constraintBottom_toBottomOf="@+id/imagePromo"
+                        app:layout_constraintStart_toStartOf="@+id/imagePromo"
+                        app:rippleColor="@color/ripple_color" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Seção Barbeiros com Material Design -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/textBarbeirosTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:text="Barbeiros Disponíveis"
+                    android:layout_marginBottom="@dimen/spacing_md"
+                    android:text="@string/barbeiros_disponiveis"
+                    android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerViewBarbeiros"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="80dp"
                     android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
                     android:orientation="horizontal"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="@dimen/spacing_md"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:listitem="@layout/item_barbeiro" />
 
             </LinearLayout>
 
         </LinearLayout>
-    </ScrollView>
 
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Bottom Navigation com Material Design -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/gradient_fade_out"
-        android:backgroundTint="@color/black"
+        android:background="@color/surface"
+        android:elevation="@dimen/elevation_card"
+        app:itemIconTint="@color/AmareloPadrao"
         app:itemTextColor="@color/AmareloPadrao"
+        app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

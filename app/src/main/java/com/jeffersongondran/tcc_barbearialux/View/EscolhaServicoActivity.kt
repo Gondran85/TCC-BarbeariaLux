@@ -2,7 +2,7 @@ package com.jeffersongondran.tcc_barbearialux.View// Pacote onde a classe está 
 
 import android.os.Bundle // Importa classes necessárias para gerenciar o ciclo de vida da atividade
 import android.widget.Toast // Importa a classe Toast para exibir mensagens curtas na tela
-import androidx.activity.viewModels // Importa a função viewModels para inicializar ViewModel <button class="citation-flag" data-index="5">
+import androidx.activity.viewModels // Importa a função viewModels para inicializar ViewModel
 import androidx.appcompat.app.AppCompatActivity // Importa a classe base para atividades compatíveis com a biblioteca de suporte
 import com.jeffersongondran.tcc_barbearialux.Viewmodel.EscolhaServicoViewModel // Importa o ViewModel associado a esta atividade
 import com.jeffersongondran.tcc_barbearialux.R // Importa o arquivo R para acessar recursos do projeto
@@ -11,7 +11,7 @@ import com.jeffersongondran.tcc_barbearialux.databinding.ActivityEscolhaServicoB
 // Classe que representa a tela de escolha de serviço
 class EscolhaServicoActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEscolhaServicoBinding // Binding para acessar os elementos do layout
-    private val viewModel: EscolhaServicoViewModel by viewModels() // Inicializa o ViewModel usando a biblioteca AndroidX <button class="citation-flag" data-index="5">
+    private val viewModel: EscolhaServicoViewModel by viewModels() // Inicializa o ViewModel usando a biblioteca AndroidX
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,8 +19,8 @@ class EscolhaServicoActivity : AppCompatActivity() {
         setContentView(binding.root) // Define o conteúdo da atividade como o layout inflado
 
         // Configurar o botão de voltar
-        binding.btnVoltarServicos.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed() // Fecha a atividade ou volta para a tela anterior <button class="citation-flag" data-index="4">
+        binding.btnVoltarServicos.setOnClickListener(){
+            onBackPressedDispatcher.onBackPressed() // Fecha a atividade ou volta para a tela anterior
         }
 
         // Observar mudanças nos dados fornecidos pelo ViewModel
@@ -42,34 +42,36 @@ class EscolhaServicoActivity : AppCompatActivity() {
                     // Lógica para Corte de Cabelo
                     println("Serviço selecionado: Corte de Cabelo") // Exibe no console o serviço selecionado
                 }
-                R.id.barbaRadioButton -> {
+                R.id.corteBarbaRadioButton -> {
                     // Lógica para Barba
                     println("Serviço selecionado: Barba") // Exibe no console o serviço selecionado
                 }
-                R.id.corteCabeloRadioButton-> {
-                    // Lógica para Corte Senior
-                    println("Serviço selecionado: Corte Senior") // Exibe no console o serviço selecionado
+                R.id.cabeloBarbaRadioButton -> {
+                    // Lógica Corte cabelo e Barba
+                    println("Serviço selecionado: Corte cabelo e Barba") // Exibe no console
+
                 }
-                R.id.corteBarbaRadioButton -> {
-                    // Lógica para Corte de Tesoura
-                    println("Serviço selecionado: Corte de Tesoura") // Exibe no console o serviço selecionado
+                R.id.lavagemCabeloRadioButton -> {
+                    // Lógica lavagem de cabelo
+                    println("Serviço selecionado: Lavagem de Cabelo") // Exibe no console
                 }
-                R.id.corteIfantilRadioButton -> {
-                    // Lógica para Corte Infantil
-                    println("Serviço selecionado: Corte Infantil") // Exibe no console o serviço selecionado
-                }
+//                R.id.radioBotaoCorteInfantil -> {
+//                    // Lógica para Corte Infantil
+//                    println("Serviço selecionado: Corte Infantil") // Exibe no console o serviço selecionado
+//                }
             }
         }
 
         // Configurar o botão de reserva
-        binding.reservarButton.setOnClickListener {
+        binding.agendarHorarioButton.setOnClickListener {
             // Obter o serviço selecionado
-            val selectedService = when (binding.servicosRadioGroup.checkedRadioButtonId) {
+            val selectedService = when (binding.servicoRadioGroup.checkedRadioButtonId) {
                 R.id.corteCabeloRadioButton -> "Corte de Cabelo" // Retorna o serviço correspondente ao RadioButton selecionado
-                R.id.barbaRadioButton -> "Barba"
-                R.id.corteSeniorRadioButton -> "Corte Senior"
-                R.id.corteTesouraRadioButton -> "Corte de Tesoura"
-                R.id.corteInfantilRadioButton -> "Corte Infantil"
+                R.id.corteBarbaRadioButton -> "Barba"
+                R.id.lavagemCabeloRadioButton-> "Corte lavagem de cabelo"
+                R.id.cabeloBarbaRadioButton -> "Corte cabelo e Barba"
+                //R.id.radioBotaoCorteTesoura -> "Corte de Tesoura"
+                //R.id.radioBotaoCorteInfantil -> "Corte Infantil"
                 else -> null // Retorna null se nenhum RadioButton estiver selecionado
             }
 

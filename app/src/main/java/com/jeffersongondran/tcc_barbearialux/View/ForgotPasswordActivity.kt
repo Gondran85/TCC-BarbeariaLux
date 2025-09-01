@@ -3,6 +3,9 @@ package com.jeffersongondran.tcc_barbearialux.View // Pacote onde a classe está
 
 // Importa as classes necessárias de outras partes do Android e do projeto.
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.animation.AnimationUtils
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -38,25 +41,94 @@ class ForgotPasswordActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         setupClickListeners()
+        setupEmailValidation()
+        animateCardEntrance()
     }
 
     /**
      * Configura os listeners de clique para os componentes da tela.
      */
     private fun setupClickListeners() {
-        // Botão voltar - retorna para a tela de login
-        binding.btnVoltarForgotPassword.setOnClickListener {
-            finish() // Finaliza esta activity e volta para a anterior
+        // Configura o botão de voltar na toolbar
+        binding.toolbar.setNavigationOnClickListener {
+            animateCardExit {
+                finish() // Finaliza esta activity e volta para a anterior
+            }
         }
 
         // Texto "Voltar para login" - também retorna para a tela de login
         binding.textVoltarLogin.setOnClickListener {
-            finish()
+            animateCardExit {
+                finish()
+            }
         }
 
         // Botão enviar recuperação - envia email de recuperação de senha
         binding.btnEnviarRecuperacao.setOnClickListener {
             sendPasswordResetEmail()
+        }
+    }
+
+    /**
+     * Configura validação em tempo real do campo de email
+     */
+    private fun setupEmailValidation() {
+        binding.editTextEmailForgotPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                val email = s.toString().trim()
+
+                if (email.isNotEmpty()) {
+                    if (isValidEmail(email)) {
+                        // Email válido - remove erro e habilita botão
+                        binding.textInputLayoutEmail.error = null
+                        binding.btnEnviarRecuperacao.isEnabled = true
+                        binding.btnEnviarRecuperacao.alpha = 1.0f
+                    } else {
+                        // Email inválido - mostra erro e desabilita botão
+                        binding.textInputLayoutEmail.error = "Formato de email inválido"
+                        binding.btnEnviarRecuperacao.isEnabled = false
+                        binding.btnEnviarRecuperacao.alpha = 0.6f
+                    }
+                } else {
+                    // Campo vazio - remove erro mas desabilita botão
+                    binding.textInputLayoutEmail.error = null
+                    binding.btnEnviarRecuperacao.isEnabled = false
+                    binding.btnEnviarRecuperacao.alpha = 0.6f
+                }
+            }
+        })
+    }
+
+    /**
+     * Anima a entrada do card principal
+     */
+    private fun animateCardEntrance() {
+        try {
+            val slideInAnimation = AnimationUtils.loadAnimation(this, R.anim.card_slide_in)
+            binding.mainContentCard?.startAnimation(slideInAnimation)
+        } catch (_: Exception) {
+            // Se a animação não existir, continua sem ela
+        }
+    }
+
+    /**
+     * Anima a saída do card antes de finalizar a activity
+     */
+    private fun animateCardExit(onComplete: () -> Unit) {
+        try {
+            binding.mainContentCard?.animate()
+                ?.alpha(0f)
+                ?.translationY(-50f)
+                ?.setDuration(300)
+                ?.withEndAction(onComplete)
+                ?.start()
+        } catch (_: Exception) {
+            // Se a animação falhar, executa a ação diretamente
+            onComplete()
         }
     }
 
@@ -68,43 +140,147 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
         // Validação do campo de email
         if (email.isEmpty()) {
+            binding.textInputLayoutEmail.error = "Por favor, digite seu email"
             showToast("Por favor, digite seu email")
             return
         }
 
         if (!isValidEmail(email)) {
+            binding.textInputLayoutEmail.error = "Por favor, digite um email válido"
             showToast("Por favor, digite um email válido")
             return
         }
 
-        // Desabilita o botão para evitar múltiplos cliques
-        binding.btnEnviarRecuperacao.isEnabled = false
-        binding.btnEnviarRecuperacao.text = getString(R.string.enviando)
+        // Remove qualquer erro anterior
+        binding.textInputLayoutEmail.error = null
+
+        // Feedback visual durante o carregamento
+        showLoadingState(true)
 
         // Envia o email de recuperação através do Firebase
         auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
-                // Reabilita o botão
-                binding.btnEnviarRecuperacao.isEnabled = true
-                binding.btnEnviarRecuperacao.text = getString(R.string.enviar_recuperacao)
+                // Remove o estado de carregamento
+                showLoadingState(false)
 
                 if (task.isSuccessful) {
-                    // Sucesso - informa o usuário e volta para a tela de login
+                    // Sucesso - anima o ícone e informa o usuário
+                    animateSuccessState()
                     showToast("Email de recuperação enviado! Verifique sua caixa de entrada.")
-                    finish()
+
+                    // Aguarda a animação antes de voltar
+                    binding.mainContentCard?.postDelayed({
+                        animateCardExit { finish() }
+                    }, 1500)
                 } else {
-                    // Erro - informa o usuário sobre o problema
-                    val errorMessage = when (task.exception?.message) {
-                        "There is no user record corresponding to this identifier. The user may have been deleted." ->
-                            "Email não encontrado. Verifique se está correto."
-                        "The email address is badly formatted." ->
-                            "Formato de email inválido."
-                        else ->
-                            "Erro ao enviar email de recuperação. Tente novamente."
-                    }
+                    // Erro - anima o erro e informa o usuário
+                    animateErrorState()
+                    val errorMessage = getFirebaseErrorMessage(task.exception?.message)
+                    binding.textInputLayoutEmail.error = errorMessage
                     showToast(errorMessage)
                 }
             }
+    }
+
+    /**
+     * Mostra/esconde o estado de carregamento
+     */
+    private fun showLoadingState(isLoading: Boolean) {
+        if (isLoading) {
+            binding.btnEnviarRecuperacao.isEnabled = false
+            binding.btnEnviarRecuperacao.text = getString(R.string.enviando)
+            binding.btnEnviarRecuperacao.alpha = 0.7f
+
+            // Anima o ícone para indicar carregamento
+            binding.iconForgotPassword?.animate()
+                ?.rotation(360f)
+                ?.setDuration(1000)
+                ?.start()
+        } else {
+            binding.btnEnviarRecuperacao.isEnabled = true
+            binding.btnEnviarRecuperacao.text = getString(R.string.enviar_recuperacao)
+            binding.btnEnviarRecuperacao.alpha = 1.0f
+
+            // Para a animação do ícone
+            binding.iconForgotPassword?.animate()
+                ?.rotation(0f)
+                ?.setDuration(300)
+                ?.start()
+        }
+    }
+
+    /**
+     * Anima o estado de sucesso
+     */
+    private fun animateSuccessState() {
+        // Anima o ícone com efeito de sucesso
+        binding.iconForgotPassword?.animate()
+            ?.scaleX(1.2f)
+            ?.scaleY(1.2f)
+            ?.setDuration(200)
+            ?.withEndAction {
+                binding.iconForgotPassword?.animate()
+                    ?.scaleX(1.0f)
+                    ?.scaleY(1.0f)
+                    ?.setDuration(200)
+                    ?.start()
+            }
+            ?.start()
+
+        // Anima o botão com feedback de sucesso
+        binding.btnEnviarRecuperacao.animate()
+            .scaleX(0.95f)
+            .scaleY(0.95f)
+            .setDuration(100)
+            .withEndAction {
+                binding.btnEnviarRecuperacao.animate()
+                    .scaleX(1.0f)
+                    .scaleY(1.0f)
+                    .setDuration(100)
+                    .start()
+            }
+            .start()
+    }
+
+    /**
+     * Anima o estado de erro
+     */
+    private fun animateErrorState() {
+        // Shake animation no campo de email
+        binding.textInputLayoutEmail.animate()
+            .translationX(-10f)
+            .setDuration(50)
+            .withEndAction {
+                binding.textInputLayoutEmail.animate()
+                    .translationX(10f)
+                    .setDuration(50)
+                    .withEndAction {
+                        binding.textInputLayoutEmail.animate()
+                            .translationX(0f)
+                            .setDuration(50)
+                            .start()
+                    }
+                    .start()
+            }
+            .start()
+    }
+
+    /**
+     * Retorna mensagem de erro amigável baseada na exceção do Firebase
+     */
+    private fun getFirebaseErrorMessage(firebaseError: String?): String {
+        return when (firebaseError) {
+            "There is no user record corresponding to this identifier. The user may have been deleted." ->
+                "Email não encontrado. Verifique se está correto."
+            "The email address is badly formatted." ->
+                "Formato de email inválido."
+            "A network error (such as timeout, interrupted connection or unreachable host) has occurred." ->
+                "Erro de conexão. Verifique sua internet."
+            "Too many requests. Please try again later." ->
+                "Muitas tentativas. Tente novamente em alguns minutos."
+            else ->
+                "Erro ao enviar email de recuperação. Tente novamente."
+        }
     }
 
     /**

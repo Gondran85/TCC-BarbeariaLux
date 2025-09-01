@@ -180,7 +180,7 @@
                         android:textSize="16sp" />
 
                     <RadioButton
-                        android:id="@+id/barbaRadioButton"
+                        android:id="@+id/corteBarbaRadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -190,7 +190,7 @@
                         android:textSize="16sp" />
 
                     <RadioButton
-                        android:id="@+id/corteBarbaRadioButton"
+                        android:id="@+id/cabeloBarbaRadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -200,7 +200,7 @@
                         android:textSize="15sp" />
 
                     <RadioButton
-                        android:id="@+id/corteIfantilRadioButton"
+                        android:id="@+id/lavagemCabeloRadioButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
@@ -242,7 +242,7 @@
                     android:spinnerMode="dropdown" />
 
                 <Button
-                    android:id="@+id/reservarButton"
+                    android:id="@+id/agendarHorarioButton"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"
                     android:backgroundTint="@color/AmareloPadrao"

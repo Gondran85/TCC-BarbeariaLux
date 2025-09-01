@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/AmareloPadrao</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/black</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <!-- Custom TextInputLayout style for forgot password screen -->
+    <style name="ForgotPassword.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="hintTextColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="errorTextColor">@android:color/holo_red_light</item>
+        <item name="errorEnabled">true</item>
+        <item name="startIconTint">@color/white</item>
+        <item name="endIconTint">@color/white</item>
+    </style>
+
+    <!-- Custom button style for primary actions -->
+    <style name="ForgotPassword.Button.Primary" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="strokeColor">@color/AmareloPadrao</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="cornerRadius">@dimen/corner_radius_medium</item>
+        <item name="rippleColor">@color/AmareloPadrao</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:textColor">@color/AmareloPadrao</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+        <item name="android:minHeight">@dimen/button_height</item>
+    </style>
+
+    <!-- Text styles following Material Design type scale -->
+    <style name="ForgotPassword.Text.Headline" parent="TextAppearance.MaterialComponents.Headline5">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_headline_small</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="ForgotPassword.Text.Body" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_body_large</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:alpha">0.87</item>
+    </style>
+
+    <style name="ForgotPassword.Text.Link" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_body_medium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:padding">@dimen/spacing_sm</item>
+        <item name="android:minHeight">@dimen/touch_target_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:alpha">0.87</item>
+    </style>
+
+    <!-- Toolbar style for transparent background -->
+    <style name="ForgotPassword.Toolbar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="navigationIconTint">@color/white</item>
+        <item name="titleTextColor">@color/white</item>
+    </style>
+</resources>
