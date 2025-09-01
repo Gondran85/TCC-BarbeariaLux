@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tablets and larger screens -->
+    <dimen name="margin_horizontal">48dp</dimen>
+    <dimen name="margin_vertical">32dp</dimen>
+
+    <!-- Spacing for larger screens -->
+    <dimen name="spacing_small">12dp</dimen>
+    <dimen name="spacing_medium">24dp</dimen>
+    <dimen name="spacing_large">36dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+
+    <!-- Card Properties for tablets -->
+    <dimen name="card_corner_radius">20dp</dimen>
+    <dimen name="card_elevation">12dp</dimen>
+    <dimen name="card_padding">32dp</dimen>
+
+    <!-- Text Sizes for larger screens -->
+    <dimen name="text_size_title">36sp</dimen>
+    <dimen name="text_size_headline">28sp</dimen>
+    <dimen name="text_size_body">18sp</dimen>
+    <dimen name="text_size_caption">16sp</dimen>
+
+    <!-- Maximum width for form elements on large screens -->
+    <dimen name="max_form_width">480dp</dimen>
+</resources>
+
