@@ -9,27 +9,34 @@
     android:fitsSystemWindows="true"
     tools:context=".View.SignUpActivity">
 
-    <!-- Guidelines para responsividade -->
+    <!-- Guidelines para responsividade em tablets -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.08" />
+        app:layout_constraintGuide_percent="0.15" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.92" />
+        app:layout_constraintGuide_percent="0.85" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_top"
+        android:id="@+id/guideline_content_start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.15" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_content_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
 
     <!-- Imagem de fundo -->
     <ImageView
@@ -39,7 +46,7 @@
         android:background="#151515"
         android:scaleType="centerCrop"
         android:contentDescription="@string/background_image_description"
-        app:layout_constraintBottom_toBottomOf="@+id/fadeOutOverlay3"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -50,85 +57,77 @@
         android:id="@+id/fadeOutOverlay3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/spacing_xxl"
         android:background="@drawable/gradient_fade_out"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline_top" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botão voltar -->
-    <ImageView
-        android:id="@+id/btnVoltarSignUp"
-        android:layout_width="@dimen/icon_size_large"
-        android:layout_height="@dimen/icon_size_large"
-        android:layout_marginTop="@dimen/spacing_lg"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="@dimen/spacing_sm"
-        android:contentDescription="@string/back_button_description"
-        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ico_voltar" />
-
-    <!-- Container principal com ScrollView para acessibilidade -->
-    <ScrollView
-        android:id="@+id/scrollContainer"
+    <!-- Card centralizado para o formulário -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/formCard"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:fillViewport="true"
-        android:scrollbars="none"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_lg"
+        app:cardBackgroundColor="#AA1A1A1A"
+        app:cardCornerRadius="@dimen/corner_radius_large"
+        app:cardElevation="@dimen/elevation_card"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-        app:layout_constraintStart_toStartOf="@+id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@+id/btnVoltarSignUp">
+        app:layout_constraintEnd_toEndOf="@+id/guideline_content_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_max="@dimen/max_form_width">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/spacing_xl">
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_xxl">
+
+            <!-- Botão voltar -->
+            <ImageView
+                android:id="@+id/btnVoltarSignUp"
+                android:layout_width="@dimen/icon_size_large"
+                android:layout_height="@dimen/icon_size_large"
+                android:layout_gravity="start"
+                android:layout_marginBottom="@dimen/spacing_lg"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
+                android:padding="@dimen/spacing_sm"
+                android:contentDescription="@string/back_button_description"
+                app:srcCompat="@drawable/ico_voltar" />
 
             <!-- Título principal -->
             <TextView
                 android:id="@+id/txtEsqueceuSenha"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxl"
+                android:layout_marginBottom="@dimen/spacing_sm"
                 android:text="@string/welcome_title"
                 android:textAlignment="center"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_headline_small"
+                android:textSize="@dimen/text_headline_medium"
                 android:textStyle="bold"
-                android:accessibilityHeading="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:accessibilityHeading="true" />
 
             <!-- Subtítulo -->
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_sm"
+                android:layout_marginBottom="@dimen/spacing_xl"
                 android:text="@string/signup_subtitle"
                 android:textAlignment="center"
                 android:textColor="@color/on_surface_variant"
-                android:textSize="@dimen/text_body_large"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtEsqueceuSenha" />
+                android:textSize="@dimen/text_body_large" />
 
             <!-- Container dos campos de input -->
             <LinearLayout
                 android:id="@+id/inputContainer"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_xxl"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4">
+                android:orientation="vertical">
 
                 <!-- Campo Nome -->
                 <com.google.android.material.textfield.TextInputLayout
@@ -216,7 +215,7 @@
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_lg"
+                    android:layout_marginBottom="@dimen/spacing_xl"
                     android:hint="@string/confirm_password_hint"
                     app:boxBackgroundColor="#33FFFFFF"
                     app:boxStrokeColor="@color/AmareloPadrao"
@@ -243,30 +242,23 @@
             <!-- Botão de inscrição -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnIncrever"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginTop="@dimen/spacing_lg"
+                android:layout_marginBottom="@dimen/spacing_lg"
                 android:background="@drawable/btn_fundo_transparente_borda_amarelo"
                 android:text="@string/signup_button"
                 android:textColor="@color/AmareloPadrao"
                 android:textSize="@dimen/text_body_large"
                 android:textStyle="bold"
-                app:backgroundTint="@null"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inputContainer" />
+                app:backgroundTint="@null" />
 
             <!-- Container para texto de login -->
             <LinearLayout
                 android:id="@+id/loginContainer"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
                 android:gravity="center"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnIncrever">
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/appCompatTextView"
@@ -292,8 +284,8 @@
 
             </LinearLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-    </ScrollView>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -36,6 +36,13 @@
     <string name="login_button_description">Botão para fazer login</string>
     <string name="forgot_password_description">Link para recuperar senha esquecida</string>
     <string name="signup_link_description">Link para criar nova conta</string>
+    <string name="back_button_description">Botão voltar</string>
+    <string name="logo_description">Logo da Barbearia Lux</string>
+
+    <!-- Accessibility strings -->
+    <string name="entrar_content_description">Botão para fazer login na aplicação</string>
+    <string name="registra_se_content_description">Botão para criar nova conta</string>
+    <string name="esqueceu_da_senha_content_description">Link para recuperar senha esquecida</string>
 
     <!-- Error Messages -->
     <string name="error_email_required">Email é obrigatório</string>
@@ -54,4 +61,26 @@
     <string name="imagem_promocional_desc">Imagem promocional da barbearia</string>
     <string name="reserve_agora">Reserve Agora</string>
     <string name="barbeiros_disponiveis">Barbeiros Disponíveis</string>
+
+    <!-- Sign Up Screen -->
+    <string name="welcome_title">Bem-vindo à Barbearia Lux</string>
+    <string name="signup_subtitle">Crie sua conta para agendar serviços</string>
+    <string name="full_name_hint">Nome completo</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Senha</string>
+    <string name="confirm_password_hint">Confirmar senha</string>
+    <string name="signup_button">Cadastrar</string>
+    <string name="already_have_account">Já tem conta?</string>
+    <string name="login_link">Entre aqui</string>
+
+    <!-- Validation Messages -->
+    <string name="field_required">Este campo é obrigatório</string>
+    <string name="invalid_email">Email inválido</string>
+    <string name="password_too_short">Senha deve ter pelo menos 6 caracteres</string>
+    <string name="passwords_dont_match">As senhas não coincidem</string>
+
+    <!-- Error Messages -->
+    <string name="registration_failed">Falha no cadastro</string>
+    <string name="registration_success">Cadastro realizado com sucesso!</string>
+    <string name="fill_all_fields">Preencha todos os campos</string>
 </resources>

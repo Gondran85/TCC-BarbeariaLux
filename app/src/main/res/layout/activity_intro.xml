@@ -1,124 +1,172 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#151515"
+    android:fitsSystemWindows="true"
     tools:context=".View.IntroActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        android:background="#151515"
-        android:contentDescription="@string/imagem_principal"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/btnEntrar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/lucid_origin_a_stunning_and_vibrant_cinematic_photo_of_create_2" />
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <!-- View com gradiente para fade out -->
-    <View
-        android:id="@+id/fadeOutOverlay"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:background="@drawable/gradient_fade_out"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_screen_height">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnEntrar"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/btn_fundo_amarelo"
-        android:text="@string/entrar"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/btnInscrever"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:background="#151515"
+                android:contentDescription="@string/imagem_principal"
+                android:scaleType="centerCrop"
+                android:importantForAccessibility="yes"
+                app:layout_constraintBottom_toTopOf="@+id/contentContainer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHeight_percent="0.55"
+                app:srcCompat="@drawable/lucid_origin_a_stunning_and_vibrant_cinematic_photo_of_create_2" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnInscrever"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/btn_fundo_transparente_borda_amarelo"
-        android:text="@string/registra_se"
-        android:textColor="@color/AmareloPadrao"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/textEsqueceuSenha"
-        app:layout_constraintEnd_toEndOf="@+id/btnEntrar"
-        app:layout_constraintStart_toStartOf="@+id/btnEntrar" />
+            <View
+                android:id="@+id/fadeOutOverlay"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/fade_overlay_height"
+                android:background="@drawable/gradient_fade_out"
+                android:importantForAccessibility="no"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="@+id/imageView" />
 
-    <TextView
-        android:id="@+id/textEsqueceuSenha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/esqueceu_da_senha"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/textContinue"
-        app:layout_constraintEnd_toEndOf="@+id/btnInscrever"
-        app:layout_constraintStart_toStartOf="@+id/btnInscrever" />
+            <LinearLayout
+                android:id="@+id/contentContainer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing_large"
+                android:layout_marginEnd="@dimen/spacing_large"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/textContinue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="@string/ou_continue_com"
-        android:textColor="@color/white"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/socialIconsContainer"
-        app:layout_constraintEnd_toEndOf="@+id/textEsqueceuSenha"
-        app:layout_constraintStart_toStartOf="@+id/textEsqueceuSenha" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnEntrar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:background="@drawable/btn_fundo_amarelo"
+                    android:text="@string/entrar"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/button_text_size"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:contentDescription="@string/entrar_content_description"
+                    android:minHeight="@dimen/min_touch_target"
+                    app:cornerRadius="@dimen/button_corner_radius"
+                    app:elevation="@dimen/button_elevation"
+                    app:backgroundTint="@null" />
 
-    <!-- Container para centralizar os ícones sociais -->
-    <LinearLayout
-        android:id="@+id/socialIconsContainer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnInscrever"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/button_height"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:background="@drawable/btn_fundo_transparente_borda_amarelo"
+                    android:text="@string/registra_se"
+                    android:textColor="@color/AmareloPadrao"
+                    android:textSize="@dimen/button_text_size"
+                    android:textStyle="bold"
+                    android:textAllCaps="false"
+                    android:contentDescription="@string/registra_se_content_description"
+                    android:minHeight="@dimen/min_touch_target"
+                    app:cornerRadius="@dimen/button_corner_radius"
+                    app:strokeWidth="@dimen/stroke_width"
+                    app:strokeColor="@color/AmareloPadrao"
+                    app:backgroundTint="@android:color/transparent"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
 
-        <ImageView
-            android:id="@+id/imgFacebook"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_marginEnd="24dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/login_facebook"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/ico_face" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textEsqueceuSenha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_medium"
+                    android:text="@string/esqueceu_da_senha"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/caption_text_size"
+                    android:background="?attr/selectableItemBackground"
+                    android:padding="@dimen/spacing_small"
+                    android:minHeight="@dimen/min_touch_target"
+                    android:gravity="center"
+                    android:contentDescription="@string/esqueceu_da_senha_content_description"
+                    android:clickable="true"
+                    android:focusable="true" />
 
-        <ImageView
-            android:id="@+id/imgGoogle"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/login_google"
-            android:padding="8dp"
-            android:scaleType="centerInside"
-            app:srcCompat="@drawable/ico_gmail" />
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/textContinue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_large"
+                    android:text="@string/ou_continue_com"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/caption_text_size"
+                    android:gravity="center"
+                    android:importantForAccessibility="yes" />
 
-    </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/socialIconsContainer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgFacebook"
+                        android:layout_width="@dimen/social_icon_size"
+                        android:layout_height="@dimen/social_icon_size"
+                        android:layout_marginEnd="@dimen/spacing_large"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/login_facebook"
+                        android:padding="@dimen/spacing_small"
+                        android:scaleType="centerInside"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:minHeight="@dimen/min_touch_target"
+                        android:minWidth="@dimen/min_touch_target"
+                        app:shapeAppearanceOverlay="@style/CircularImageView"
+                        app:srcCompat="@drawable/ico_face" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/imgGoogle"
+                        android:layout_width="@dimen/social_icon_size"
+                        android:layout_height="@dimen/social_icon_size"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/login_google"
+                        android:padding="@dimen/spacing_small"
+                        android:scaleType="centerInside"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:minHeight="@dimen/min_touch_target"
+                        android:minWidth="@dimen/min_touch_target"
+                        app:shapeAppearanceOverlay="@style/CircularImageView"
+                        app:srcCompat="@drawable/ico_gmail" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
