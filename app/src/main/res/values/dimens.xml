@@ -68,11 +68,24 @@
     <dimen name="border_width_thick">4dp</dimen>
 
     <!-- Card specific dimensions -->
+    <dimen name="card_width">280dp</dimen>
     <dimen name="card_corner_radius">12dp</dimen>
-    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_elevation">8dp</dimen>
     <dimen name="card_padding">24dp</dimen>
 
     <!-- Content margins for different screen sizes -->
     <dimen name="content_margin_horizontal">@dimen/spacing_md</dimen>
     <dimen name="content_margin_vertical">@dimen/spacing_lg</dimen>
+
+    <!-- Margins -->
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">24dp</dimen>
+
+    <!-- Padding -->
+    <dimen name="padding_tiny">4dp</dimen>
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
 </resources>

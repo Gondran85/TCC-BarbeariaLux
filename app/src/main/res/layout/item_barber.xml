@@ -1,67 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/card_width"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="16dp"
-    android:background="@color/black"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_marginHorizontal="@dimen/margin_small"
+    android:layout_marginVertical="@dimen/margin_tiny"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/black"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="@dimen/card_elevation"
+    app:strokeColor="@color/transparent_black"
+    app:strokeWidth="1dp">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent_black"
-        android:orientation="vertical">
+        android:padding="@dimen/padding_medium">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imageView"
-            android:layout_width="200dp"
-            android:layout_height="250dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@color/black"
-            android:paddingStart="20dp"
+            android:contentDescription="@string/barber_photo_description"
             android:scaleType="centerCrop"
-            tools:ignore="RtlSymmetry" />
+            app:layout_constraintDimensionRatio="4:5"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8dp"
+            tools:src="@tools:sample/avatars" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tituloTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="Titulo"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="@string/barber_name_placeholder"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageView"
+            tools:text="João Silva" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/subtituloTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="16dp"
-            android:text="Subtitulo"
+            android:layout_marginTop="@dimen/margin_tiny"
+            android:alpha="0.87"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/barber_speciality_placeholder"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceBody2"
             android:textColor="@color/white"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tituloTextView"
+            tools:text="Especialista em cortes modernos" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/horarioTextView"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Horarios Disponiveis"
+            android:layout_marginTop="@dimen/margin_small"
+            android:drawablePadding="@dimen/padding_tiny"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/available_hours"
+            android:textAlignment="center"
+            android:textAppearance="?attr/textAppearanceCaption"
             android:textColor="@color/AmareloPadrao"
-            android:textSize="14sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_schedule_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/subtituloTextView"
+            tools:text="Horários Disponíveis" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnReservaRecycler"
-            android:layout_width="wrap_content"
+            style="@style/Widget.Material3.Button.UnelevatedButton"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/img_reserve_agora" />
-    </LinearLayout>
-</LinearLayout>
+            android:layout_marginHorizontal="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:contentDescription="@string/reserve_now_description"
+            android:text="@string/reserve_now"
+            android:textColor="@color/black"
+            app:backgroundTint="@color/AmareloPadrao"
+            app:cornerRadius="@dimen/button_corner_radius"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/horarioTextView"
+            app:rippleColor="@color/white" />
+
+        <!-- Guia para margem inferior -->
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="@dimen/margin_small"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnReservaRecycler" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

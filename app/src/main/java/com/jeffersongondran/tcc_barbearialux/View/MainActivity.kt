@@ -1,62 +1,177 @@
-package com.jeffersongondran.tcc_barbearialux.View // Pacote onde a classe está localizada
+package com.jeffersongondran.tcc_barbearialux.View
 
-import android.content.Intent // Importa a classe Intent para navegar entre atividades <button class="citation-flag" data-index="1">
-import android.os.Bundle // Importa classes necessárias para gerenciar o ciclo de vida da atividade
-import androidx.activity.viewModels // Importa a função viewModels para inicializar ViewModel <button class="citation-flag" data-index="5">
-import androidx.appcompat.app.AppCompatActivity // Importa a classe base para atividades compatíveis com a biblioteca de suporte
-import androidx.recyclerview.widget.LinearLayoutManager // Importa o LinearLayoutManager para configurar o RecyclerView
-import com.google.firebase.FirebaseApp // Importa a classe FirebaseApp para inicializar o Firebase <button class="citation-flag" data-index="3">
-import com.jeffersongondran.tcc_barbearialux.Adapter.BarberAdapter // Importa o adapter personalizado para o RecyclerView
-import com.jeffersongondran.tcc_barbearialux.Viewmodel.MainViewModel // Importa o ViewModel associado a esta atividade
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityMainBinding // Importa o binding gerado automaticamente para acessar elementos do layout
-import kotlin.jvm.java
+// Importações necessárias para o funcionamento da Activity
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.FirebaseApp
+import com.jeffersongondran.tcc_barbearialux.Adapter.BarberAdapter
+import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
+import com.jeffersongondran.tcc_barbearialux.Viewmodel.MainViewModel
+import com.jeffersongondran.tcc_barbearialux.databinding.ActivityMainBinding
+import java.io.Serializable
 
-// Classe que representa a tela principal (MainActivity) do aplicativo
+/**
+ * MainActivity: Tela principal do aplicativo de barbearia
+ *
+ * Esta classe é responsável por:
+ * - Exibir a lista de barbeiros disponíveis
+ * - Permitir navegação para a tela de escolha de serviços
+ * - Gerenciar a interface principal do usuário
+ *
+ * Utiliza o padrão MVVM (Model-View-ViewModel) para separar
+ * a lógica de negócio da interface do usuário
+ */
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding // Binding para acessar os elementos do layout
-    private val viewModel: MainViewModel by viewModels() // Inicializa o ViewModel usando a biblioteca AndroidX <button class="citation-flag" data-index="5">
 
+    // Constantes para melhor organização e manutenção
+    companion object {
+        private const val EXTRA_BARBER_ITEM = "BARBER_ITEM"
+    }
+
+    // Binding para acessar os elementos da interface de forma segura
+    // O lateinit indica que será inicializado antes do primeiro uso
+    private lateinit var interfaceBinding: ActivityMainBinding
+
+    // ViewModel responsável por gerenciar os dados da tela
+    // O 'by viewModels()' é uma forma moderna de inicializar ViewModels
+    private val telaInicialViewModel: MainViewModel by viewModels()
+
+    /**
+     * Método chamado quando a Activity é criada
+     * É aqui que configuramos toda a interface e funcionalidades
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
-        FirebaseApp.initializeApp(this) // Inicializa o Firebase no aplicativo <button class="citation-flag" data-index="3">
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater) // Infla o layout usando View Binding
-        setContentView(binding.root) // Define o conteúdo da atividade como o layout inflado
 
-        // Configurar o botão "Reserve Agora" para navegar para a tela de escolha de serviço
-        binding.btnReserveAgora.setOnClickListener {
-            startActivity(Intent(this, EscolhaServicoActivity::class.java)) // Navega para a EscolhaServicoActivity <button class="citation-flag" data-index="1">
-        }
-
-        // Configurar o botão de voltar
-        binding.btnVoltarHome?.setOnClickListener {
-            onBackPressedDispatcher.onBackPressed() // Fecha a atividade ou volta para a tela anterior <button class="citation-flag" data-index="4">
-        }
-
-        setupRecyclerView() // Configura o RecyclerView
-        observeViewModel() // Observa mudanças nos dados fornecidos pelo ViewModel
+        // Inicializar componentes essenciais
+        inicializarFirebase()
+        configurarInterface()
+        configurarBotoesNavegacao()
+        configurarListaBarbeiros()
+        observarDadosDoViewModel()
     }
 
-    // Método para configurar o RecyclerView
-    private fun setupRecyclerView() {
-        // Configura o LinearLayoutManager para orientação horizontal
-        binding.recyclerViewBarbeiros.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.recyclerViewBarbeiros.setHasFixedSize(true) // Otimiza o desempenho ao informar que o tamanho do RecyclerView não muda
+    /**
+     * Inicializa o Firebase - necessário para usar os serviços do Google
+     * Como autenticação, banco de dados em tempo real, etc.
+     */
+    private fun inicializarFirebase() {
+        FirebaseApp.initializeApp(this)
     }
 
-    // Método para observar mudanças nos dados fornecidos pelo ViewModel
-    private fun observeViewModel() {
-        viewModel.barberItems.observe(this) { items ->
-            // Atualiza o adapter do RecyclerView com os itens observados
-            binding.recyclerViewBarbeiros.adapter = BarberAdapter(items) { clickedItem ->
-                // Navegar para a EscolhaServicoActivity ao clicar em um item
-                val intent = Intent(this, EscolhaServicoActivity::class.java).apply {
-                    putExtra(
-                        "BARBER_ITEM",
-                        clickedItem
-                    ) // Passa os dados do item clicado para a próxima tela
-                }
-                startActivity(intent) // Inicia a nova atividade <button class="citation-flag" data-index="1">
-            }
+    /**
+     * Configura a interface da tela utilizando View Binding
+     * View Binding é uma forma segura de acessar elementos do layout
+     */
+    private fun configurarInterface() {
+        // Infla (carrega) o layout XML e cria o binding
+        interfaceBinding = ActivityMainBinding.inflate(layoutInflater)
+
+        // Define o conteúdo da tela como o layout carregado
+        setContentView(interfaceBinding.root)
+    }
+
+    /**
+     * Configura os botões de navegação da tela
+     * Separamos em um método próprio para melhor organização
+     */
+    private fun configurarBotoesNavegacao() {
+        configurarBotaoReservarAgora()
+        configurarBotaoVoltar()
+    }
+
+    /**
+     * Configura o botão "Reserve Agora"
+     * Quando clicado, leva o usuário para a tela de escolha de serviços
+     */
+    private fun configurarBotaoReservarAgora() {
+        interfaceBinding.btnReserveAgora.setOnClickListener {
+            navegarParaEscolhaServico()
         }
+    }
+
+    /**
+     * Configura o botão de voltar (se existir no layout)
+     * O '?' indica que o elemento pode ser nulo (safe call)
+     */
+    private fun configurarBotaoVoltar() {
+        interfaceBinding.btnVoltarHome?.setOnClickListener {
+            // Usa o dispatcher moderno para lidar com o botão voltar
+            onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    /**
+     * Navega para a tela de escolha de serviços
+     * Método separado para facilitar reutilização e testes
+     */
+    private fun navegarParaEscolhaServico(barbeiroSelecionado: BarberItem? = null) {
+        val intencaoNavegacao = Intent(this, EscolhaServicoActivity::class.java)
+
+        // Se um barbeiro foi selecionado, passa os dados para a próxima tela
+        // BarberItem precisa implementar Serializable para ser passado entre Activities
+        barbeiroSelecionado?.let { barbeiro: BarberItem ->
+            intencaoNavegacao.putExtra(EXTRA_BARBER_ITEM, barbeiro as Serializable)
+        }
+
+        startActivity(intencaoNavegacao)
+    }
+
+    /**
+     * Configura a lista horizontal de barbeiros (RecyclerView)
+     * RecyclerView é um componente eficiente para exibir listas
+     */
+    private fun configurarListaBarbeiros() {
+        with(interfaceBinding.recyclerViewBarbeiros) {
+            // Configura o layout manager para exibição horizontal
+            layoutManager = criarLayoutManagerHorizontal()
+
+            // Otimização: informa que o tamanho da lista não mudará
+            // Isso melhora a performance do RecyclerView
+            setHasFixedSize(true)
+        }
+    }
+
+    /**
+     * Cria e configura o layout manager para exibição horizontal
+     * Separado em método próprio para melhor legibilidade
+     */
+    private fun criarLayoutManagerHorizontal(): LinearLayoutManager {
+        return LinearLayoutManager(
+            this,                           // Contexto da Activity
+            LinearLayoutManager.HORIZONTAL, // Orientação horizontal
+            false                          // Não reverter a ordem dos itens
+        )
+    }
+
+    /**
+     * Observa as mudanças nos dados fornecidos pelo ViewModel
+     * Quando os dados mudam, a interface é automaticamente atualizada
+     */
+    private fun observarDadosDoViewModel() {
+        // Observa a lista de barbeiros disponíveis
+        telaInicialViewModel.barberItems.observe(this) { listaDeItens ->
+            atualizarListaBarbeiros(listaDeItens)
+        }
+    }
+
+    /**
+     * Atualiza a lista de barbeiros exibida na tela
+     *
+     * @param listaDeItens: Lista com os dados dos barbeiros a serem exibidos
+     */
+    private fun atualizarListaBarbeiros(listaDeItens: List<BarberItem>) {
+        // Cria um novo adapter com os dados atualizados
+        val adaptadorBarbeiros = BarberAdapter(listaDeItens) { barbeiroClicado ->
+            // Quando um barbeiro é clicado, navega para escolha de serviços
+            // passando os dados do barbeiro selecionado
+            navegarParaEscolhaServico(barbeiroClicado)
+        }
+
+        // Atribui o novo adapter ao RecyclerView
+        interfaceBinding.recyclerViewBarbeiros.adapter = adaptadorBarbeiros
     }
 }

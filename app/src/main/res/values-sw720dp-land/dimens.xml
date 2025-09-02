@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensões para tablets em modo paisagem -->
+    <dimen name="card_width">300dp</dimen>
+    <dimen name="padding_medium">24dp</dimen>
+    <dimen name="margin_medium">24dp</dimen>
+    <dimen name="margin_large">40dp</dimen>
+</resources>
+

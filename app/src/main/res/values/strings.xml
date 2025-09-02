@@ -1,88 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--
+    ===========================================
+    CONFIGURAÇÕES GERAIS DA APLICAÇÃO
+    ===========================================
+    Nome da aplicação que aparece no Android
+    -->
     <string name="app_name">Barbearia Lux</string>
 
-    <!-- Login Screen -->
+    <!--
+    ===========================================
+    TELA DE LOGIN (LoginActivity)
+    ===========================================
+    Strings relacionadas ao processo de autenticação do usuário
+    -->
+    <!-- Textos dos campos de entrada -->
+    <string name="login_titulo_entrar">Entrar</string>
+    <string name="login_campo_email">Email</string>
+    <string name="login_campo_senha">Senha</string>
+
+    <!-- Links e navegação -->
+    <string name="login_link_esqueceu_senha">Esqueceu da senha?</string>
+    <string name="login_link_criar_conta">Não tem conta? Cadastre-se</string>
+    <string name="login_botao_voltar_para_login">Voltar para Login</string>
+
+    <!-- Mensagens de feedback -->
+    <string name="login_sucesso">Login realizado com sucesso</string>
+    <string name="login_erro_credenciais">Falha no login. Verifique suas credenciais.</string>
+
+    <!--
+    ===========================================
+    TELA DE CADASTRO (SignUpActivity)
+    ===========================================
+    Strings para criação de nova conta de usuário
+    -->
+    <string name="cadastro_titulo_bemvindo">Bem-vindo à Barbearia Lux</string>
+    <string name="cadastro_subtitulo">Crie sua conta para agendar serviços</string>
+
+    <!-- Campos do formulário de cadastro -->
+    <string name="cadastro_campo_nome_completo">Nome completo</string>
+    <string name="cadastro_campo_email">Email</string>
+    <string name="cadastro_campo_senha">Senha</string>
+    <string name="cadastro_campo_confirmar_senha">Confirmar senha</string>
+
+    <!-- Botões e links -->
+    <string name="cadastro_botao_cadastrar">Cadastrar</string>
+    <string name="cadastro_texto_ja_tem_conta">Já tem conta?</string>
+    <string name="cadastro_link_entrar">Entre aqui</string>
+
+    <!-- Mensagens de resultado -->
+    <string name="cadastro_sucesso">Cadastro realizado com sucesso!</string>
+    <string name="cadastro_erro_falha">Falha no cadastro</string>
+
+    <!--
+    ===========================================
+    RECUPERAÇÃO DE SENHA (ForgotPasswordActivity)
+    ===========================================
+    Strings para processo de recuperação de senha esquecida
+    -->
+    <string name="recuperacao_titulo">Esqueceu sua Senha?</string>
+    <string name="recuperacao_instrucao">Digite seu email para recuperação</string>
+    <string name="recuperacao_botao_enviar">Enviar Email de Recuperação</string>
+    <string name="recuperacao_status_enviando">Enviando…</string>
+
+    <!--
+    ===========================================
+    TELA DE INTRODUÇÃO (IntroActivity)
+    ===========================================
+    Primeira tela que o usuário vê ao abrir o app
+    -->
+    <string name="intro_botao_registrar">Registre-se</string>
+    <string name="intro_texto_ou_continue">Ou continue com</string>
+    <string name="intro_botao_facebook">Continuar com Facebook</string>
+    <string name="intro_botao_google">Continuar com Google</string>
+
+    <!--
+    ===========================================
+    TELA PRINCIPAL (MainActivity)
+    ===========================================
+    Interface principal após o login do usuário
+    -->
+    <string name="main_menu">Menu</string>
+    <string name="main_bemvindo_usuario">Bem-vindo Jefferson</string>
+    <string name="main_subtitulo">Afiado e estiloso! Agende seu horário agora mesmo!</string>
+    <string name="main_campo_pesquisar">Pesquisar</string>
+    <string name="main_botao_reservar_agora">Reserve Agora</string>
+    <string name="main_secao_barbeiros">Barbeiros Disponíveis</string>
+
+    <!--
+    ===========================================
+    TELA DE BOAS-VINDAS E SERVIÇOS
+    ===========================================
+    Apresentação da barbearia e seus benefícios
+    -->
+    <string name="boas_vindas_titulo">Bem-vindo à Barbearia Lux</string>
+    <string name="boas_vindas_clientes_satisfeitos">+30K Clientes Satisfeitos</string>
+    <string name="boas_vindas_beneficios">Aproveite os benefícios com serviços exclusivos e promoções especiais</string>
+    <string name="boas_vindas_personalizada">Bem-vindo ao %1$s</string>
+
+    <!--
+    ===========================================
+    CATÁLOGO DE SERVIÇOS
+    ===========================================
+    Lista de serviços oferecidos pela barbearia
+    -->
+    <!-- Nomes simples dos serviços (para uso em lógica) -->
+    <string name="servico_nome_corte_cabelo">Corte de Cabelo</string>
+    <string name="servico_nome_barba">Barba</string>
+    <string name="servico_nome_cabelo_e_barba">Corte cabelo e Barba</string>
+    <string name="servico_nome_lavagem_cabelo">Lavagem de Cabelo</string>
+
+    <!-- Descrições completas com preço e duração (para exibição) -->
+    <string name="servico_detalhes_corte_cabelo">Corte de Cabelo – R$ 50,00 – 30 min</string>
+    <string name="servico_detalhes_corte_barba">Corte da Barba – R$ 30,00 – 20 min</string>
+    <string name="servico_detalhes_cabelo_e_barba">Corte Cabelo e Barba – R$ 70,00 – 50 min</string>
+    <string name="servico_detalhes_lavagem_cabelo">Lavagem do Cabelo – R$ 40,00 – 30 min</string>
+
+    <!--
+    ===========================================
+    AGENDAMENTO DE HORÁRIOS
+    ===========================================
+    Interface para seleção de data e hora dos serviços
+    -->
+    <string name="agendamento_titulo_selecione_horario">Selecione o horário desejado:</string>
+    <string name="agendamento_hint_horario">Selecione um horário</string>
+    <string name="agendamento_botao_agendar">Agendar Horário</string>
+
+    <!-- Mensagens de resultado do agendamento -->
+    <string name="agendamento_confirmado">Reserva confirmada: %1$s às %2$s</string>
+    <string name="agendamento_erro_selecao">Erro: Serviço ou horário não selecionado!</string>
+
+    <!--
+    ===========================================
+    CARDS DOS BARBEIROS
+    ===========================================
+    Informações exibidas sobre cada barbeiro disponível
+    -->
+    <string name="barbeiro_nome_placeholder">Nome do Barbeiro</string>
+    <string name="barbeiro_especialidade_placeholder">Especialidade</string>
+    <string name="barbeiro_horarios_disponiveis">Horários Disponíveis</string>
+    <string name="barbeiro_botao_reservar">Reservar</string>
+
+    <!--
+    ===========================================
+    VALIDAÇÃO DE FORMULÁRIOS
+    ===========================================
+    Mensagens de erro para campos obrigatórios e validações
+    -->
+    <string name="validacao_campo_obrigatorio">Este campo é obrigatório</string>
+    <string name="validacao_email_obrigatorio">Email é obrigatório</string>
+    <string name="validacao_email_invalido">Email inválido</string>
+    <string name="validacao_senha_obrigatoria">Senha é obrigatória</string>
+    <string name="validacao_senha_muito_curta">Senha deve ter pelo menos 6 caracteres</string>
+    <string name="validacao_senhas_nao_coincidem">As senhas não coincidem</string>
+    <string name="validacao_preencher_todos_campos">Preencha todos os campos</string>
+
+    <!--
+    ===========================================
+    ACESSIBILIDADE
+    ===========================================
+    Descrições para leitores de tela e usuários com deficiência visual
+    -->
+    <!-- Navegação e botões -->
+    <string name="acessibilidade_voltar">Voltar para tela anterior</string>
+    <string name="acessibilidade_botao_voltar">Botão voltar</string>
+    <string name="acessibilidade_botao_entrar">Botão para fazer login na aplicação</string>
+    <string name="acessibilidade_botao_cadastrar">Botão para criar nova conta</string>
+    <string name="acessibilidade_botao_agendar">Botão para confirmar o agendamento</string>
+    <string name="acessibilidade_botao_reservar_barbeiro">Botão para fazer reserva com este barbeiro</string>
+
+    <!-- Campos de entrada -->
+    <string name="acessibilidade_campo_email">Campo para inserir email</string>
+    <string name="acessibilidade_campo_senha">Campo para inserir senha</string>
+
+    <!-- Links -->
+    <string name="acessibilidade_link_esqueceu_senha">Link para recuperar senha esquecida</string>
+    <string name="acessibilidade_link_criar_conta">Link para criar nova conta</string>
+
+    <!-- Imagens -->
+    <string name="acessibilidade_imagem_fundo">Imagem de fundo da barbearia</string>
+    <string name="acessibilidade_imagem_principal">Imagem Principal</string>
+    <string name="acessibilidade_imagem_promocional">Imagem promocional da barbearia</string>
+    <string name="acessibilidade_logo_barbearia">Logo da Barbearia Lux</string>
+    <string name="acessibilidade_foto_barbeiro">Foto do barbeiro</string>
+
+    <!-- Seleção de horários -->
+    <string name="acessibilidade_selecao_horario">Escolha um horário disponível</string>
+
+    <!--
+    ===========================================
+    ESTADOS E AÇÕES GERAIS
+    ===========================================
+    Mensagens e botões comuns usados em várias telas
+    -->
+    <string name="estado_carregando">Carregando…</string>
+    <string name="estado_erro">Erro</string>
+
+    <!-- Botões padrão -->
+    <string name="botao_tentar_novamente">Tentar novamente</string>
+    <string name="botao_cancelar">Cancelar</string>
+
+    <!--
+    ===========================================
+    STRINGS FALTANTES PARA ACTIVITY_INTRO E ACTIVITY_LOGIN
+    ===========================================
+    -->
+    <!-- Strings para tela de introdução -->
+    <string name="imagem_principal">Imagem principal da barbearia</string>
     <string name="entrar">Entrar</string>
+    <string name="entrar_content_description">Botão para fazer login</string>
+    <string name="registra_se">Registre-se</string>
+    <string name="registra_se_content_description">Botão para se registrar</string>
+    <string name="esqueceu_da_senha">Esqueceu da senha?</string>
+    <string name="esqueceu_da_senha_content_description">Link para recuperar senha</string>
+    <string name="ou_continue_com">Ou continue com</string>
+    <string name="login_facebook">Login com Facebook</string>
+    <string name="login_google">Login com Google</string>
+
+    <!-- Strings para tela de login -->
+    <string name="background_image_description">Imagem de fundo da tela de login</string>
+    <string name="voltar_description">Botão voltar</string>
     <string name="email">Email</string>
     <string name="senha">Senha</string>
-    <string name="esqueceu_da_senha">Esqueceu da senha?</string>
-    <string name="nao_tem_conta">Não tem conta? Cadastre-se</string>
-
-    <!-- Welcome and Service Screen -->
-    <string name="bem_vindo">Bem-vindo à Barbearia Lux</string>
-    <string name="_30k_nclients">+30K Clientes Satisfeitos</string>
-    <string name="aproveite_os_beneficos_com_servi_os_exclusivos_e_promo_es_especiais">Aproveite os benefícios com serviços exclusivos e promoções especiais</string>
-
-    <!-- Forgot Password Screen -->
-    <string name="voltar_para_login">Voltar para Login</string>
-    <string name="esqueceu_senha">Esqueceu sua Senha?</string>
-    <string name="digite_email_recuperacao">Digite seu email para recuperação</string>
-    <string name="enviar_recuperacao">Enviar Email de Recuperação</string>
-    <string name="enviando">Enviando...</string>
-
-    <!-- Intro Screen -->
-    <string name="imagem_principal">Imagem Principal</string>
-    <string name="registra_se">Registre-se</string>
-    <string name="ou_continue_com">Ou continue com</string>
-    <string name="login_facebook">Continuar com Facebook</string>
-    <string name="login_google">Continuar com Google</string>
-
-    <!-- Accessibility Descriptions -->
-    <string name="voltar_description">Voltar para tela anterior</string>
-    <string name="background_image_description">Imagem de fundo da barbearia</string>
     <string name="email_input_description">Campo para inserir email</string>
     <string name="password_input_description">Campo para inserir senha</string>
     <string name="login_button_description">Botão para fazer login</string>
-    <string name="forgot_password_description">Link para recuperar senha esquecida</string>
-    <string name="signup_link_description">Link para criar nova conta</string>
-    <string name="back_button_description">Botão voltar</string>
-    <string name="logo_description">Logo da Barbearia Lux</string>
+    <string name="forgot_password_description">Link para recuperar senha</string>
 
-    <!-- Accessibility strings -->
-    <string name="entrar_content_description">Botão para fazer login na aplicação</string>
-    <string name="registra_se_content_description">Botão para criar nova conta</string>
-    <string name="esqueceu_da_senha_content_description">Link para recuperar senha esquecida</string>
-
-    <!-- Error Messages -->
-    <string name="error_email_required">Email é obrigatório</string>
-    <string name="error_email_invalid">Email inválido</string>
-    <string name="error_password_required">Senha é obrigatória</string>
-    <string name="error_login_failed">Falha no login. Verifique suas credenciais.</string>
-
-    <!-- Service Selection Screen -->
-    <string name="seguidores_count">20k\nSeguidores</string>
-    <string name="barbearia_name">BARBEARIA ZON</string>
-    <string name="status_aberto">Aberto Agora</string>
-    <string name="escolha_servico_titulo">Escolha o serviço desejado:</string>
-    <string name="servico_selecao_description">Selecione o serviço que deseja agendar</string>
-
-    <!-- Service Options -->
+    <!--
+    ===========================================
+    STRINGS PARA ACTIVITY_ESCOLHA_SERVICO
+    ===========================================
+    -->
+    <string name="bem_vindo">Bem-vindo à Barbearia Lux</string>
+    <string name="_30k_nclients">+30K\nClientes</string>
+    <string name="seguidores_count">15K\nSeguidores</string>
+    <string name="barbearia_name">Barbearia Lux</string>
+    <string name="aproveite_os_beneficos_com_servi_os_exclusivos_e_promo_es_especiais">Aproveite os benefícios com serviços exclusivos e promoções especiais</string>
+    <string name="status_aberto">Aberto</string>
+    <string name="escolha_servico_titulo">Escolha seu serviço:</string>
     <string name="servico_corte_cabelo">Corte de Cabelo - R$ 50,00 - 30 min</string>
     <string name="servico_corte_barba">Corte da Barba - R$ 30,00 - 20 min</string>
     <string name="servico_cabelo_barba">Corte Cabelo e Barba - R$ 70,00 - 50 min</string>
     <string name="servico_lavagem_cabelo">Lavagem do Cabelo - R$ 40,00 - 30 min</string>
-
-    <!-- Time Selection -->
     <string name="selecione_horario_titulo">Selecione o horário desejado:</string>
-    <string name="horario_selecao_description">Escolha um horário disponível</string>
-    <string name="hint_selecione_horario">Selecione um horário</string>
     <string name="btn_agendar_horario">Agendar Horário</string>
-    <string name="agendar_button_description">Botão para confirmar o agendamento</string>
 
-    <!-- Success Messages -->
-    <string name="login_success">Login realizado com sucesso</string>
+    <!--
+    ===========================================
+    STRINGS PARA ACTIVITY_FORGOT_PASSWORD
+    ===========================================
+    -->
+    <string name="voltar_para_login">Voltar para Login</string>
+    <string name="esqueceu_senha">Esqueceu sua Senha?</string>
+    <string name="digite_email_recuperacao">Digite seu email para recuperação</string>
+    <string name="enviar_recuperacao">Enviar Email de Recuperação</string>
 
-    <!-- Main Activity -->
+    <!--
+    ===========================================
+    STRINGS ADICIONAIS PARA ACTIVITY_LOGIN
+    ===========================================
+    -->
+    <string name="nao_tem_conta">Não tem conta? Cadastre-se</string>
+    <string name="signup_link_description">Link para criar nova conta</string>
+
+    <!--
+    ===========================================
+    STRINGS AUSENTES PARA CORREÇÃO DE ERROS
+    ===========================================
+    -->
+    <!-- Strings para activity_main.xml -->
     <string name="menu">Menu</string>
-    <string name="bem_vindo_usuario">Bem-vindo Jefferson</string>
+    <string name="bem_vindo_usuario">Bem-vindo, usuário!</string>
     <string name="subtitulo_barbearia">Afiado e estiloso! Agende seu horário agora mesmo!</string>
     <string name="pesquisar">Pesquisar</string>
     <string name="imagem_promocional_desc">Imagem promocional da barbearia</string>
     <string name="reserve_agora">Reserve Agora</string>
     <string name="barbeiros_disponiveis">Barbeiros Disponíveis</string>
 
-    <!-- Sign Up Screen -->
+    <!-- Strings para activity_sign_up.xml -->
+    <string name="back_button_description">Botão voltar</string>
     <string name="welcome_title">Bem-vindo à Barbearia Lux</string>
     <string name="signup_subtitle">Crie sua conta para agendar serviços</string>
     <string name="full_name_hint">Nome completo</string>
@@ -93,14 +290,12 @@
     <string name="already_have_account">Já tem conta?</string>
     <string name="login_link">Entre aqui</string>
 
-    <!-- Validation Messages -->
-    <string name="field_required">Este campo é obrigatório</string>
-    <string name="invalid_email">Email inválido</string>
-    <string name="password_too_short">Senha deve ter pelo menos 6 caracteres</string>
-    <string name="passwords_dont_match">As senhas não coincidem</string>
+    <!-- Strings para item_barber.xml -->
+    <string name="barber_photo_description">Foto do barbeiro</string>
+    <string name="barber_name_placeholder">Nome do Barbeiro</string>
+    <string name="barber_speciality_placeholder">Especialidade</string>
+    <string name="available_hours">Horários Disponíveis</string>
+    <string name="reserve_now">Reservar</string>
+    <string name="reserve_now_description">Botão para fazer reserva com este barbeiro</string>
 
-    <!-- Error Messages -->
-    <string name="registration_failed">Falha no cadastro</string>
-    <string name="registration_success">Cadastro realizado com sucesso!</string>
-    <string name="fill_all_fields">Preencha todos os campos</string>
 </resources>

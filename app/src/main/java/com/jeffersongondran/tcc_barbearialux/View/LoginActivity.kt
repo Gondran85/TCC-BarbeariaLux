@@ -3,192 +3,416 @@ package com.jeffersongondran.tcc_barbearialux.View
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityLoginBinding
-import android.widget.Toast // Import Toast for messages
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import kotlin.jvm.java
+import com.jeffersongondran.tcc_barbearialux.R
+import com.jeffersongondran.tcc_barbearialux.databinding.ActivityLoginBinding
 
+/**
+ * Activity responsável pela tela de login da aplicação.
+ *
+ * Esta classe gerencia toda a lógica de autenticação do usuário,
+ * incluindo validação de dados e comunicação com o Firebase.
+ *
+ * Principais funcionalidades:
+ * - Validação de email e senha
+ * - Autenticação com Firebase
+ * - Navegação para outras telas
+ * - Tratamento de erros de login
+ */
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityLoginBinding
-    private lateinit var auth: FirebaseAuth
+    // ===========================================
+    // PROPRIEDADES DA CLASSE
+    // ===========================================
 
-    // TAG para logging
-    private companion object {
-        private const val TAG = "LoginActivity"
+    /**
+     * Binding para acessar os elementos da interface de forma segura.
+     * O View Binding é uma forma moderna e segura de acessar views
+     * sem usar findViewById()
+     */
+    private lateinit var binding: ActivityLoginBinding
+
+    /**
+     * Instância do Firebase Authentication para gerenciar login/logout
+     */
+    private lateinit var autenticadorFirebase: FirebaseAuth
+
+    /**
+     * Constante para identificar logs desta Activity.
+     * Usamos companion object para criar uma "variável estática"
+     * que pode ser acessada sem instanciar a classe.
+     */
+    companion object {
+        private const val TAG_LOG = "LoginActivity"
     }
 
+    // ===========================================
+    // CICLO DE VIDA DA ACTIVITY
+    // ===========================================
+
+    /**
+     * Método chamado quando a Activity é criada.
+     * É aqui que inicializamos todos os componentes necessários.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        // Inicializar Firebase Auth
-        initializeFirebase()
+        // Inicializa o View Binding para acessar as views
+        configurarViewBinding()
 
-        setupUI()
-        setupClickListeners()
+        // Configura o Firebase Authentication
+        inicializarFirebaseAuth()
+
+        // Configura os listeners dos botões e campos
+        configurarEventosDeClique()
     }
 
+    // ===========================================
+    // CONFIGURAÇÃO INICIAL
+    // ===========================================
+
     /**
-     * Inicializa o Firebase Authentication
+     * Configura o View Binding para esta Activity.
+     *
+     * O View Binding gera automaticamente uma classe que contém
+     * referências para todas as views do layout XML.
      */
-    private fun initializeFirebase() {
+    private fun configurarViewBinding() {
         try {
-            auth = FirebaseAuth.getInstance()
-            Log.d(TAG, "initializeFirebase: Firebase Auth inicializado com sucesso.")
-        } catch (e: Exception) {
-            Log.e(TAG, "initializeFirebase: Erro ao inicializar Firebase Auth.", e)
-            showToast("Erro ao inicializar autenticação. Tente novamente.")
+            binding = ActivityLoginBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+            Log.d(TAG_LOG, "View Binding configurado com sucesso")
+        } catch (erro: Exception) {
+            Log.e(TAG_LOG, "Erro ao configurar View Binding", erro)
+            exibirMensagem("Erro ao carregar a tela. Tente reiniciar o app.")
         }
     }
 
-    private fun setupUI() {
-        // Configurações iniciais da UI, se necessário
+    /**
+     * Inicializa o Firebase Authentication.
+     *
+     * O Firebase Auth é o serviço que gerencia autenticação de usuários
+     * (login, logout, criação de contas, etc.)
+     */
+    private fun inicializarFirebaseAuth() {
+        try {
+            autenticadorFirebase = FirebaseAuth.getInstance()
+            Log.d(TAG_LOG, "Firebase Authentication inicializado com sucesso")
+        } catch (erro: Exception) {
+            Log.e(TAG_LOG, "Erro ao inicializar Firebase Auth", erro)
+            exibirMensagem("Erro ao inicializar sistema de login. Verifique sua conexão.")
+        }
     }
 
-    private fun setupClickListeners() {
-        // Botão de voltar
+    /**
+     * Configura todos os eventos de clique da tela.
+     *
+     * Separamos esta lógica em um método próprio para manter
+     * o onCreate() limpo e organizado.
+     */
+    private fun configurarEventosDeClique() {
+        configurarBotaoVoltar()
+        configurarBotaoEntrar()
+        configurarLinkEsqueceuSenha()
+        configurarRedirecionamentoCadastro()
+    }
+
+    // ===========================================
+    // CONFIGURAÇÃO DE EVENTOS DE CLIQUE
+    // ===========================================
+
+    /**
+     * Configura o comportamento do botão "Voltar".
+     * Quando clicado, fecha a tela atual.
+     */
+    private fun configurarBotaoVoltar() {
         binding.btnVoltarLogin.setOnClickListener {
-            finish() // Fecha a activity atual
+            Log.d(TAG_LOG, "Usuário clicou em voltar")
+            finish() // Fecha a Activity atual
         }
+    }
 
-        // Botão de entrar
+    /**
+     * Configura o comportamento do botão "Entrar".
+     * Quando clicado, inicia o processo de login.
+     */
+    private fun configurarBotaoEntrar() {
         binding.btnEntrar.setOnClickListener {
-            performLogin()
+            Log.d(TAG_LOG, "Usuário clicou em entrar")
+            executarProcessoDeLogin()
         }
+    }
 
-        // Link "Esqueceu da senha?"
+    /**
+     * Configura o link "Esqueceu a senha?".
+     * Por enquanto apenas exibe uma mensagem informativa.
+     */
+    private fun configurarLinkEsqueceuSenha() {
         binding.forgotPasswordText.setOnClickListener {
-            handleForgotPassword()
+            Log.d(TAG_LOG, "Usuário clicou em 'esqueceu a senha'")
+            tratarEsqueceuSenha()
         }
-
-        // Redirecionar para a tela de inscrição
-        setupSignUpRedirection()
     }
 
     /**
-     * Esta função pode ser chamada separadamente se necessário
+     * Configura o redirecionamento para a tela de cadastro.
+     * Usamos um clique longo como exemplo (pode ser adaptado conforme necessário).
      */
-    private fun setupSignUpRedirection() {
-        // Como não vemos esse elemento no layout atual, vamos adicioná-lo
+    private fun configurarRedirecionamentoCadastro() {
         binding.forgotPasswordText.setOnLongClickListener {
-            redirectToSignUp()
-            true
+            Log.d(TAG_LOG, "Usuário fez clique longo - redirecionando para cadastro")
+            redirecionarParaTelaDeCadastro()
+            true // Indica que o evento foi tratado
         }
     }
 
-    fun redirectToSignUp() {
-        val intent = Intent(this, SignUpActivity::class.java)
-        startActivity(intent)
-    }
+    // ===========================================
+    // LÓGICA DE AUTENTICAÇÃO
+    // ===========================================
 
-    private fun performLogin() {
-        val email = binding.editTextEmail.text.toString().trim()
-        val password = binding.editTextPassword.text.toString().trim()
+    /**
+     * Executa todo o processo de login do usuário.
+     *
+     * Este método coordena as etapas:
+     * 1. Coletar dados dos campos
+     * 2. Validar os dados
+     * 3. Tentar autenticar no Firebase
+     */
+    private fun executarProcessoDeLogin() {
+        // Coleta os dados digitados pelo usuário
+        val emailDigitado = obterEmailDigitado()
+        val senhaDigitada = obterSenhaDigitada()
 
-        if (validateInput(email, password)) {
-            // Desabilita o botão para evitar múltiplos cliques
-            binding.btnEntrar.isEnabled = false
+        Log.d(TAG_LOG, "Iniciando processo de login para: $emailDigitado")
 
-            // Autenticação real com Firebase
-            authenticateWithFirebase(email, password)
+        // Valida se os dados estão corretos antes de tentar o login
+        if (validarDadosDeEntrada(emailDigitado, senhaDigitada)) {
+            desabilitarBotaoEntrar() // Evita múltiplos cliques
+            autenticarComFirebase(emailDigitado, senhaDigitada)
         }
     }
 
     /**
-     * Autentica o usuário usando Firebase Authentication
+     * Obtém o email digitado pelo usuário, removendo espaços extras.
      */
-    private fun authenticateWithFirebase(email: String, password: String) {
-        Log.d(TAG, "authenticateWithFirebase: Tentando login para $email")
+    private fun obterEmailDigitado(): String {
+        return binding.editTextEmail.text.toString().trim()
+    }
 
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                // Reabilita o botão
-                binding.btnEntrar.isEnabled = true
+    /**
+     * Obtém a senha digitada pelo usuário, removendo espaços extras.
+     */
+    private fun obterSenhaDigitada(): String {
+        return binding.editTextPassword.text.toString().trim()
+    }
 
-                if (task.isSuccessful) {
-                    // Login bem-sucedido
-                    Log.i(TAG, "authenticateWithFirebase: Login bem-sucedido para $email")
-                    handleLoginSuccess()
+    /**
+     * Desabilita o botão "Entrar" para evitar múltiplos cliques.
+     */
+    private fun desabilitarBotaoEntrar() {
+        binding.btnEntrar.isEnabled = false
+    }
+
+    /**
+     * Reabilita o botão "Entrar".
+     */
+    private fun reabilitarBotaoEntrar() {
+        binding.btnEntrar.isEnabled = true
+    }
+
+    /**
+     * Autentica o usuário usando o Firebase Authentication.
+     *
+     * O Firebase fará a verificação do email e senha nos seus servidores
+     * e retornará o resultado através de um callback.
+     */
+    private fun autenticarComFirebase(email: String, senha: String) {
+        Log.d(TAG_LOG, "Enviando credenciais para o Firebase: $email")
+
+        autenticadorFirebase.signInWithEmailAndPassword(email, senha)
+            .addOnCompleteListener(this) { tarefaDeAutenticacao ->
+                // Reabilita o botão independente do resultado
+                reabilitarBotaoEntrar()
+
+                if (tarefaDeAutenticacao.isSuccessful) {
+                    // Login deu certo
+                    Log.i(TAG_LOG, "Login realizado com sucesso para: $email")
+                    tratarLoginBemSucedido()
                 } else {
                     // Login falhou
-                    Log.w(TAG, "authenticateWithFirebase: Falha no login para $email", task.exception)
-                    handleLoginFailure(task.exception)
+                    val erro = tarefaDeAutenticacao.exception
+                    Log.w(TAG_LOG, "Falha no login para: $email", erro)
+                    tratarFalhaNoLogin(erro)
                 }
             }
     }
 
+    // ===========================================
+    // TRATAMENTO DE RESULTADOS
+    // ===========================================
+
     /**
-     * Trata o sucesso do login
+     * Trata o sucesso do login.
+     *
+     * Quando o login é bem-sucedido:
+     * 1. Mostra mensagem de sucesso
+     * 2. Redireciona para a tela principal
+     * 3. Fecha a tela de login
      */
-    private fun handleLoginSuccess() {
-        val user = auth.currentUser
-        Log.i(TAG, "handleLoginSuccess: Usuário ${user?.email} logado com sucesso.")
+    private fun tratarLoginBemSucedido() {
+        val usuarioLogado = autenticadorFirebase.currentUser
+        Log.i(TAG_LOG, "Usuário ${usuarioLogado?.email} está agora logado")
 
-        showToast("Login realizado com sucesso!")
-
-        // Navegar para EscolhaServicosActivity
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish() // Fecha a LoginActivity para que o usuário não volte para ela
+        exibirMensagem("Login realizado com sucesso! Bem-vindo!")
+        redirecionarParaTelaPrincipal()
     }
 
     /**
-     * Trata as falhas no login
+     * Trata as falhas no processo de login.
+     *
+     * Analisa o tipo de erro e mostra uma mensagem apropriada para o usuário.
      */
-    private fun handleLoginFailure(exception: Exception?) {
-        Log.e(TAG, "handleLoginFailure: Erro no login", exception)
+    private fun tratarFalhaNoLogin(erro: Exception?) {
+        Log.e(TAG_LOG, "Erro durante o login", erro)
 
-        val errorMessage = when (exception) {
-            is FirebaseAuthInvalidUserException ->
-                "Email não cadastrado. Verifique o email ou crie uma conta."
-            is FirebaseAuthInvalidCredentialsException ->
-                "Email ou senha incorretos. Verifique seus dados."
+        val mensagemDeErro = when (erro) {
+            is FirebaseAuthInvalidUserException -> {
+                // Email não existe na base de dados
+                "Este email não está cadastrado. Verifique o email ou crie uma conta."
+            }
+            is FirebaseAuthInvalidCredentialsException -> {
+                // Email ou senha incorretos
+                "Email ou senha incorretos. Verifique seus dados e tente novamente."
+            }
             else -> {
-                Log.e(TAG, "handleLoginFailure: Erro não categorizado: ${exception?.message}", exception)
-                "Erro no login. Verifique sua conexão ou tente novamente."
+                // Outros tipos de erro (rede, servidor, etc.)
+                Log.e(TAG_LOG, "Erro não categorizado: ${erro?.message}", erro)
+                "Erro no login. Verifique sua conexão com a internet e tente novamente."
             }
         }
-        showToast(errorMessage)
+
+        exibirMensagem(mensagemDeErro)
+    }
+
+    // ===========================================
+    // VALIDAÇÃO DE DADOS
+    // ===========================================
+
+    /**
+     * Valida os dados de entrada do usuário (email e senha).
+     *
+     * Retorna true se todos os dados estão válidos,
+     * false caso contrário (e mostra as mensagens de erro).
+     */
+    private fun validarDadosDeEntrada(email: String, senha: String): Boolean {
+        var todosOsDadosEstaoValidos = true
+
+        // Valida o campo de email
+        if (!validarCampoEmail(email)) {
+            todosOsDadosEstaoValidos = false
+        }
+
+        // Valida o campo de senha
+        if (!validarCampoSenha(senha)) {
+            todosOsDadosEstaoValidos = false
+        }
+
+        return todosOsDadosEstaoValidos
     }
 
     /**
-     * Exibe mensagem Toast
+     * Valida especificamente o campo de email.
+     *
+     * Verifica se:
+     * 1. O campo não está vazio
+     * 2. O formato do email é válido
      */
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    private fun validarCampoEmail(email: String): Boolean {
+        return when {
+            email.isEmpty() -> {
+                // Email está vazio
+                binding.emailInputLayout.error = getString(R.string.validacao_email_obrigatorio)
+                false
+            }
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                // Email tem formato inválido
+                binding.emailInputLayout.error = getString(R.string.validacao_email_invalido)
+                false
+            }
+            else -> {
+                // Email está válido
+                binding.emailInputLayout.error = null
+                true
+            }
+        }
     }
 
-    fun validateInput(email: String, password: String): Boolean {
-        var isValid = true
-
-        // Validação do email
-        if (email.isEmpty()) {
-            binding.emailInputLayout.error = getString(com.jeffersongondran.tcc_barbearialux.R.string.error_email_required) // Assuming you add/have this string
-            isValid = false
-        } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.emailInputLayout.error = getString(com.jeffersongondran.tcc_barbearialux.R.string.error_email_invalid)
-            isValid = false
-        } else {
-            binding.emailInputLayout.error = null
-        }
-
-        // Validação da senha
-        if (password.isEmpty()) {
-            binding.passwordInputLayout.error = getString(com.jeffersongondran.tcc_barbearialux.R.string.error_password_required)
-            isValid = false
+    /**
+     * Valida especificamente o campo de senha.
+     *
+     * Por enquanto apenas verifica se não está vazio,
+     * mas pode ser expandido para verificar força da senha.
+     */
+    private fun validarCampoSenha(senha: String): Boolean {
+        return if (senha.isEmpty()) {
+            binding.passwordInputLayout.error = getString(R.string.validacao_senha_obrigatoria)
+            false
         } else {
             binding.passwordInputLayout.error = null
+            true
         }
-
-        return isValid
     }
 
-    private fun handleForgotPassword() {
-        showToast("Funcionalidade em breve!")
+    // ===========================================
+    // NAVEGAÇÃO ENTRE TELAS
+    // ===========================================
+
+    /**
+     * Redireciona o usuário para a tela principal da aplicação.
+     *
+     * Após o login bem-sucedido, o usuário vai para MainActivity
+     * e a tela de login é fechada para evitar que ele volte para ela.
+     */
+    private fun redirecionarParaTelaPrincipal() {
+        val intencaoParaTelaPrincipal = Intent(this, MainActivity::class.java)
+        startActivity(intencaoParaTelaPrincipal)
+        finish() // Remove esta tela da pilha de navegação
+    }
+
+    /**
+     * Redireciona o usuário para a tela de cadastro.
+     */
+    private fun redirecionarParaTelaDeCadastro() {
+        val intencaoParaCadastro = Intent(this, SignUpActivity::class.java)
+        startActivity(intencaoParaCadastro)
+    }
+
+    // ===========================================
+    // FUNCIONALIDADES AUXILIARES
+    // ===========================================
+
+    /**
+     * Trata o clique no link "Esqueceu a senha?".
+     *
+     * Por enquanto apenas mostra uma mensagem informativa,
+     * mas pode ser expandido para implementar recuperação de senha.
+     */
+    private fun tratarEsqueceuSenha() {
+        exibirMensagem("Funcionalidade de recuperação de senha em desenvolvimento!")
+    }
+
+    /**
+     * Exibe uma mensagem Toast para o usuário.
+     *
+     * Toast é uma mensagem pequena que aparece brevemente na tela.
+     * É útil para dar feedback rápido ao usuário.
+     */
+    private fun exibirMensagem(mensagem: String) {
+        Toast.makeText(this, mensagem, Toast.LENGTH_SHORT).show()
+        Log.d(TAG_LOG, "Mensagem exibida: $mensagem")
     }
 }

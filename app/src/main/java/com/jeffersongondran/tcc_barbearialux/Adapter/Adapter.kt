@@ -1,50 +1,116 @@
-package com.jeffersongondran.tcc_barbearialux.Adapter // Pacote onde a classe está localizada
+package com.jeffersongondran.tcc_barbearialux.Adapter
 
-import android.view.LayoutInflater // Importa a classe LayoutInflater para inflar layouts XML <button class="citation-flag" data-index="1">
-import android.view.ViewGroup // Importa a classe ViewGroup para manipular grupos de views
-import androidx.recyclerview.widget.RecyclerView // Importa o RecyclerView para criar listas eficientes
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
-import com.jeffersongondran.tcc_barbearialux.databinding.ItemBarberBinding // Importa o binding gerado para o layout item_barber.xml
+import com.jeffersongondran.tcc_barbearialux.databinding.ItemBarberBinding
 
-// Adapter para o RecyclerView que exibe uma lista de itens de barbearia
+/**
+ * Adapter responsável por exibir uma lista de serviços de barbearia no RecyclerView.
+ *
+ * Este adapter segue o padrão ViewHolder para otimizar a performance da lista,
+ * reutilizando as views conforme o usuário faz scroll.
+ *
+ * @param listaItensBarberaria Lista contendo todos os itens de serviços da barbearia
+ * @param acaoCliqueItem Função que será executada quando um item da lista for clicado
+ */
 class BarberAdapter(
-    private val items: List<BarberItem>, // Lista de itens a serem exibidos no RecyclerView
-    private val onItemClick: (BarberItem) -> Unit // Função de callback para lidar com cliques nos itens
-) : RecyclerView.Adapter<BarberAdapter.BarberViewHolder>() { // Adapter para o RecyclerView
+    private val listaItensBarberaria: List<BarberItem>,
+    private val acaoCliqueItem: (BarberItem) -> Unit
+) : RecyclerView.Adapter<BarberAdapter.BarberViewHolder>() {
 
-    // ViewHolder interno que mantém as referências das views
-    inner class BarberViewHolder(private val binding: ItemBarberBinding) :
-        RecyclerView.ViewHolder(binding.root) { // ViewHolder inicializado com o root do binding
+    /**
+     * ViewHolder interno que mantém as referências das views de cada item da lista.
+     *
+     * O ViewHolder é uma classe que "segura" as views de um item específico,
+     * evitando que o sistema precise procurar essas views repetidas vezes.
+     * Isso melhora significativamente a performance da lista.
+     */
+    inner class BarberViewHolder(
+        private val bindingDoItem: ItemBarberBinding
+    ) : RecyclerView.ViewHolder(bindingDoItem.root) {
+
         init {
-            // Configurar o clique no item
-            binding.root.setOnClickListener { // Define o listener de clique no item
-                val position = adapterPosition // Obtém a posição atual do item no adapter
-                if (position != RecyclerView.NO_POSITION) { // Verifica se a posição é válida
-                    onItemClick(items[position]) // Chama a função de callback com o item clicado
+            // Configuramos o clique no item assim que o ViewHolder é criado
+            configurarCliqueNoItem()
+        }
+
+        /**
+         * Configura o que acontece quando o usuário clica em um item da lista.
+         *
+         * Verificamos se a posição é válida antes de executar a ação,
+         * pois durante animações a posição pode ser inválida.
+         */
+        private fun configurarCliqueNoItem() {
+            bindingDoItem.root.setOnClickListener {
+                val posicaoAtual = adapterPosition
+
+                if (posicaoAtual != RecyclerView.NO_POSITION) {
+                    val itemClicado = listaItensBarberaria[posicaoAtual]
+                    acaoCliqueItem(itemClicado)
                 }
             }
         }
 
-        // Método para vincular os dados ao ViewHolder
-        fun bind(item: BarberItem) {
-            binding.tituloTextView // Define o título no TextView
-            binding.subtituloTextView// Define o subtítulo no TextView
-            binding.horarioTextView// Define o horário no TextView
-            binding.imageView.setImageResource(item.imageResId) // Define a imagem no ImageView
+        /**
+         * Vincula os dados de um BarberItem específico às views do layout.
+         *
+         * Este método é chamado toda vez que um novo item precisa ser exibido
+         * ou quando um item existente precisa ser atualizado.
+         *
+         * @param itemBarberaria O item contendo os dados a serem exibidos
+         */
+        fun vincularDados(itemBarberaria: BarberItem) {
+            with(bindingDoItem) {
+                // Definindo o nome do serviço (ex: "CORTE DE CABELO")
+                tituloTextView.text = itemBarberaria.nomeDoServico
+
+                // Definindo a descrição do serviço (ex: "Corte moderno e estiloso")
+                subtituloTextView.text = itemBarberaria.descricaoDoServico
+
+                // Definindo o horário de funcionamento (ex: "10h - 18h")
+                horarioTextView.text = itemBarberaria.horarioFuncionamento
+
+                // Definindo a imagem representativa do serviço
+                imageView.setImageResource(itemBarberaria.imagemDoServico)
+            }
         }
     }
 
-    // Método chamado para criar novos ViewHolder quando necessário
+    /**
+     * Cria um novo ViewHolder quando o RecyclerView precisa de uma nova view.
+     *
+     * Este método é chamado apenas quando não há ViewHolders reutilizáveis disponíveis.
+     * O RecyclerView reutiliza ViewHolders sempre que possível para economizar memória.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BarberViewHolder {
-        val binding = ItemBarberBinding.inflate(LayoutInflater.from(parent.context), parent, false) // Infla o layout usando o LayoutInflater <button class="citation-flag" data-index="1">
-        return BarberViewHolder(binding) // Retorna um novo ViewHolder com o binding
+        // Inflamos o layout XML transformando-o em uma view utilizável
+        val binding = ItemBarberBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        return BarberViewHolder(binding)
     }
 
-    // Método chamado para vincular os dados a um ViewHolder existente
+    /**
+     * Vincula os dados de um item específico a um ViewHolder existente.
+     *
+     * Este método é chamado toda vez que um ViewHolder precisa exibir
+     * dados de um item diferente (quando o usuário faz scroll, por exemplo).
+     */
     override fun onBindViewHolder(holder: BarberViewHolder, position: Int) {
-        holder.bind(items[position]) // Vincula os dados do item na posição especificada ao ViewHolder
+        val itemNaPosicao = listaItensBarberaria[position]
+        holder.vincularDados(itemNaPosicao)
     }
 
-    // Retorna o número total de itens na lista
-    override fun getItemCount(): Int = items.size // Retorna o tamanho da lista de itens
+    /**
+     * Retorna a quantidade total de itens na lista.
+     *
+     * O RecyclerView usa esse número para saber quantos itens precisa gerenciar
+     * e para calcular o tamanho da barra de rolagem.
+     */
+    override fun getItemCount(): Int = listaItensBarberaria.size
 }
