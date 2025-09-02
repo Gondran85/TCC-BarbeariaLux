@@ -1,263 +1,338 @@
 // Define o pacote ao qual este arquivo pertence. Pacotes são usados para organizar o código.
-package com.jeffersongondran.tcc_barbearialux.View // Pacote onde a classe está localizada
+package com.jeffersongondran.tcc_barbearialux.View
 
 // Importa as classes necessárias de outras partes do Android e do projeto.
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.animation.AnimationUtils
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.jeffersongondran.tcc_barbearialux.R
 import com.jeffersongondran.tcc_barbearialux.databinding.ActivityForgotPasswordBinding
 
-
-
 /**
- * Activity responsável por gerenciar a funcionalidade "Esqueceu a senha".
- * Permite que o usuário envie um email de recuperação de senha para o Firebase Authentication.
+ * Tela responsável pela recuperação de senha do usuário.
+ *
+ * Esta Activity permite que o usuário digite seu email e receba
+ * um link para redefinir sua senha via Firebase Authentication.
+ *
+ * Funcionalidades principais:
+ * - Validação de email
+ * - Envio de email de recuperação
+ * - Feedback visual para o usuário
+ * - Animações sutis para melhor experiência
  */
 class ForgotPasswordActivity : AppCompatActivity() {
 
-    // ViewBinding para acessar os componentes do layout de forma segura e eficiente
+    // ========== CONSTANTES ==========
+    companion object {
+        // Tempo em milissegundos para animações rápidas
+        private const val ANIMATION_DURATION_FAST = 100L
+
+        // Tempo em milissegundos para animações médias
+        private const val ANIMATION_DURATION_MEDIUM = 300L
+
+        // Distância do efeito "shake" em pixels
+        private const val SHAKE_DISTANCE = 10f
+
+        // Escala normal dos elementos (100%)
+        private const val SCALE_NORMAL = 1.0f
+
+        // Escala reduzida para efeito de "press" (95%)
+        private const val SCALE_PRESSED = 0.95f
+
+        // Delay antes de fechar a tela após sucesso (2 segundos)
+        private const val SUCCESS_DELAY_MS = 2000L
+
+        // Textos das mensagens
+        private const val MSG_EMAIL_REQUIRED = "Digite seu email"
+        private const val MSG_EMAIL_INVALID = "Email inválido"
+        private const val MSG_SUCCESS = "Email de recuperação enviado! Verifique sua caixa de entrada."
+        private const val MSG_EMAIL_NOT_FOUND = "Email não encontrado"
+        private const val MSG_GENERIC_ERROR = "Erro ao enviar email. Tente novamente."
+
+        // Textos dos botões
+        private const val BTN_TEXT_NORMAL = "Enviar Recuperação"
+        private const val BTN_TEXT_LOADING = "Enviando..."
+    }
+
+    // ========== PROPRIEDADES ==========
+    /**
+     * Binding para acessar os elementos da interface de forma segura
+     */
     private lateinit var binding: ActivityForgotPasswordBinding
 
-    // Instância do Firebase Authentication para gerenciar a recuperação de senha
-    private lateinit var auth: FirebaseAuth
+    /**
+     * Instância do Firebase Authentication para gerenciar autenticação
+     */
+    private lateinit var firebaseAuth: FirebaseAuth
 
+    // ========== CICLO DE VIDA DA ACTIVITY ==========
     /**
      * Método chamado quando a Activity é criada pela primeira vez.
-     * Configura a UI e os listeners de clique.
+     *
+     * Aqui inicializamos:
+     * - O binding para acessar a interface
+     * - O Firebase Authentication
+     * - Os listeners dos elementos da tela
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inicializa o ViewBinding
+        // Infla o layout e configura o binding
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializa o Firebase Authentication
-        auth = FirebaseAuth.getInstance()
+        // Inicializa os componentes necessários
+        initializeComponents()
 
-        setupClickListeners()
-        setupEmailValidation()
-        animateCardEntrance()
+        // Configura os listeners dos elementos da interface
+        setupUserInteractions()
+    }
+
+    // ========== INICIALIZAÇÃO ==========
+    /**
+     * Inicializa os componentes necessários para o funcionamento da tela.
+     *
+     * Separamos a inicialização em um método próprio para deixar
+     * o onCreate mais limpo e focado apenas no essencial.
+     */
+    private fun initializeComponents() {
+        // Obtém a instância do Firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     /**
-     * Configura os listeners de clique para os componentes da tela.
+     * Configura todos os listeners (eventos de clique) da interface.
+     *
+     * Listeners são "ouvintes" que ficam esperando o usuário
+     * interagir com os elementos da tela (tocar, clicar, etc.)
      */
-    private fun setupClickListeners() {
-        // Configura o botão de voltar na toolbar
+    private fun setupUserInteractions() {
+        // Configura o botão de voltar na toolbar (barra superior)
         binding.toolbar.setNavigationOnClickListener {
-            animateCardExit {
-                finish() // Finaliza esta activity e volta para a anterior
-            }
+            closeScreen()
         }
 
-        // Texto "Voltar para login" - também retorna para a tela de login
+        // Configura o texto clicável "Voltar para login"
         binding.textVoltarLogin.setOnClickListener {
-            animateCardExit {
-                finish()
-            }
+            closeScreen()
         }
 
-        // Botão enviar recuperação - envia email de recuperação de senha
+        // Configura o botão principal de enviar recuperação
         binding.btnEnviarRecuperacao.setOnClickListener {
-            sendPasswordResetEmail()
+            handlePasswordRecovery()
         }
     }
 
+    // ========== LÓGICA PRINCIPAL ==========
     /**
-     * Configura validação em tempo real do campo de email
+     * Método principal que coordena todo o processo de recuperação de senha.
+     *
+     * Este método segue o padrão de "função orquestradora":
+     * - Não faz o trabalho pesado diretamente
+     * - Coordena outros métodos menores e específicos
+     * - Fica fácil de ler e entender o fluxo principal
      */
-    private fun setupEmailValidation() {
-        binding.editTextEmailForgotPassword.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+    private fun handlePasswordRecovery() {
+        // 1. Obtém o email digitado pelo usuário
+        val userEmail = getUserEmail()
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                val email = s.toString().trim()
-
-                if (email.isNotEmpty()) {
-                    if (isValidEmail(email)) {
-                        // Email válido - remove erro e habilita botão
-                        binding.textInputLayoutEmail.error = null
-                        binding.btnEnviarRecuperacao.isEnabled = true
-                        binding.btnEnviarRecuperacao.alpha = 1.0f
-                    } else {
-                        // Email inválido - mostra erro e desabilita botão
-                        binding.textInputLayoutEmail.error = "Formato de email inválido"
-                        binding.btnEnviarRecuperacao.isEnabled = false
-                        binding.btnEnviarRecuperacao.alpha = 0.6f
-                    }
-                } else {
-                    // Campo vazio - remove erro mas desabilita botão
-                    binding.textInputLayoutEmail.error = null
-                    binding.btnEnviarRecuperacao.isEnabled = false
-                    binding.btnEnviarRecuperacao.alpha = 0.6f
-                }
-            }
-        })
-    }
-
-    /**
-     * Anima a entrada do card principal
-     */
-    private fun animateCardEntrance() {
-        try {
-            val slideInAnimation = AnimationUtils.loadAnimation(this, R.anim.card_slide_in)
-            binding.mainContentCard?.startAnimation(slideInAnimation)
-        } catch (_: Exception) {
-            // Se a animação não existir, continua sem ela
+        // 2. Valida se o email é válido
+        if (!isEmailValid(userEmail)) {
+            return // Se inválido, para a execução aqui
         }
+
+        // 3. Remove qualquer mensagem de erro anterior
+        clearEmailError()
+
+        // 4. Mostra estado de carregamento
+        showLoadingState()
+
+        // 5. Envia o email de recuperação
+        sendPasswordResetEmail(userEmail)
     }
 
     /**
-     * Anima a saída do card antes de finalizar a activity
+     * Obtém o email digitado pelo usuário no campo de texto.
+     *
+     * O .trim() remove espaços em branco no início e fim,
+     * evitando problemas com emails que tenham espaços acidentais.
      */
-    private fun animateCardExit(onComplete: () -> Unit) {
-        try {
-            binding.mainContentCard?.animate()
-                ?.alpha(0f)
-                ?.translationY(-50f)
-                ?.setDuration(300)
-                ?.withEndAction(onComplete)
-                ?.start()
-        } catch (_: Exception) {
-            // Se a animação falhar, executa a ação diretamente
-            onComplete()
-        }
+    private fun getUserEmail(): String {
+        return binding.editTextEmailForgotPassword.text.toString().trim()
     }
 
     /**
-     * Envia um email de recuperação de senha usando o Firebase Authentication.
+     * Valida se o email fornecido é válido.
+     *
+     * Verifica duas condições:
+     * 1. Se não está vazio
+     * 2. Se tem formato válido de email
+     *
+     * @param email O email a ser validado
+     * @return true se válido, false caso contrário
      */
-    private fun sendPasswordResetEmail() {
-        val email = binding.editTextEmailForgotPassword.text.toString().trim()
-
-        // Validação do campo de email
+    private fun isEmailValid(email: String): Boolean {
+        // Verifica se o email está vazio
         if (email.isEmpty()) {
-            binding.textInputLayoutEmail.error = "Por favor, digite seu email"
-            showToast("Por favor, digite seu email")
-            return
+            showEmailError(MSG_EMAIL_REQUIRED)
+            animateEmailFieldError()
+            return false
         }
 
-        if (!isValidEmail(email)) {
-            binding.textInputLayoutEmail.error = "Por favor, digite um email válido"
-            showToast("Por favor, digite um email válido")
-            return
+        // Verifica se o email tem formato válido usando padrão do Android
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            showEmailError(MSG_EMAIL_INVALID)
+            animateEmailFieldError()
+            return false
         }
 
-        // Remove qualquer erro anterior
-        binding.textInputLayoutEmail.error = null
+        return true
+    }
 
-        // Feedback visual durante o carregamento
-        showLoadingState(true)
-
-        // Envia o email de recuperação através do Firebase
-        auth.sendPasswordResetEmail(email)
+    /**
+     * Envia o email de recuperação de senha usando Firebase.
+     *
+     * @param email O email para onde enviar a recuperação
+     */
+    private fun sendPasswordResetEmail(email: String) {
+        firebaseAuth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
-                // Remove o estado de carregamento
-                showLoadingState(false)
+                // Sempre volta ao estado normal do botão
+                hideLoadingState()
 
                 if (task.isSuccessful) {
-                    // Sucesso - anima o ícone e informa o usuário
-                    animateSuccessState()
-                    showToast("Email de recuperação enviado! Verifique sua caixa de entrada.")
-
-                    // Aguarda a animação antes de voltar
-                    binding.mainContentCard?.postDelayed({
-                        animateCardExit { finish() }
-                    }, 1500)
+                    handlePasswordResetSuccess()
                 } else {
-                    // Erro - anima o erro e informa o usuário
-                    animateErrorState()
-                    val errorMessage = getFirebaseErrorMessage(task.exception?.message)
-                    binding.textInputLayoutEmail.error = errorMessage
-                    showToast(errorMessage)
+                    handlePasswordResetError(task.exception)
                 }
             }
     }
 
+    // ========== TRATAMENTO DE SUCESSO E ERRO ==========
     /**
-     * Mostra/esconde o estado de carregamento
+     * Trata o sucesso no envio do email de recuperação.
+     *
+     * Mostra mensagem de sucesso e programa o fechamento da tela.
      */
-    private fun showLoadingState(isLoading: Boolean) {
-        if (isLoading) {
-            binding.btnEnviarRecuperacao.isEnabled = false
-            binding.btnEnviarRecuperacao.text = getString(R.string.enviando)
-            binding.btnEnviarRecuperacao.alpha = 0.7f
+    private fun handlePasswordResetSuccess() {
+        // Mostra mensagem de sucesso para o usuário
+        showSuccessMessage(MSG_SUCCESS)
 
-            // Anima o ícone para indicar carregamento
-            binding.iconForgotPassword?.animate()
-                ?.rotation(360f)
-                ?.setDuration(1000)
-                ?.start()
-        } else {
-            binding.btnEnviarRecuperacao.isEnabled = true
-            binding.btnEnviarRecuperacao.text = getString(R.string.enviar_recuperacao)
-            binding.btnEnviarRecuperacao.alpha = 1.0f
+        // Anima o botão para dar feedback visual
+        animateButtonSuccess()
 
-            // Para a animação do ícone
-            binding.iconForgotPassword?.animate()
-                ?.rotation(0f)
-                ?.setDuration(300)
-                ?.start()
+        // Programa o fechamento da tela após um delay
+        scheduleScreenClose()
+    }
+
+    /**
+     * Trata erros que podem ocorrer ao enviar email de recuperação.
+     *
+     * @param exception A exceção retornada pelo Firebase
+     */
+    private fun handlePasswordResetError(exception: Exception?) {
+        val errorMessage = getErrorMessage(exception)
+        showErrorMessage(errorMessage)
+        animateEmailFieldError()
+    }
+
+    /**
+     * Converte exceções do Firebase em mensagens amigáveis para o usuário.
+     *
+     * @param exception A exceção a ser traduzida
+     * @return Mensagem de erro em português
+     */
+    private fun getErrorMessage(exception: Exception?): String {
+        return when (exception?.message) {
+            "There is no user record corresponding to this identifier. The user may have been deleted." ->
+                MSG_EMAIL_NOT_FOUND
+            "The email address is badly formatted." ->
+                MSG_EMAIL_INVALID
+            else ->
+                MSG_GENERIC_ERROR
+        }
+    }
+
+    // ========== INTERFACE DO USUÁRIO ==========
+    /**
+     * Mostra erro no campo de email.
+     *
+     * @param message Mensagem de erro a ser exibida
+     */
+    private fun showEmailError(message: String) {
+        binding.textInputLayoutEmail.error = message
+    }
+
+    /**
+     * Remove qualquer erro do campo de email.
+     */
+    private fun clearEmailError() {
+        binding.textInputLayoutEmail.error = null
+    }
+
+    /**
+     * Mostra o estado de carregamento no botão.
+     *
+     * Desabilita o botão e muda o texto para indicar que
+     * algo está sendo processado.
+     */
+    private fun showLoadingState() {
+        binding.btnEnviarRecuperacao.apply {
+            isEnabled = false
+            text = BTN_TEXT_LOADING
         }
     }
 
     /**
-     * Anima o estado de sucesso
+     * Esconde o estado de carregamento e volta ao normal.
      */
-    private fun animateSuccessState() {
-        // Anima o ícone com efeito de sucesso
-        binding.iconForgotPassword?.animate()
-            ?.scaleX(1.2f)
-            ?.scaleY(1.2f)
-            ?.setDuration(200)
-            ?.withEndAction {
-                binding.iconForgotPassword?.animate()
-                    ?.scaleX(1.0f)
-                    ?.scaleY(1.0f)
-                    ?.setDuration(200)
-                    ?.start()
-            }
-            ?.start()
-
-        // Anima o botão com feedback de sucesso
-        binding.btnEnviarRecuperacao.animate()
-            .scaleX(0.95f)
-            .scaleY(0.95f)
-            .setDuration(100)
-            .withEndAction {
-                binding.btnEnviarRecuperacao.animate()
-                    .scaleX(1.0f)
-                    .scaleY(1.0f)
-                    .setDuration(100)
-                    .start()
-            }
-            .start()
+    private fun hideLoadingState() {
+        binding.btnEnviarRecuperacao.apply {
+            isEnabled = true
+            text = BTN_TEXT_NORMAL
+        }
     }
 
     /**
-     * Anima o estado de erro
+     * Mostra mensagem de sucesso para o usuário.
+     *
+     * @param message Mensagem a ser exibida
      */
-    private fun animateErrorState() {
-        // Shake animation no campo de email
-        binding.textInputLayoutEmail.animate()
-            .translationX(-10f)
-            .setDuration(50)
+    private fun showSuccessMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    /**
+     * Mostra mensagem de erro para o usuário.
+     *
+     * @param message Mensagem de erro a ser exibida
+     */
+    private fun showErrorMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    // ========== ANIMAÇÕES ==========
+    /**
+     * Anima o campo de email com efeito "shake" para indicar erro.
+     *
+     * O efeito shake chama atenção do usuário para o campo com problema
+     * de forma sutil e não agressiva.
+     */
+    private fun animateEmailFieldError() {
+        val emailField = binding.textInputLayoutEmail
+
+        emailField.animate()
+            .translationX(-SHAKE_DISTANCE)
+            .setDuration(ANIMATION_DURATION_FAST)
             .withEndAction {
-                binding.textInputLayoutEmail.animate()
-                    .translationX(10f)
-                    .setDuration(50)
+                emailField.animate()
+                    .translationX(SHAKE_DISTANCE)
+                    .setDuration(ANIMATION_DURATION_FAST)
                     .withEndAction {
-                        binding.textInputLayoutEmail.animate()
+                        emailField.animate()
                             .translationX(0f)
-                            .setDuration(50)
+                            .setDuration(ANIMATION_DURATION_FAST)
                             .start()
                     }
                     .start()
@@ -266,34 +341,48 @@ class ForgotPasswordActivity : AppCompatActivity() {
     }
 
     /**
-     * Retorna mensagem de erro amigável baseada na exceção do Firebase
+     * Anima o botão com efeito de "pulse" para indicar sucesso.
+     *
+     * O botão diminui ligeiramente e volta ao tamanho normal,
+     * dando feedback visual de que a ação foi bem-sucedida.
      */
-    private fun getFirebaseErrorMessage(firebaseError: String?): String {
-        return when (firebaseError) {
-            "There is no user record corresponding to this identifier. The user may have been deleted." ->
-                "Email não encontrado. Verifique se está correto."
-            "The email address is badly formatted." ->
-                "Formato de email inválido."
-            "A network error (such as timeout, interrupted connection or unreachable host) has occurred." ->
-                "Erro de conexão. Verifique sua internet."
-            "Too many requests. Please try again later." ->
-                "Muitas tentativas. Tente novamente em alguns minutos."
-            else ->
-                "Erro ao enviar email de recuperação. Tente novamente."
-        }
+    private fun animateButtonSuccess() {
+        val button = binding.btnEnviarRecuperacao
+
+        button.animate()
+            .scaleX(SCALE_PRESSED)
+            .scaleY(SCALE_PRESSED)
+            .setDuration(ANIMATION_DURATION_FAST)
+            .withEndAction {
+                button.animate()
+                    .scaleX(SCALE_NORMAL)
+                    .scaleY(SCALE_NORMAL)
+                    .setDuration(ANIMATION_DURATION_FAST)
+                    .start()
+            }
+            .start()
+    }
+
+    // ========== NAVEGAÇÃO ==========
+    /**
+     * Programa o fechamento da tela após o sucesso.
+     *
+     * Dá tempo suficiente para o usuário ler a mensagem de sucesso
+     * antes de voltar para a tela anterior.
+     */
+    private fun scheduleScreenClose() {
+        binding.root.postDelayed({
+            closeScreen()
+        }, SUCCESS_DELAY_MS)
     }
 
     /**
-     * Valida se o email está em um formato válido.
+     * Fecha a tela atual e volta para a anterior.
+     *
+     * O finish() encerra esta Activity e retorna para
+     * a Activity anterior na pilha de navegação.
      */
-    private fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    /**
-     * Exibe uma mensagem Toast para o usuário.
-     */
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    private fun closeScreen() {
+        finish()
     }
 }

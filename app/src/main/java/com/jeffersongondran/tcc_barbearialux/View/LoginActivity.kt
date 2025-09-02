@@ -189,8 +189,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleForgotPassword() {
-        // Implementar lógica para recuperação de senha
-        // Por exemplo, abrir dialog ou navegar para tela de recuperação
-        Toast.makeText(this, "Funcionalidade Esqueceu a senha a ser implementada", Toast.LENGTH_SHORT).show()
+        showToast("Funcionalidade em breve!")
     }
 }
