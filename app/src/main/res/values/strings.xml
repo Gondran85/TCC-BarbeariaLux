@@ -50,6 +50,26 @@
     <string name="error_password_required">Senha é obrigatória</string>
     <string name="error_login_failed">Falha no login. Verifique suas credenciais.</string>
 
+    <!-- Service Selection Screen -->
+    <string name="seguidores_count">20k\nSeguidores</string>
+    <string name="barbearia_name">BARBEARIA ZON</string>
+    <string name="status_aberto">Aberto Agora</string>
+    <string name="escolha_servico_titulo">Escolha o serviço desejado:</string>
+    <string name="servico_selecao_description">Selecione o serviço que deseja agendar</string>
+
+    <!-- Service Options -->
+    <string name="servico_corte_cabelo">Corte de Cabelo - R$ 50,00 - 30 min</string>
+    <string name="servico_corte_barba">Corte da Barba - R$ 30,00 - 20 min</string>
+    <string name="servico_cabelo_barba">Corte Cabelo e Barba - R$ 70,00 - 50 min</string>
+    <string name="servico_lavagem_cabelo">Lavagem do Cabelo - R$ 40,00 - 30 min</string>
+
+    <!-- Time Selection -->
+    <string name="selecione_horario_titulo">Selecione o horário desejado:</string>
+    <string name="horario_selecao_description">Escolha um horário disponível</string>
+    <string name="hint_selecione_horario">Selecione um horário</string>
+    <string name="btn_agendar_horario">Agendar Horário</string>
+    <string name="agendar_button_description">Botão para confirmar o agendamento</string>
+
     <!-- Success Messages -->
     <string name="login_success">Login realizado com sucesso</string>
 

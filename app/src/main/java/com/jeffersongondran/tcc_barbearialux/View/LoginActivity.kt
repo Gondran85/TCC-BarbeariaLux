@@ -132,7 +132,7 @@ class LoginActivity : AppCompatActivity() {
         showToast("Login realizado com sucesso!")
 
         // Navegar para EscolhaServicosActivity
-        val intent = Intent(this, EscolhaServicoActivity::class.java)
+        val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish() // Fecha a LoginActivity para que o usuário não volte para ela
     }
