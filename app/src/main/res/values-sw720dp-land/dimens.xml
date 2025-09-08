@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Dimensões para tablets em modo paisagem -->
-    <dimen name="card_width">300dp</dimen>
-    <dimen name="padding_medium">24dp</dimen>
-    <dimen name="margin_medium">24dp</dimen>
-    <dimen name="margin_large">40dp</dimen>
-</resources>
+    <!-- Dimensões otimizadas para tablets em modo paisagem -->
 
+    <!-- Margens reduzidas para aproveitar melhor o espaço horizontal -->
+    <dimen name="content_margin_horizontal">48dp</dimen>
+    <dimen name="content_margin_vertical">24dp</dimen>
+
+    <!-- Espaçamentos ajustados para modo paisagem -->
+    <dimen name="spacing_lg">20dp</dimen>
+    <dimen name="spacing_xl">32dp</dimen>
+    <dimen name="spacing_xxl">48dp</dimen>
+
+    <!-- Largura máxima do formulário aumentada para paisagem -->
+    <dimen name="max_form_width">520dp</dimen>
+
+    <!-- Altura mínima reduzida para modo paisagem -->
+    <dimen name="min_screen_height">480dp</dimen>
+
+    <!-- Overlay de gradiente reduzido em paisagem -->
+    <dimen name="fade_overlay_height">80dp</dimen>
+</resources>

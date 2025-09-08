@@ -25,13 +25,13 @@ class BarberRepository {
                 R.drawable.lucid_realism_a_highly_detailed_and_super_realistic_depiction_1
             ), // Segundo item da lista
             BarberItem(
-                "CLUBE DE CAVALHEIROS",
+                "CLUBE DE BELEZA",
                 "Horário disponível",
                 "10am - 10pm",
                 R.drawable.lucid_realism_crie_fotos_de_um_salo_de_beleza_moderno_e_elegan_0
             ), // Terceiro item da lista
             BarberItem(
-                "CLUBE DE CAVALHEIROS",
+                "CLUBE DE BARBA",
                 "Horário disponível",
                 "10am - 10pm",
                 R.drawable.lucid_realism_a_surreal_and_vibrant_cinematic_photo_of_a_barbe_2

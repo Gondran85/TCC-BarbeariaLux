@@ -20,67 +20,57 @@
             android:layout_height="wrap_content"
             android:minHeight="@dimen/min_screen_height">
 
-            <!-- Hero Image Section -->
+            <!-- Guidelines for tablet layout -->
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_start"
+                android:id="@+id/guideline_horizontal_center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="@dimen/content_margin_horizontal" />
+                app:layout_constraintGuide_percent="0.5" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_end"
+                android:id="@+id/guideline_content_start"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintGuide_end="@dimen/content_margin_horizontal" />
+                app:layout_constraintGuide_percent="0.15" />
 
             <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline_image_bottom"
+                android:id="@+id/guideline_content_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_percent="0.50" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.85" />
 
+            <!-- Left side - Hero Image -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/imageView"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:layout_marginTop="@dimen/spacing_xl"
+                android:layout_marginEnd="@dimen/spacing_lg"
+                android:layout_marginBottom="@dimen/spacing_xl"
                 android:background="@color/surface"
                 android:contentDescription="@string/imagem_principal"
                 android:scaleType="centerCrop"
                 android:importantForAccessibility="yes"
-                app:layout_constraintBottom_toTopOf="@+id/guideline_image_bottom"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline_horizontal_center"
+                app:layout_constraintStart_toStartOf="@+id/guideline_content_start"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8dp"
                 app:srcCompat="@drawable/lucid_origin_a_stunning_and_vibrant_cinematic_photo_of_create_2" />
 
-            <!-- Gradient overlay for better text readability -->
-            <View
-                android:id="@+id/fadeOutOverlay"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/fade_overlay_height"
-                android:background="@drawable/gradient_fade_out"
-                android:importantForAccessibility="no"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
-                app:layout_constraintEnd_toEndOf="@+id/imageView"
-                app:layout_constraintStart_toStartOf="@+id/imageView" />
-
-            <!-- Content Container with proper constraints -->
+            <!-- Right side - Content Container -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/contentContainer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_lg"
-                android:layout_marginBottom="@dimen/spacing_lg"
+                android:layout_marginStart="@dimen/spacing_lg"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-                app:layout_constraintStart_toStartOf="@+id/guideline_start"
-                app:layout_constraintTop_toBottomOf="@+id/imageView"
-                app:layout_constraintVertical_bias="0.0"
-                app:layout_constraintWidth_max="@dimen/max_form_width">
+                app:layout_constraintEnd_toStartOf="@+id/guideline_content_end"
+                app:layout_constraintStart_toStartOf="@+id/guideline_horizontal_center"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <!-- Primary Action Button -->
                 <com.google.android.material.button.MaterialButton
@@ -106,7 +96,7 @@
                     style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/button_height"
-                    android:layout_marginBottom="@dimen/spacing_lg"
+                    android:layout_marginBottom="@dimen/spacing_xl"
                     android:text="@string/registra_se"
                     android:textColor="@color/AmareloPadrao"
                     android:textSize="@dimen/button_text_size"
@@ -127,7 +117,7 @@
                     android:id="@+id/textEsqueceuSenha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_lg"
+                    android:layout_marginBottom="@dimen/spacing_xl"
                     android:background="?attr/selectableItemBackground"
                     android:clickable="true"
                     android:contentDescription="@string/esqueceu_da_senha_content_description"
@@ -147,7 +137,7 @@
                     android:id="@+id/textContinue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_md"
+                    android:layout_marginBottom="@dimen/spacing_lg"
                     android:gravity="center"
                     android:importantForAccessibility="yes"
                     android:text="@string/ou_continue_com"
@@ -172,7 +162,7 @@
                         android:id="@+id/imgFacebook"
                         android:layout_width="@dimen/social_icon_size"
                         android:layout_height="@dimen/social_icon_size"
-                        android:layout_marginEnd="@dimen/spacing_lg"
+                        android:layout_marginEnd="@dimen/spacing_xl"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:clickable="true"
                         android:contentDescription="@string/login_facebook"

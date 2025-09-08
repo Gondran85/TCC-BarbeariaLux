@@ -7,17 +7,22 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jeffersongondran.tcc_barbearialux.Viewmodel.EscolhaServicoViewModel
 import com.jeffersongondran.tcc_barbearialux.R
 import com.jeffersongondran.tcc_barbearialux.databinding.ActivityEscolhaServicoBinding
+import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
 
 /**
  * Activity responsável por gerenciar a tela de escolha de serviços da barbearia.
  *
  * Esta classe permite ao usuário:
- * - Visualizar informações da barbearia
+ * - Visualizar informações da barbearia selecionada
  * - Selecionar um tipo de serviço (corte, barba, etc.)
  * - Escolher um horário disponível
  * - Confirmar o agendamento
  */
 class EscolhaServicoActivity : AppCompatActivity() {
+
+    companion object {
+        private const val EXTRA_BARBER_ITEM = "BARBER_ITEM"
+    }
 
     // Binding para acessar os elementos visuais do layout de forma segura
     private lateinit var binding: ActivityEscolhaServicoBinding
@@ -55,6 +60,7 @@ class EscolhaServicoActivity : AppCompatActivity() {
         configurarBotaoVoltar()
         configurarSelecaoDeServicos()
         configurarBotaoAgendamento()
+        exibirInformacoesDaBarbearia()
     }
 
     /**
@@ -254,5 +260,37 @@ class EscolhaServicoActivity : AppCompatActivity() {
 
         // Implementação temporária para evitar warning de parâmetro não utilizado
         println("Dados recebidos: $dadosDaBarbearia")
+    }
+
+    /**
+     * Recebe e exibe as informações da barbearia selecionada na tela anterior.
+     * Se uma barbearia foi selecionada, mostra seus dados na interface.
+     */
+    private fun exibirInformacoesDaBarbearia() {
+        // Recebe o objeto BarberItem enviado pela MainActivity
+        val barbeariaSelecionada = intent.getSerializableExtra(EXTRA_BARBER_ITEM) as? BarberItem
+
+        barbeariaSelecionada?.let { barbearia ->
+            // Atualiza o nome da barbearia
+            binding.clubeTextView.text = barbearia.nomeDoServico
+
+            // Atualiza a descrição da barbearia
+            binding.descricaoTextView.text = barbearia.descricaoDoServico
+
+            // Atualiza o horário de funcionamento
+            val horarioTexto = "Funcionamento: ${barbearia.horarioFuncionamento}"
+            binding.abertoTextView.text = horarioTexto
+
+            // Atualiza a imagem da barbearia se disponível
+            if (barbearia.imagemDoServico != 0) {
+                binding.imageView15.setImageResource(barbearia.imagemDoServico)
+            }
+
+            // Log para debug
+            println("Informações da barbearia carregadas: ${barbearia.nomeDoServico}")
+        } ?: run {
+            // Se não recebeu dados da barbearia, mantém valores padrão
+            println("Nenhuma barbearia foi selecionada, usando valores padrão")
+        }
     }
 }

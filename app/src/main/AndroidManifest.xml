@@ -11,6 +11,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Hairdress">
         <activity
+            android:name=".View.IntroActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.ForgotPasswordActivity"
             android:exported="false" />
         <activity
@@ -26,7 +29,7 @@
             android:name=".View.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".View.IntroActivity"
+            android:name=".View.SpashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
