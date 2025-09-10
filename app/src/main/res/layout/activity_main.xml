@@ -9,18 +9,35 @@
     tools:context=".View.MainActivity">
 
     <!-- App Bar com Material Design -->
+
+    <!-- ScrollView Principal com Nested Scrolling -->
+
+    <ImageView
+        android:id="@+id/btnVoltarLogin"
+        android:layout_width="47dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:contentDescription="Botão voltar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/topAppBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@drawable/ico_voltar" />
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/topAppBar"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/app_bar_height"
+        android:layout_width="wrap_content"
+        android:layout_height="81dp"
+        android:layout_marginTop="16dp"
         android:background="@color/transparent_black"
         android:elevation="@dimen/elevation_card"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:navigationIcon="@drawable/ico_voltar"
-        app:navigationIconTint="@color/white"
         app:navigationContentDescription="@string/voltar_para_login"
+        app:navigationIconTint="@color/white"
         app:title="@string/bem_vindo"
         app:titleTextColor="@color/white">
 
@@ -39,21 +56,9 @@
             app:iconTint="@color/AmareloPadrao"
             app:rippleColor="@color/ripple_color" />
 
-        <ImageView
-            android:id="@+id/btnMenu"
-            android:layout_width="@dimen/touch_target_size"
-            android:layout_height="@dimen/touch_target_size"
-            android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/spacing_md"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/menu"
-            android:padding="@dimen/spacing_sm"
-            app:srcCompat="@drawable/ico_menu"
-            app:tint="@color/white" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <!-- ScrollView Principal com Nested Scrolling -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
         android:layout_width="0dp"

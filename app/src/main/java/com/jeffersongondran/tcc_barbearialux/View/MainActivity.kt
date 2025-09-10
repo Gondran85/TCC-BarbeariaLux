@@ -3,6 +3,9 @@ package com.jeffersongondran.luxconnect.View
 // Importações necessárias para o funcionamento da Activity
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +23,7 @@ import java.io.Serializable
  * - Exibir a lista de barbeiros disponíveis
  * - Permitir navegação para a tela de escolha de serviços
  * - Gerenciar a interface principal do usuário
+ * - Implementar funcionalidade de pesquisa em tempo real
  *
  * Utiliza o padrão MVVM (Model-View-ViewModel) para separar
  * a lógica de negócio da interface do usuário
@@ -51,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         configurarInterface()
         configurarBotoesNavegacao()
         configurarListaBarbeiros()
+        configurarCampoPesquisa()
         observarDadosDoViewModel()
     }
 
@@ -81,6 +86,7 @@ class MainActivity : AppCompatActivity() {
     private fun configurarBotoesNavegacao() {
         configurarBotaoReservarAgora()
         configurarBotaoVoltar()
+        configurarBotaoVoltarLogin()
     }
 
     /**
@@ -105,6 +111,37 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * Configura o botão de logout/voltar ao login
+     * Quando clicado, leva o usuário de volta para a tela de login
+     */
+    private fun configurarBotaoVoltarLogin() {
+        interfaceBinding.btnVoltarLogin?.setOnClickListener {
+            voltarParaLogin()
+        }
+    }
+
+    /**
+     * Configura o campo de pesquisa com funcionalidade de filtragem em tempo real
+     */
+    private fun configurarCampoPesquisa() {
+        interfaceBinding.editTextPesquisa.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Não precisamos fazer nada antes da mudança do texto
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Não precisamos fazer nada durante a mudança do texto
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // Após o usuário digitar, filtra a lista de barbearias
+                val textoPesquisa = s?.toString() ?: ""
+                telaInicialViewModel.pesquisarBarbearias(textoPesquisa)
+            }
+        })
+    }
+
+    /**
      * Navega para a tela de escolha de serviços
      * Método separado para facilitar reutilização e testes
      */
@@ -118,6 +155,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         startActivity(intencaoNavegacao)
+    }
+
+    /**
+     * Volta para a tela de login
+     * Método responsável por fazer o logout do usuário e navegar para a LoginActivity
+     */
+    private fun voltarParaLogin() {
+        // Cria intent para navegar para a tela de login
+        val intentLogin = Intent(this, LoginActivity::class.java)
+
+        // Limpa toda a pilha de activities (FLAG_CLEAR_TASK | FLAG_NEW_TASK)
+        // Isso garante que o usuário não possa voltar para MainActivity pressionando voltar
+        intentLogin.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        // Inicia a LoginActivity
+        startActivity(intentLogin)
+
+        // Finaliza a MainActivity atual
+        finish()
     }
 
     /**
@@ -156,6 +212,22 @@ class MainActivity : AppCompatActivity() {
         telaInicialViewModel.barberItems.observe(this) { listaDeItens ->
             atualizarListaBarbeiros(listaDeItens)
         }
+
+        // Observa o nome do usuário e atualiza a mensagem de boas-vindas
+        telaInicialViewModel.userName.observe(this) { nomeUsuario ->
+            atualizarMensagemBoasVindas(nomeUsuario)
+        }
+    }
+
+    /**
+     * Atualiza a mensagem de boas-vindas com o nome do usuário
+     * @param nomeUsuario Nome do usuário a ser exibido
+     */
+    private fun atualizarMensagemBoasVindas(nomeUsuario: String) {
+        val mensagemPersonalizada = "Bem-vindo, $nomeUsuario!"
+        interfaceBinding.textWelcome.text = mensagemPersonalizada
+
+        Log.d("MainActivity", "Mensagem de boas-vindas atualizada para: $mensagemPersonalizada")
     }
 
     /**

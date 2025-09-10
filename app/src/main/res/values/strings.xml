@@ -118,6 +118,9 @@
     <string name="intro_slide3_titulo">Profissionais Experientes</string>
     <string name="intro_slide3_descricao">Nossa equipe é formada por barbeiros qualificados e experientes</string>
 
+    <!-- Strings específicas para o layout reestruturado de boas-vindas -->
+    <string name="icone_boas_vindas">Ícone de boas-vindas</string>
+
     <!-- Botões de navegação -->
     <string name="intro_botao_proximo">Próximo</string>
     <string name="intro_botao_pular">Pular</string>

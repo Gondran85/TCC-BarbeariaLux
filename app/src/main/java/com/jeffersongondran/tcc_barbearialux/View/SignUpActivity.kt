@@ -10,7 +10,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.jeffersongondran.luxconnect.R
+import com.jeffersongondran.luxconnect.Utils.UserPreferences
 import com.jeffersongondran.luxconnect.databinding.ActivitySignUpBinding
 
 /**
@@ -23,6 +23,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignUpBinding
     // Instância do FirebaseAuth para interagir com os serviços de autenticação do Firebase.
     private lateinit var auth: FirebaseAuth
+    // Instância para gerenciar as preferências do usuário
+    private lateinit var userPreferences: UserPreferences
 
     // TAG para logging, facilitando a depuração e rastreamento de eventos.
     private companion object {
@@ -31,13 +33,6 @@ class SignUpActivity : AppCompatActivity() {
 
     /**
      * Chamado quando a Activity está sendo criada.
-     * É aqui que a maior parte da inicialização deve acontecer: chamar setContentView(int)
-     * para inflar o layout da Activity, usar findViewById(int) para interagir programaticamente
-     * com widgets na UI, e configurar listeners.
-     *
-     * @param savedInstanceState Se a Activity está sendo recriada após ter sido
-     * previamente destruída, este Bundle contém o estado mais recentemente fornecido
-     * por onSaveInstanceState(Bundle). Caso contrário, é nulo.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +42,15 @@ class SignUpActivity : AppCompatActivity() {
 
         Log.d(TAG, "onCreate: SignUpActivity iniciada.")
 
-        // Inicializa os serviços do Firebase Authentication.
+        // Inicializa os serviços do Firebase Authentication e UserPreferences.
         initializeFirebase()
+        initializeUserPreferences()
         // Configura os listeners de clique para os botões da interface.
         setupClickListeners()
     }
 
     /**
      * Inicializa a instância do Firebase Authentication.
-     * Trata exceções que podem ocorrer durante a inicialização.
      */
     private fun initializeFirebase() {
         try {
@@ -63,66 +58,70 @@ class SignUpActivity : AppCompatActivity() {
             Log.d(TAG, "initializeFirebase: Firebase Auth inicializado com sucesso.")
         } catch (e: Exception) {
             Log.e(TAG, "initializeFirebase: Erro ao inicializar Firebase Auth.", e)
-            // Informa ao usuário sobre um erro interno que impede a funcionalidade.
             showToast("Erro crítico ao inicializar. Por favor, tente novamente mais tarde.")
-            // Considerar desabilitar funcionalidades ou fechar a activity se o Auth é crucial.
         }
     }
 
     /**
-     * Configura os listeners de clique para os elementos interativos da UI,
-     * como botões de voltar e de inscrever.
+     * Inicializa as preferências do usuário
+     */
+    private fun initializeUserPreferences() {
+        userPreferences = UserPreferences(this)
+    }
+
+    /**
+     * Configura os listeners de clique para os elementos interativos da UI.
      */
     private fun setupClickListeners() {
         // Configura o listener para o botão de voltar.
         binding.btnVoltarSignUp.setOnClickListener {
             Log.d(TAG, "setupClickListeners: Botão 'Voltar' pressionado.")
-            finish() // Encerra a Activity atual, retornando à tela anterior na pilha.
+            finish()
         }
 
         // Configura o listener para o botão de realizar o cadastro.
         binding.btnIncrever.setOnClickListener {
             Log.d(TAG, "setupClickListeners: Botão 'Inscrever' pressionado.")
-            performSignUp() // Chama o método para iniciar o processo de cadastro.
+            performSignUp()
         }
     }
 
     /**
      * Orquestra o processo de cadastro do usuário.
-     * Obtém os dados do formulário, valida-os e, se válidos,
-     * tenta criar uma conta no Firebase.
      */
     private fun performSignUp() {
-        // Extrai e normaliza o email e a senha dos campos de texto.
+        // Extrai e normaliza os dados dos campos de texto.
+        val name = binding.etNome.text.toString().trim()
         val email = binding.etEmail.text.toString().trim()
         val password = binding.etSenha.text.toString().trim()
 
-        Log.d(TAG, "performSignUp: Tentativa de cadastro para email: $email")
+        Log.d(TAG, "performSignUp: Tentativa de cadastro para nome: $name, email: $email")
 
         // Valida os dados de entrada antes de prosseguir.
-        if (!validateInput(email, password)) {
+        if (!validateInput(name, email, password)) {
             Log.w(TAG, "performSignUp: Validação de entrada falhou.")
-            return // Interrompe o processo se a validação falhar.
+            return
         }
 
         // Prossegue com a criação da conta no Firebase.
-        createFirebaseAccount(email, password)
+        createFirebaseAccount(name, email, password)
     }
 
     /**
-     * Valida os campos de email e senha inseridos pelo usuário.
-     * Verifica se os campos não estão vazios, se o email tem formato válido
-     * e se a senha atende ao requisito mínimo de tamanho.
-     *
-     * @param email O email fornecido pelo usuário.
-     * @param password A senha fornecida pelo usuário.
-     * @return `true` se os dados são válidos, `false` caso contrário.
+     * Valida os campos de nome, email e senha inseridos pelo usuário.
      */
-    private fun validateInput(email: String, password: String): Boolean {
+    private fun validateInput(name: String, email: String, password: String): Boolean {
         // Verifica se algum dos campos está vazio.
-        if (email.isEmpty() || password.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             showToast("Por favor, preencha todos os campos.")
-            Log.w(TAG, "validateInput: Campos de email ou senha vazios.")
+            Log.w(TAG, "validateInput: Campos obrigatórios vazios.")
+            return false
+        }
+
+        // Verifica se o nome tem pelo menos 2 caracteres
+        if (name.length < 2) {
+            showToast("O nome deve ter pelo menos 2 caracteres.")
+            Log.w(TAG, "validateInput: Nome muito curto.")
             return false
         }
 
@@ -134,7 +133,6 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         // Verifica se a senha tem o comprimento mínimo de 6 caracteres.
-        // O Firebase exige senhas com no mínimo 6 caracteres.
         if (password.length < 6) {
             showToast("A senha deve ter pelo menos 6 caracteres.")
             Log.w(TAG, "validateInput: Senha muito curta.")
@@ -147,12 +145,8 @@ class SignUpActivity : AppCompatActivity() {
 
     /**
      * Tenta criar uma nova conta de usuário no Firebase Authentication
-     * utilizando o email e senha fornecidos.
-     *
-     * @param email O email para a nova conta.
-     * @param password A senha para a nova conta.
      */
-    private fun createFirebaseAccount(email: String, password: String) {
+    private fun createFirebaseAccount(name: String, email: String, password: String) {
         // Desabilita o botão de inscrever para prevenir múltiplos cliques durante o processo.
         binding.btnIncrever.isEnabled = false
         Log.d(TAG, "createFirebaseAccount: Iniciando criação de conta para $email.")
@@ -163,9 +157,9 @@ class SignUpActivity : AppCompatActivity() {
                 binding.btnIncrever.isEnabled = true
 
                 if (task.isSuccessful) {
-                    // Se o cadastro for bem-sucedido, prossegue para o fluxo de sucesso.
+                    // Se o cadastro for bem-sucedido, salva os dados e prossegue
                     Log.i(TAG, "createFirebaseAccount: Cadastro bem-sucedido para $email.")
-                    handleSignUpSuccess()
+                    handleSignUpSuccess(name, email)
                 } else {
                     // Se o cadastro falhar, trata os erros específicos.
                     Log.w(TAG, "createFirebaseAccount: Falha no cadastro para $email.", task.exception)
@@ -176,13 +170,16 @@ class SignUpActivity : AppCompatActivity() {
 
     /**
      * Executado quando o cadastro do usuário no Firebase é bem-sucedido.
-     * Informa o usuário e navega para a tela principal da aplicação.
      */
-    private fun handleSignUpSuccess() {
+    private fun handleSignUpSuccess(name: String, email: String) {
         val user = auth.currentUser
         Log.i(TAG, "handleSignUpSuccess: Usuário ${user?.email} cadastrado e logado com sucesso.")
 
-        showToast("Cadastro realizado com sucesso! Bem-vindo!")
+        // Salva os dados do usuário nas preferências
+        userPreferences.saveUserData(name, email)
+        Log.d(TAG, "handleSignUpSuccess: Dados do usuário salvos: nome=$name, email=$email")
+
+        showToast("Cadastro realizado com sucesso! Bem-vindo, $name!")
 
         // Navega para a tela principal da aplicação.
         navigateToMainScreen()

@@ -40,18 +40,22 @@
             android:paddingBottom="@dimen/margin_vertical">
 
             <!-- Back button with proper touch target -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnVoltarLogin"
-                style="@style/Widget.Material3.Button.IconButton"
-                android:layout_width="@dimen/min_touch_target"
-                android:layout_height="@dimen/min_touch_target"
-                android:contentDescription="@string/voltar_description"
-                app:icon="@drawable/ico_voltar"
-                app:iconTint="@color/white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
             <!-- Title Text -->
+            <ImageView
+                android:id="@+id/btnVoltarLogin"
+                android:layout_width="47dp"
+                android:layout_height="41dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="24dp"
+                android:contentDescription="Botão voltar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/ico_voltar" />
+
             <TextView
                 android:id="@+id/titleText"
                 android:layout_width="0dp"

@@ -171,6 +171,14 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun naoTemConta() {
+        binding.naoTemContaTextView?.setOnClickListener {
+            Log.d(TAG_LOG, "Usuário clicou em 'Não tem conta?'")
+            redirecionarParaTelaDeCadastro()
+        }
+
+    }
+
     // ===========================================
     // LÓGICA DE AUTENTICAÇÃO
     // ===========================================
