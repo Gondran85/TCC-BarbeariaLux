@@ -1,4 +1,4 @@
-# 💇‍♀️ BarbeariaLux - App de Agendamento de Salões de Beleza  
+# 💇‍♀️ LuxConnect - App de Agendamento de Salões de Beleza  
 
 <p align="center">
   <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status">
@@ -19,7 +19,7 @@
 
 ## 📌 Sobre o Projeto  
 
-O **BarbeariaLux** é um aplicativo móvel desenvolvido como parte do meu **Trabalho de Conclusão de Curso (TCC)** em Engenharia de Software.  
+O **LuxConnect** é um aplicativo móvel desenvolvido como parte do meu **Trabalho de Conclusão de Curso (TCC)** em Engenharia de Software.  
 Ele tem como objetivo **simplificar a busca e o agendamento de serviços de beleza**, conectando clientes e salões em uma experiência centralizada, prática e intuitiva.  
 
 ---
