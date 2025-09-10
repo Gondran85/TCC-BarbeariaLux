@@ -8,7 +8,7 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.jeffersongondran.tcc_barbearialux" />
+                  <option name="appId" value="com.jeffersongondran.luxconnect" />
                   <option name="mobileSdkAppId" value="1:748154328218:android:1e9afbcbbcccbd7b30fb23" />
                   <option name="projectId" value="tcc-barbearialux" />
                   <option name="projectNumber" value="748154328218" />
