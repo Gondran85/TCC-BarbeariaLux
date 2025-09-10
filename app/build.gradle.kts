@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.jeffersongondran.tcc_barbearialux"
+    namespace = "com.jeffersongondran.luxconnect"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.jeffersongondran.tcc_barbearialux"
+        applicationId = "com.jeffersongondran.luxconnect"
         minSdk = 30
         targetSdk = 36
         versionCode = 1

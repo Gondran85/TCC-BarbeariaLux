@@ -1,5 +1,5 @@
 // Define o pacote ao qual este arquivo pertence. Pacotes são usados para organizar o código.
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 // Importa as classes necessárias de outras partes do Android e do projeto.
 import android.os.Bundle
@@ -7,7 +7,7 @@ import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityForgotPasswordBinding
+import com.jeffersongondran.luxconnect.databinding.ActivityForgotPasswordBinding
 
 /**
  * Tela responsável pela recuperação de senha do usuário.

@@ -1,13 +1,13 @@
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityIntroBinding
+import com.jeffersongondran.luxconnect.databinding.ActivityIntroBinding
 
 /**
- * Activity responsável pela tela de introdução do aplicativo da Barbearia Lux.
+ * Activity responsável pela tela de introdução do aplicativo do LuxConnect.
  *
  * Esta tela permite ao usuário:
  * - Fazer login (se já estiver registrado)

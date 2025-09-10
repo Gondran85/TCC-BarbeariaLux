@@ -1,10 +1,10 @@
-package com.jeffersongondran.tcc_barbearialux.Adapter
+package com.jeffersongondran.luxconnect.Adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
-import com.jeffersongondran.tcc_barbearialux.databinding.ItemBarberBinding
+import com.jeffersongondran.luxconnect.Model.BarberItem
+import com.jeffersongondran.luxconnect.databinding.ItemBarberBinding
 
 /**
  * Adapter responsável por exibir uma lista de serviços de barbearia no RecyclerView.

@@ -1,7 +1,7 @@
-package com.jeffersongondran.tcc_barbearialux.Repository
+package com.jeffersongondran.luxconnect.Repository
 
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem // Importa a classe BarberItem, que representa um item da barbearia
-import com.jeffersongondran.tcc_barbearialux.R // Importa os recursos de layout e imagens do projeto
+import com.jeffersongondran.luxconnect.Model.BarberItem // Importa a classe BarberItem, que representa um item da barbearia
+import com.jeffersongondran.luxconnect.R // Importa os recursos de layout e imagens do projeto
 
 
 

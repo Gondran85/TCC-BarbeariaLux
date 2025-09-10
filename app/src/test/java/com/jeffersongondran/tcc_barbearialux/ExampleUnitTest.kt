@@ -1,4 +1,4 @@
-package com.jeffersongondran.tcc_barbearialux
+package com.jeffersongondran.luxconnect
 
 import org.junit.Test
 

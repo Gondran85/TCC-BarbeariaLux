@@ -2,10 +2,10 @@
  * Pacote que contém as classes responsáveis por fornecer dados para a aplicação
  * Repository Pattern: Camada de abstração entre a fonte de dados e a lógica de negócio
  */
-package com.jeffersongondran.tcc_barbearialux.Repository
+package com.jeffersongondran.luxconnect.Repository
 
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
-import com.jeffersongondran.tcc_barbearialux.R
+import com.jeffersongondran.luxconnect.Model.BarberItem
+import com.jeffersongondran.luxconnect.R
 
 /**
  * Repository responsável por gerenciar os dados dos serviços de barbearia
@@ -24,8 +24,10 @@ class EscolhaServicoRepository {
      */
     companion object {
         // Constantes para os nomes das barbearias - facilita manutenção
-        private const val NOME_CLUBE_CAVALHEIROS = "CLUBE DE CAVALHEIROS"
-        private const val NOME_BARBEARIA_STYLE = "BARBEARIA STYLE"
+        private const val NOME_CLUBE_DE_STYLE = "BARBEARIA STYLE"
+        private const val NOME_CLUBE_DE_CABELO = "CLUBE DE CABELO"
+        private const val NOME_CLUBE_DE_BELEZA = "CLUBE DE BELEZA"
+        private const val NOME_CLUBE_DA_BARBA  = "CLUBE DA BARBA"
 
         // Constantes para descrições padronizadas
         private const val DESCRICAO_HORARIO_DISPONIVEL = "Horário disponível"
@@ -60,31 +62,31 @@ class EscolhaServicoRepository {
         return listOf(
             // Primeiro serviço - Clube de Cavalheiros (Imagem 1)
             criarItemServico(
-                nome = NOME_CLUBE_CAVALHEIROS,
+                nome = NOME_CLUBE_DE_STYLE,
                 descricao = DESCRICAO_HORARIO_DISPONIVEL,
                 horario = HORARIO_FUNCIONAMENTO_PADRAO,
                 imagemId = R.drawable.lucid_realism_create_a_photograph_of_a_bustling_barbershop_wit_0
             ),
 
-            // Segundo serviço - Barbearia Style
+            // Segundo serviço - Clube de cabelo (Imagem 1)
             criarItemServico(
-                nome = NOME_BARBEARIA_STYLE,
-                descricao = DESCRICAO_HORARIO_DISPONIVEL,
-                horario = HORARIO_FUNCIONAMENTO_PADRAO,
-                imagemId = R.drawable.lucid_realism_a_vibrant_hairdressing_and_barber_salon_with_mod_3
-            ),
-
-            // Terceiro serviço - Clube de Cavalheiros (Imagem 2)
-            criarItemServico(
-                nome = NOME_CLUBE_CAVALHEIROS,
+                nome = NOME_CLUBE_DE_CABELO,
                 descricao = DESCRICAO_HORARIO_DISPONIVEL,
                 horario = HORARIO_FUNCIONAMENTO_PADRAO,
                 imagemId = R.drawable.lucid_realism_a_highly_detailed_and_super_realistic_depiction_1
             ),
 
-            // Quarto serviço - Clube de Cavalheiros (Imagem 3)
+            // Terceiro serviço - Clube de beleza (Imagem 2)
             criarItemServico(
-                nome = NOME_CLUBE_CAVALHEIROS,
+                nome = NOME_CLUBE_DE_BELEZA,
+                descricao = DESCRICAO_HORARIO_DISPONIVEL,
+                horario = HORARIO_FUNCIONAMENTO_PADRAO,
+                imagemId = R.drawable.lucid_realism_a_vibrant_hairdressing_and_barber_salon_with_mod_3
+            ),
+
+            // Quarto serviço - Clube da barba (Imagem 3)
+            criarItemServico(
+                nome = NOME_CLUBE_DA_BARBA,
                 descricao = DESCRICAO_HORARIO_DISPONIVEL,
                 horario = HORARIO_FUNCIONAMENTO_PADRAO,
                 imagemId = R.drawable.lucid_realism_a_surreal_and_vibrant_cinematic_photo_of_a_barbe_2

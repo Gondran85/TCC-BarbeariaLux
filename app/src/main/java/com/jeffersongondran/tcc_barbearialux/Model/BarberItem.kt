@@ -2,7 +2,7 @@
  * Pacote que contém as classes de modelo de dados da aplicação
  * Estas classes representam as entidades de negócio do sistema
  */
-package com.jeffersongondran.tcc_barbearialux.Model
+package com.jeffersongondran.luxconnect.Model
 
 import java.io.Serializable
 

@@ -1,13 +1,13 @@
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.jeffersongondran.tcc_barbearialux.Viewmodel.EscolhaServicoViewModel
-import com.jeffersongondran.tcc_barbearialux.R
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityEscolhaServicoBinding
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
+import com.jeffersongondran.luxconnect.Viewmodel.EscolhaServicoViewModel
+import com.jeffersongondran.luxconnect.R
+import com.jeffersongondran.luxconnect.databinding.ActivityEscolhaServicoBinding
+import com.jeffersongondran.luxconnect.Model.BarberItem
 
 /**
  * Activity responsável por gerenciar a tela de escolha de serviços da barbearia.
@@ -99,10 +99,10 @@ class EscolhaServicoActivity : AppCompatActivity() {
      */
     private fun obterNomeDoServicoSelecionado(idDaOpcaoSelecionada: Int): String? {
         return when (idDaOpcaoSelecionada) {
-            R.id.corteCabeloRadioButton -> getString(R.string.servico_nome_corte_cabelo)
-            R.id.corteBarbaRadioButton -> getString(R.string.servico_nome_barba)
-            R.id.cabeloBarbaRadioButton -> getString(R.string.servico_nome_cabelo_e_barba)
-            R.id.lavagemCabeloRadioButton -> getString(R.string.servico_nome_lavagem_cabelo)
+            R.id.corteCabeloRadioButton -> getString(R.string.servico_corte_cabelo)
+            R.id.corteBarbaRadioButton -> getString(R.string.servico_barba)
+            R.id.cabeloBarbaRadioButton -> getString(R.string.servico_cabelo_barba)
+            R.id.lavagemCabeloRadioButton -> getString(R.string.servico_lavagem_cabelo)
             else -> null // Retorna null quando nenhuma opção válida está selecionada
         }
     }

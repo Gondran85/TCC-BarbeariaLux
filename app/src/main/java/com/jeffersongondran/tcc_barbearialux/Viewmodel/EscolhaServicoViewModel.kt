@@ -2,7 +2,7 @@
  * Pacote que contém os ViewModels da aplicação
  * ViewModels são responsáveis por gerenciar os dados da interface do usuário
  */
-package com.jeffersongondran.tcc_barbearialux.Viewmodel
+package com.jeffersongondran.luxconnect.Viewmodel
 
 // Importações necessárias para trabalhar com arquitetura MVVM
 import androidx.lifecycle.LiveData // Para observar mudanças nos dados de forma reativa
@@ -10,8 +10,9 @@ import androidx.lifecycle.MutableLiveData // Para permitir alterações nos dado
 import androidx.lifecycle.ViewModel // Classe base para ViewModels que sobrevivem a mudanças de configuração
 
 // Importações específicas do projeto
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem // Modelo de dados que representa um item de serviço
-import com.jeffersongondran.tcc_barbearialux.Repository.EscolhaServicoRepository // Repositório que fornece os dados
+import com.jeffersongondran.luxconnect.Model.BarberItem // Modelo de dados que representa um item de serviço
+import com.jeffersongondran.luxconnect.Repository.EscolhaServicoRepository // Repositório que fornece os dados
+import kotlin.collections.isNotEmpty
 
 /**
  * ViewModel responsável por gerenciar os dados da tela de escolha de serviços da barbearia

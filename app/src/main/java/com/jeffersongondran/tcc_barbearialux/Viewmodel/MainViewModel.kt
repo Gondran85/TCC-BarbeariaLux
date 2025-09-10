@@ -1,16 +1,16 @@
-package com.jeffersongondran.tcc_barbearialux.Viewmodel // Pacote onde a classe está localizada
+package com.jeffersongondran.luxconnect.Viewmodel // Pacote onde a classe está localizada
 
-import androidx.lifecycle.LiveData // Importa LiveData para observar mudanças nos dados <button class="citation-flag" data-index="1">
-import androidx.lifecycle.MutableLiveData // Importa MutableLiveData para atualizar dados de forma segura <button class="citation-flag" data-index="6">
-import androidx.lifecycle.ViewModel // Importa ViewModel para gerenciar dados relacionados à UI <button class="citation-flag" data-index="5">
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
-import com.jeffersongondran.tcc_barbearialux.Repository.BarberRepository
+import androidx.lifecycle.LiveData // Importa LiveData para observar mudanças nos dados
+import androidx.lifecycle.MutableLiveData // Importa MutableLiveData para atualizar dados de forma segura
+import androidx.lifecycle.ViewModel // Importa ViewModel para gerenciar dados relacionados à UI
+import com.jeffersongondran.luxconnect.Model.BarberItem
+import com.jeffersongondran.luxconnect.Repository.BarberRepository
 
 
 // Classe ViewModel que gerencia os dados para a tela principal (MainActivity)
 class MainViewModel : ViewModel() {
-    private val _barberItems = MutableLiveData<List<BarberItem>>() // Dados mutáveis privados para atualização segura <button class="citation-flag" data-index="6">
-    val barberItems: LiveData<List<BarberItem>> get() = _barberItems // Dados públicos observáveis para a UI <button class="citation-flag" data-index="1">
+    private val _barberItems = MutableLiveData<List<BarberItem>>() // Dados mutáveis privados para atualização segura
+    val barberItems: LiveData<List<BarberItem>> get() = _barberItems // Dados públicos observáveis para a UI
 
     init {
         loadBarberItems() // Carrega os dados iniciais ao inicializar o ViewModel

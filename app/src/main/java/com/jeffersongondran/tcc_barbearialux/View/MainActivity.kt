@@ -1,4 +1,4 @@
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 // Importações necessárias para o funcionamento da Activity
 import android.content.Intent
@@ -7,10 +7,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.FirebaseApp
-import com.jeffersongondran.tcc_barbearialux.Adapter.BarberAdapter
-import com.jeffersongondran.tcc_barbearialux.Model.BarberItem
-import com.jeffersongondran.tcc_barbearialux.Viewmodel.MainViewModel
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityMainBinding
+import com.jeffersongondran.luxconnect.Adapter.BarberAdapter
+import com.jeffersongondran.luxconnect.Model.BarberItem
+import com.jeffersongondran.luxconnect.Viewmodel.MainViewModel
+import com.jeffersongondran.luxconnect.databinding.ActivityMainBinding
 import java.io.Serializable
 
 /**

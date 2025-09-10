@@ -1,4 +1,4 @@
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
-import com.jeffersongondran.tcc_barbearialux.R
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivityLoginBinding
+import com.jeffersongondran.luxconnect.R
+import com.jeffersongondran.luxconnect.databinding.ActivityLoginBinding
+
 
 /**
  * Activity responsável pela tela de login da aplicação.

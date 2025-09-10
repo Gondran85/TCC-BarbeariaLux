@@ -1,4 +1,4 @@
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 import android.content.Intent
 import android.icu.lang.UCharacter.GraphemeClusterBreak.L
@@ -9,7 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.jeffersongondran.tcc_barbearialux.R
+import com.jeffersongondran.luxconnect.R
 import java.util.logging.Handler
 import kotlin.jvm.java
 

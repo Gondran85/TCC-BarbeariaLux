@@ -19,6 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Tcc_BarbeariaLux"
+rootProject.name = "LuxConnect"
 include(":app")
- 

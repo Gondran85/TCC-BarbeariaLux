@@ -1,4 +1,4 @@
-package com.jeffersongondran.tcc_barbearialux.View
+package com.jeffersongondran.luxconnect.View
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
-import com.jeffersongondran.tcc_barbearialux.databinding.ActivitySignUpBinding
+import com.jeffersongondran.luxconnect.R
+import com.jeffersongondran.luxconnect.databinding.ActivitySignUpBinding
 
 /**
  * `SignUpActivity` é responsável pelo processo de cadastro de novos usuários.
