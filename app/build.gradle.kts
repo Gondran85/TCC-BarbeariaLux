@@ -40,13 +40,26 @@ android {
 }
 
 dependencies {
-
+    // Android Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.firebase.firestore)
+
+    // Firebase - Usando BoM para garantir compatibilidade entre versões
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore.ktx)
+
+    // Lifecycle e ViewModel para arquitetura MVVM
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    // Coroutines para operações assíncronas com Firebase
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.play.services)
+
+    // Testes
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -55,8 +68,5 @@ dependencies {
     implementation("com.google.firebase:firebase-auth:21.2.0")
     //Firebase UI Auth(opcional, mas facilita a implementação de telas de login)
     implementation("com.firebaseui:firebase-ui-auth:8.0.2")
-    //LiveData e ViewModel
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
 }

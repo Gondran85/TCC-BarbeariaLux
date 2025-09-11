@@ -1,0 +1,119 @@
+// Regras de segurança do Firebase Firestore para LuxConnect
+// Estas regras controlam quem pode ler e escrever dados no banco
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // REGRAS PARA USUÁRIOS
+    // Cada usuário pode apenas ler e editar seu próprio documento
+    match /usuarios/{usuarioId} {
+      // Permite leitura e escrita apenas para o próprio usuário
+      allow read, write: if request.auth != null && request.auth.uid == usuarioId;
+
+      // Permite que usuários autenticados criem novos documentos de usuário
+      allow create: if request.auth != null &&
+                   request.auth.uid == resource.id &&
+                   validarDadosUsuario();
+    }
+
+    // REGRAS PARA SALÕES
+    // Salões têm leitura pública, mas escrita apenas para administradores
+    match /saloes/{salaoId} {
+      // Qualquer usuário autenticado pode ler salões
+      allow read: if request.auth != null;
+
+      // Apenas administradores podem criar, atualizar ou deletar salões
+      // (Para implementar: adicionar campo 'isAdmin' no perfil do usuário)
+      allow write: if request.auth != null &&
+                  isAdmin() &&
+                  validarDadosSalao();
+    }
+
+    // REGRAS PARA AGENDAMENTOS
+    // Usuários podem gerenciar apenas seus próprios agendamentos
+    match /agendamentos/{agendamentoId} {
+      // Usuário pode ler seus próprios agendamentos
+      allow read: if request.auth != null &&
+                 (request.auth.uid == resource.data.usuarioId ||
+                  isAdminOrSalaoOwner(resource.data.salaoId));
+
+      // Usuário pode criar agendamentos para si mesmo
+      allow create: if request.auth != null &&
+                   request.auth.uid == request.resource.data.usuarioId &&
+                   validarDadosAgendamento();
+
+      // Usuário pode atualizar seus próprios agendamentos
+      // Salões podem atualizar status dos agendamentos
+      allow update: if request.auth != null &&
+                   (request.auth.uid == resource.data.usuarioId ||
+                    isAdminOrSalaoOwner(resource.data.salaoId)) &&
+                   validarAtualizacaoAgendamento();
+
+      // Apenas o usuário dono pode deletar o agendamento
+      allow delete: if request.auth != null &&
+                   request.auth.uid == resource.data.usuarioId;
+    }
+
+    // FUNÇÕES AUXILIARES PARA VALIDAÇÃO
+
+    // Verifica se o usuário é administrador
+    function isAdmin() {
+      // Para implementar: verificar se o usuário tem role de admin
+      // return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.isAdmin == true;
+      return false; // Por enquanto, desabilitado
+    }
+
+    // Verifica se o usuário é admin ou dono do salão
+    function isAdminOrSalaoOwner(salaoId) {
+      // Para implementar: verificar proprietário do salão
+      // return isAdmin() || get(/databases/$(database)/documents/saloes/$(salaoId)).data.proprietarioId == request.auth.uid;
+      return isAdmin();
+    }
+
+    // Valida dados do usuário
+    function validarDadosUsuario() {
+      let dados = request.resource.data;
+      return dados.keys().hasAll(['nome', 'email', 'dataCadastro']) &&
+             dados.nome is string && dados.nome.size() > 0 &&
+             dados.email is string && dados.email.matches('.*@.*\\..*') &&
+             dados.dataCadastro is timestamp;
+    }
+
+    // Valida dados do salão
+    function validarDadosSalao() {
+      let dados = request.resource.data;
+      return dados.keys().hasAll(['nome', 'telefone', 'servicos', 'ativo', 'dataCadastro']) &&
+             dados.nome is string && dados.nome.size() > 0 &&
+             dados.telefone is string && dados.telefone.size() > 0 &&
+             dados.servicos is list &&
+             dados.ativo is bool &&
+             dados.dataCadastro is timestamp;
+    }
+
+    // Valida dados do agendamento
+    function validarDadosAgendamento() {
+      let dados = request.resource.data;
+      return dados.keys().hasAll(['usuarioId', 'salaoId', 'tipoServico', 'horario', 'status', 'dataAgendamento']) &&
+             dados.usuarioId is string && dados.usuarioId.size() > 0 &&
+             dados.salaoId is string && dados.salaoId.size() > 0 &&
+             dados.tipoServico is string && dados.tipoServico.size() > 0 &&
+             dados.horario is timestamp &&
+             dados.status is string &&
+             dados.dataAgendamento is timestamp &&
+             // Horário deve ser no futuro
+             dados.horario > request.time;
+    }
+
+    // Valida atualizações de agendamento
+    function validarAtualizacaoAgendamento() {
+      let dadosAtuais = resource.data;
+      let novosDados = request.resource.data;
+
+      // Não permite alterar usuarioId, salaoId ou dataAgendamento
+      return dadosAtuais.usuarioId == novosDados.usuarioId &&
+             dadosAtuais.salaoId == novosDados.salaoId &&
+             dadosAtuais.dataAgendamento == novosDados.dataAgendamento;
+    }
+  }
+}
+
