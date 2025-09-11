@@ -9,7 +9,9 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.firestore
 import com.jeffersongondran.luxconnect.Adapter.BarberAdapter
 import com.jeffersongondran.luxconnect.Model.BarberItem
 import com.jeffersongondran.luxconnect.Viewmodel.MainViewModel
@@ -246,4 +248,5 @@ class MainActivity : AppCompatActivity() {
         // Atribui o novo adapter ao RecyclerView
         interfaceBinding.recyclerViewBarbeiros.adapter = adaptadorBarbeiros
     }
+
 }
