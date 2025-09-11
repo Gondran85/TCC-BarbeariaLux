@@ -106,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
             Log.d(TAG_LOG, "Firebase Authentication inicializado com sucesso")
         } catch (erro: Exception) {
             Log.e(TAG_LOG, "Erro ao inicializar Firebase Auth", erro)
-            exibirMensagem("Erro ao inicializar sistema de login. Verifique sua conexão.")
+            exibirMensagem("Erro ao inicializar sistema de login. Tente reiniciar o app.")
         }
     }
 
@@ -283,7 +283,7 @@ class LoginActivity : AppCompatActivity() {
         val usuarioLogado = autenticadorFirebase.currentUser
         Log.i(TAG_LOG, "Usuário ${usuarioLogado?.email} está agora logado")
 
-        exibirMensagem("Login realizado com sucesso! Bem-vindo!")
+        exibirMensagem("Login realizado com sucesso! Bem-vindo! ${usuarioLogado?.email}")
         redirecionarParaTelaPrincipal()
     }
 
