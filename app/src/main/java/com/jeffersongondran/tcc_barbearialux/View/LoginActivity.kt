@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
@@ -119,7 +120,8 @@ class LoginActivity : AppCompatActivity() {
         configurarBotaoVoltar()
         configurarBotaoEntrar()
         configurarLinkEsqueceuSenha()
-        configurarRedirecionamentoCadastro()
+        configurarLinkCadastro()
+        //configurarRedirecionamentoCadastro()
     }
 
     // ===========================================
@@ -163,20 +165,25 @@ class LoginActivity : AppCompatActivity() {
      * Configura o redirecionamento para a tela de cadastro.
      * Usamos um clique longo como exemplo (pode ser adaptado conforme necessário).
      */
-    private fun configurarRedirecionamentoCadastro() {
+   /* private fun configurarRedirecionamentoCadastro() {
         binding.forgotPasswordText.setOnLongClickListener {
             Log.d(TAG_LOG, "Usuário fez clique longo - redirecionando para cadastro")
             redirecionarParaTelaDeCadastro()
             true // Indica que o evento foi tratado
         }
-    }
+    }*/
 
-    private fun naoTemConta() {
+    /**
+     * Configura o clique no texto "Não tem conta? Cadastre-se"
+     * para redirecionar para a tela de cadastro (SignUpActivity).
+     */
+    private fun configurarLinkCadastro() {
+        // Supondo que o ID do seu TextView no XML seja "naoTemContaTextView"
         binding.naoTemContaTextView?.setOnClickListener {
-            Log.d(TAG_LOG, "Usuário clicou em 'Não tem conta?'")
-            redirecionarParaTelaDeCadastro()
+            Log.d(TAG_LOG, "Usuário clicou para se cadastrar, abrindo SignUpActivity")
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
-
     }
 
     // ===========================================
@@ -398,6 +405,8 @@ class LoginActivity : AppCompatActivity() {
     private fun redirecionarParaTelaDeCadastro() {
         val intencaoParaCadastro = Intent(this, SignUpActivity::class.java)
         startActivity(intencaoParaCadastro)
+        Log.d(TAG_LOG, "Redirecionando para tela de cadastro")
+
     }
 
     // ===========================================
