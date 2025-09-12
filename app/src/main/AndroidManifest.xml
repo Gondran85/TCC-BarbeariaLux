@@ -30,6 +30,9 @@
             android:name=".View.MainActivity"
             android:exported="false" />
         <activity
+            android:name=".View.ConfirmacaoActivity"
+            android:exported="false" />
+        <activity
             android:name=".View.SpashActivity"
             android:exported="true">
             <intent-filter>

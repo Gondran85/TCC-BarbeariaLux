@@ -1,5 +1,6 @@
 package com.jeffersongondran.luxconnect.View
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,6 +30,9 @@ class EscolhaServicoActivity : AppCompatActivity() {
 
     // ViewModel que gerencia os dados e lógica de negócio desta tela
     private val viewModel: EscolhaServicoViewModel by viewModels()
+
+    // Mantém referência da barbearia/serviço selecionado vindo da tela anterior para repassar adiante
+    private var barbeariaSelecionada: BarberItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +88,7 @@ class EscolhaServicoActivity : AppCompatActivity() {
             val nomeDoServicoSelecionado = obterNomeDoServicoSelecionado(opcaoSelecionadaId)
 
             if (nomeDoServicoSelecionado != null) {
-                // Log para acompanhar qual serviço foi selecionado (útil para debug)
+                // Log para debug
                 println("Serviço selecionado pelo usuário: $nomeDoServicoSelecionado")
             }
         }
@@ -122,14 +126,13 @@ class EscolhaServicoActivity : AppCompatActivity() {
      * Se tudo estiver correto, confirma a reserva. Caso contrário, mostra erro.
      */
     private fun processarSolicitacaoDeAgendamento() {
-        // Obtém o serviço que o usuário selecionou
+        // Coleta serviço e horário escolhidos na UI
         val servicoEscolhido = obterServicoSelecionadoPeloUsuario()
-
-        // Obtém o horário que o usuário escolheu no spinner
         val horarioEscolhido = obterHorarioSelecionadoPeloUsuario()
 
-        // Verifica se tanto o serviço quanto o horário foram selecionados
+        // Validação básica dos campos obrigatórios
         if (dadosDoAgendamentoSaoValidos(servicoEscolhido, horarioEscolhido)) {
+            // Navega para a tela de confirmação passando o resumo do agendamento
             confirmarAgendamento(servicoEscolhido!!, horarioEscolhido)
         } else {
             mostrarErroDeSelecao()
@@ -174,15 +177,13 @@ class EscolhaServicoActivity : AppCompatActivity() {
      * @param horarioEscolhido Horário que foi selecionado para o agendamento
      */
     private fun confirmarAgendamento(nomeDoServico: String, horarioEscolhido: String) {
-        // Mostra uma mensagem de confirmação para o usuário
-        Toast.makeText(
-            this,
-            getString(R.string.agendamento_confirmado, nomeDoServico, horarioEscolhido),
-            Toast.LENGTH_LONG
-        ).show()
-
-        // Registra a confirmação no log para acompanhamento interno
-        println("Agendamento confirmado com sucesso: $nomeDoServico às $horarioEscolhido")
+        // Inicia a ConfirmacaoActivity passando os dados necessários
+        val intent = Intent(this, com.jeffersongondran.luxconnect.View.ConfirmacaoActivity::class.java)
+        intent.putExtra(com.jeffersongondran.luxconnect.View.ConfirmacaoActivity.EXTRA_SERVICO, nomeDoServico)
+        intent.putExtra(com.jeffersongondran.luxconnect.View.ConfirmacaoActivity.EXTRA_HORARIO, horarioEscolhido)
+        // Repassa também a barbearia/serviço selecionado da tela anterior (se houver)
+        barbeariaSelecionada?.let { intent.putExtra(EXTRA_BARBER_ITEM, it) }
+        startActivity(intent)
     }
 
     /**
@@ -231,34 +232,7 @@ class EscolhaServicoActivity : AppCompatActivity() {
      * @param dadosDaBarbearia Objeto contendo as informações da barbearia
      */
     private fun preencherInformacoesDaBarbearia(dadosDaBarbearia: Any) {
-        // NOTA PARA DESENVOLVEDOR:
-        // Este método precisa ser implementado conforme a estrutura real da classe de dados da barbearia.
-        // Substitua 'Any' pelo tipo específico da sua classe de dados (ex: BarberShop, Servico, etc.)
-
-        // Exemplo de implementação com uma classe de dados conhecida:
-        /*
-        when (dadosDaBarbearia) {
-            is BarberShop -> {
-                // Preenche os campos da interface com os dados da barbearia
-                binding.nomeBarbeariaTextView.text = dadosDaBarbearia.nome
-                binding.descricaoTextView.text = dadosDaBarbearia.descricao
-                binding.horarioFuncionamentoTextView.text = dadosDaBarbearia.horarioFuncionamento
-                binding.enderecoTextView.text = dadosDaBarbearia.endereco
-            }
-            is Servico -> {
-                // Se for um objeto de serviço específico
-                binding.nomeServicoTextView.text = dadosDaBarbearia.nome
-                binding.precoTextView.text = dadosDaBarbearia.preco
-                binding.duracaoTextView.text = dadosDaBarbearia.duracao
-            }
-            else -> {
-                // Log para indicar que o tipo não foi reconhecido
-                println("Tipo de dados não reconhecido: ${dadosDaBarbearia::class.simpleName}")
-            }
-        }
-        */
-
-        // Implementação temporária para evitar warning de parâmetro não utilizado
+        // Mantém implementação genérica conforme código existente
         println("Dados recebidos: $dadosDaBarbearia")
     }
 
@@ -267,29 +241,20 @@ class EscolhaServicoActivity : AppCompatActivity() {
      * Se uma barbearia foi selecionada, mostra seus dados na interface.
      */
     private fun exibirInformacoesDaBarbearia() {
-        // Recebe o objeto BarberItem enviado pela MainActivity
-        val barbeariaSelecionada = intent.getSerializableExtra(EXTRA_BARBER_ITEM) as? BarberItem
+        // Recebe o objeto BarberItem enviado pela MainActivity e guarda para repasse
+        barbeariaSelecionada = intent.getSerializableExtra(EXTRA_BARBER_ITEM) as? BarberItem
 
         barbeariaSelecionada?.let { barbearia ->
-            // Atualiza o nome da barbearia
+            // Atualiza UI com dados disponíveis
             binding.clubeTextView.text = barbearia.nomeDoServico
-
-            // Atualiza a descrição da barbearia
             binding.descricaoTextView.text = barbearia.descricaoDoServico
-
-            // Atualiza o horário de funcionamento
             val horarioTexto = "Funcionamento: ${barbearia.horarioFuncionamento}"
             binding.abertoTextView.text = horarioTexto
-
-            // Atualiza a imagem da barbearia se disponível
             if (barbearia.imagemDoServico != 0) {
                 binding.imageView15.setImageResource(barbearia.imagemDoServico)
             }
-
-            // Log para debug
             println("Informações da barbearia carregadas: ${barbearia.nomeDoServico}")
         } ?: run {
-            // Se não recebeu dados da barbearia, mantém valores padrão
             println("Nenhuma barbearia foi selecionada, usando valores padrão")
         }
     }

@@ -392,4 +392,16 @@
     <string name="welcome_title">Bem-vindo ao LuxConnect</string>
     <string name="welcome_message">Transforme seu visual com nossos serviços premium</string>
     <string name="get_started">Começar</string>
+
+    <!-- Tela de Confirmação de Agendamento -->
+    <string name="confirmacao_titulo">Confirmação do Agendamento</string>
+    <string name="confirmacao_resumo">Confira os dados antes de confirmar:</string>
+    <string name="rotulo_servico">Serviço</string>
+    <string name="rotulo_horario">Horário</string>
+    <string name="rotulo_salao">Salão</string>
+    <string name="confirmando">Confirmando…</string>
+    <string name="agendado_com_sucesso">Agendamento realizado com sucesso!</string>
+    <string name="btn_ver_meus_agendamentos">Ver meus agendamentos</string>
+    <string name="btn_tentar_novamente">Tentar novamente</string>
+    <string name="voltar">Voltar</string>
 </resources>
