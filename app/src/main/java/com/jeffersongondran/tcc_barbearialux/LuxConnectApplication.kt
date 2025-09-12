@@ -7,6 +7,7 @@ package com.jeffersongondran.luxconnect
 import android.app.Application
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreSettings
 
 /**
  * Classe Application responsável pela inicialização do Firebase
@@ -29,6 +30,11 @@ class LuxConnectApplication : Application() {
 
         // Inicializa o Firebase
         inicializarFirebase()
+
+        // Configura o Firestore com persistência offline habilitada
+        // e demais ajustes globais. Isso garante que o aplicativo funcione
+        // mesmo sem conexão e sincronize assim que possível.
+        configurarFirestoreGlobal()
     }
 
     /**
@@ -39,8 +45,18 @@ class LuxConnectApplication : Application() {
         if (FirebaseApp.getApps(this).isEmpty()) {
             FirebaseApp.initializeApp(this)
         }
+    }
 
-        // O cache offline agora é habilitado por padrão no Firestore
-        // Não é mais necessário configurar manualmente
+    /**
+     * Aplica configurações globais do Firestore (persistência offline, etc.)
+     * Observação: Em Android, a persistência offline já é habilitada por padrão,
+     * mas deixamos explícito para documentação e futuras customizações.
+     */
+    private fun configurarFirestoreGlobal() {
+        val instancia = FirebaseFirestore.getInstance()
+        val configuracoes = FirebaseFirestoreSettings.Builder()
+            .setPersistenceEnabled(true) // Habilita cache offline
+            .build()
+        instancia.firestoreSettings = configuracoes
     }
 }

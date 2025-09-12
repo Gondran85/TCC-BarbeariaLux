@@ -233,6 +233,20 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    <!-- Conteúdo dinâmico para telas de Favoritos/Procurar/Histórico/Perfil.
+         Fica entre a AppBar e o BottomNavigation, inicialmente oculto. -->
+    <FrameLayout
+        android:id="@+id/conteudoDinamico"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/topAppBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"
+        tools:ignore="MissingConstraints" />
+
     <!-- Bottom Navigation com Material Design -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

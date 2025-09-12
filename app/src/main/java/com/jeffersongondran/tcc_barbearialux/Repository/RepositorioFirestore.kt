@@ -4,17 +4,22 @@
  */
 package com.jeffersongondran.luxconnect.Repository
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.Query
 import com.jeffersongondran.luxconnect.LuxConnectApplication
 import com.jeffersongondran.luxconnect.Model.Agendamento
 import com.jeffersongondran.luxconnect.Model.Salao
 import com.jeffersongondran.luxconnect.Model.StatusAgendamento
 import com.jeffersongondran.luxconnect.Model.Usuario
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 /**
  * Classe responsável por gerenciar todas as operações com o Firebase Firestore
@@ -27,6 +32,7 @@ class RepositorioFirestore {
         private const val COLECAO_USUARIOS = "usuarios"
         private const val COLECAO_SALOES = "saloes"
         private const val COLECAO_AGENDAMENTOS = "agendamentos"
+        private const val SUBCOLECAO_FAVORITOS = "favoritos"
 
         // Instância singleton do repositório
         @Volatile
@@ -291,6 +297,156 @@ class RepositorioFirestore {
             Result.success(agendamento)
         } catch (exception: Exception) {
             Result.failure(exception)
+        }
+    }
+
+    // ===================== FAVORITOS =====================
+    /**
+     * Observa em tempo real os salões marcados como favoritos por um usuário.
+     * A implementação usa uma subcoleção: /usuarios/{usuarioId}/favoritos/{salaoId}
+     * Cada documento em favoritos representa o ID de um salão favoritado.
+     */
+    fun observarFavoritos(usuarioId: String): Flow<List<Salao>> = callbackFlow {
+        val favoritosRef = firestore.collection(COLECAO_USUARIOS)
+            .document(usuarioId)
+            .collection(SUBCOLECAO_FAVORITOS)
+
+        val listener = favoritosRef.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
+            }
+
+            val idsFavoritos = snapshot?.documents?.map { it.id } ?: emptyList()
+            if (idsFavoritos.isEmpty()) {
+                trySend(emptyList())
+                return@addSnapshotListener
+            }
+
+            // Busca os salões correspondentes aos IDs em lotes de até 10 (limite do whereIn)
+            val chunks = idsFavoritos.chunked(10)
+            // Lança uma coroutine filha no escopo do flow
+            launch {
+                val agregados = mutableListOf<Salao>()
+                for (lote in chunks) {
+                    try {
+                        val saloes = withContext(Dispatchers.IO) {
+                            val query = firestore.collection(COLECAO_SALOES)
+                                .whereIn(FieldPath.documentId(), lote)
+                                .get()
+                                .await()
+                            query.documents.mapNotNull { doc ->
+                                doc.toObject(Salao::class.java)?.copy(id = doc.id)
+                            }
+                        }
+                        agregados += saloes
+                    } catch (_: Exception) {
+                        // Em caso de erro em um lote, seguimos com os demais
+                    }
+                }
+                trySend(agregados)
+            }
+        }
+
+        awaitClose { listener.remove() }
+    }
+
+    /**
+     * Alterna o estado de favorito de um salão para um usuário.
+     * Se já for favorito, remove; caso contrário, adiciona.
+     */
+    suspend fun alternarFavorito(usuarioId: String, salaoId: String): Result<Unit> {
+        return try {
+            val docRef = firestore.collection(COLECAO_USUARIOS)
+                .document(usuarioId)
+                .collection(SUBCOLECAO_FAVORITOS)
+                .document(salaoId)
+
+            val existe = docRef.get().await().exists()
+            if (existe) {
+                docRef.delete().await()
+            } else {
+                docRef.set(mapOf("adicionadoEm" to Timestamp.now())).await()
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // ===================== BUSCA DE SALÕES =====================
+    /**
+     * Busca salões pelo nome (prefix match) observando mudanças em tempo real.
+     * Implementação usa startAt/endAt para simular busca por prefixo.
+     */
+    fun buscarSaloes(termo: String): Flow<List<Salao>> = callbackFlow {
+        val termoBusca = termo.trim()
+        if (termoBusca.isEmpty()) {
+            trySend(emptyList())
+            awaitClose { }
+            return@callbackFlow
+        }
+
+        val listener = firestore.collection(COLECAO_SALOES)
+            .whereEqualTo("ativo", true)
+            .orderBy("nome")
+            .startAt(termoBusca)
+            .endAt(termoBusca + "\uf8ff")
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    close(error)
+                    return@addSnapshotListener
+                }
+                val saloes = snapshot?.documents?.mapNotNull { d ->
+                    d.toObject(Salao::class.java)?.copy(id = d.id)
+                } ?: emptyList()
+                trySend(saloes)
+            }
+
+        awaitClose { listener.remove() }
+    }
+
+    // ===================== WRAPPERS SOLICITADOS =====================
+    /**
+     * Wrapper com nome em português que carrega um usuário pelo ID e
+     * retorna Result<Usuario>. Falha se o usuário não existir.
+     */
+    suspend fun carregarUsuario(usuarioId: String): Result<Usuario> {
+        val res = buscarUsuarioPorId(usuarioId)
+        return if (res.isSuccess) {
+            val usuario = res.getOrNull()
+            if (usuario != null) Result.success(usuario) else Result.failure(NoSuchElementException("Usuário não encontrado"))
+        } else Result.failure(res.exceptionOrNull() ?: Exception("Erro desconhecido"))
+    }
+
+    /**
+     * Atualiza um usuário recebendo o objeto completo.
+     * Internamente converte para Map e envia somente campos persistentes.
+     */
+    suspend fun atualizarUsuario(usuario: Usuario): Result<Unit> {
+        return try {
+            firestore.collection(COLECAO_USUARIOS)
+                .document(usuario.id)
+                .update(usuario.paraMap())
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    /**
+     * Versão que adiciona usuário retornando Unit (conforme solicitação),
+     * mantendo o método existente que retorna ID para compatibilidade.
+     */
+    suspend fun adicionarUsuarioUnit(usuario: Usuario): Result<Unit> {
+        return try {
+            firestore.collection(COLECAO_USUARIOS)
+                .add(usuario.paraMap())
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
         }
     }
 }

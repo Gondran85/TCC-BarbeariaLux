@@ -13,9 +13,12 @@ import com.jeffersongondran.luxconnect.Repository.RepositorioFirestore
 import com.jeffersongondran.luxconnect.Viewmodel.AgendamentosViewModel
 import com.jeffersongondran.luxconnect.Viewmodel.SaloesViewModel
 import com.jeffersongondran.luxconnect.Viewmodel.UsuarioViewModel
+import com.jeffersongondran.luxconnect.Viewmodel.FavoritosViewModel
+import com.jeffersongondran.luxconnect.Viewmodel.ProcurarViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -245,6 +248,79 @@ class ExemplosDeUso {
                     }
                 }
             }
+        }
+
+        /**
+         * EXEMPLO 7: Como observar e alternar favoritos
+         * Demonstra como observar salões favoritos e alternar favorito para um salão.
+         */
+        fun exemploFavoritos(usuarioId: String) {
+            val favoritosViewModel = FavoritosViewModel()
+            val scope = CoroutineScope(Dispatchers.Main)
+
+            // Inicia a observação dos favoritos do usuário
+            favoritosViewModel.observarFavoritosDoUsuario(usuarioId)
+
+            // Observa a lista de favoritos em tempo real
+            scope.launch {
+                favoritosViewModel.favoritos.collect { lista ->
+                    println("Favoritos (${lista.size}):")
+                    lista.forEach { s -> println("- ${s.nome}") }
+                }
+            }
+
+            // Alternar favorito (exemplo): chamar quando usuário tocar no ícone de coração
+            fun onClickFavorito(salaoId: String) {
+                favoritosViewModel.alternarFavorito(usuarioId, salaoId)
+            }
+        }
+
+        /**
+         * EXEMPLO 8: Como usar a busca com debounce (Procurar)
+         * Demonstra atualizar termo e observar resultados em tempo real.
+         */
+        fun exemploProcurar() {
+            val procurarViewModel = ProcurarViewModel()
+            val scope = CoroutineScope(Dispatchers.Main)
+
+            // Atualiza o termo de busca (como se fosse digitado pelo usuário)
+            procurarViewModel.atualizarTermo("Barbearia")
+
+            // Observa resultados com debounce
+            scope.launch {
+                procurarViewModel.resultados.collectLatest { resultados ->
+                    println("Resultados da busca: ${resultados.size}")
+                    resultados.forEach { println("- ${it.nome}") }
+                }
+            }
+        }
+
+        /**
+         * EXEMPLO 9: Perfil do usuário (carregar e atualizar)
+         * Usa UsuarioViewModel já existente para gerenciar o perfil.
+         */
+        fun exemploPerfil(usuarioId: String) {
+            val usuarioViewModel = UsuarioViewModel()
+            val scope = CoroutineScope(Dispatchers.Main)
+
+            // Carrega o usuário pelo ID
+            usuarioViewModel.carregarUsuario(usuarioId)
+
+            // Observa o usuário logado e imprime dados
+            scope.launch {
+                usuarioViewModel.usuarioLogado.collect { usuario ->
+                    usuario?.let {
+                        println("Usuário: ${it.nome} / ${it.email}")
+                    }
+                }
+            }
+
+            // Exemplo de atualização de perfil
+            val dadosAtualizados = mapOf(
+                "nome" to "Nome Atualizado",
+                "telefone" to "(11) 90000-0000"
+            )
+            usuarioViewModel.atualizarPerfil(dadosAtualizados)
         }
 
         // FUNÇÕES UTILITÁRIAS
