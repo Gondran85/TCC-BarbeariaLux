@@ -1,8 +1,8 @@
-# 💇‍♀️ LuxConnect - App de Agendamento de Salões de Beleza  
+# 💇‍♀️ LuxConnect - App de Agendamento de Salões de Beleza
 
 <p align="center">
   <img src="https://img.shields.io/badge/build-passing-brightgreen" alt="Build Status">
-  <img src="https://img.shields.io/github/issues/Gondran85/TCC-BarbeariaLux alt="Issues">
+  <img src="https://img.shields.io/github/issues/Gondran85/TCC-BarbeariaLux" alt="Issues">
   <img src="https://img.shields.io/github/forks/Gondran85/TCC-BarbeariaLux" alt="Forks">
   <img src="https://img.shields.io/github/stars/Gondran85/TCC-BarbeariaLux" alt="Stars">
   <img src="https://img.shields.io/github/license/Gondran85/TCC-BarbeariaLux" alt="License">
@@ -10,81 +10,84 @@
 
 ---
 
-
-![Kotlin](https://img.shields.io/badge/Kotlin-Multiplatform-7F52FF?logo=kotlin)  
-![Firebase](https://img.shields.io/badge/Firebase-Backend-orange?logo=firebase)  
-![Scrum](https://img.shields.io/badge/Agile-Scrum-green?logo=scrumalliance) 
-
----
-
-## 📌 Sobre o Projeto  
-
-O **LuxConnect** é um aplicativo móvel desenvolvido como parte do meu **Trabalho de Conclusão de Curso (TCC)** em Engenharia de Software.  
-Ele tem como objetivo **simplificar a busca e o agendamento de serviços de beleza**, conectando clientes e salões em uma experiência centralizada, prática e intuitiva.  
+![Kotlin](https://img.shields.io/badge/Kotlin-Android-7F52FF?logo=kotlin)
+![Firebase](https://img.shields.io/badge/Firebase-Firestore%20%7C%20Auth-orange?logo=firebase)
+![MVVM](https://img.shields.io/badge/Architecture-MVVM-blue)
 
 ---
 
-## ✨ Funcionalidades  
+## 📌 Sobre o Projeto
 
-- **Cadastro e Login** via **Firebase Authentication**  
-- **Busca e Localização** com **Google Maps API** ( Em desenvolvimento ) 
-- **Agendamento de Serviços** com redirecionamento para sites parceiros  
-- **Painel para Salões**: gestão de horários, preços e serviços  
-- **Notificações Push**: lembretes de agendamentos e promoções ( Em desenvolvimento )
-
-> 🔮 **Futuro**: iOS, Web, Desktop, melhorias de UX e recomendações personalizadas  
+O **LuxConnect** é um aplicativo Android que simplifica a busca e o agendamento de serviços em barbearias, conectando clientes e salões em uma experiência prática e intuitiva.
 
 ---
 
-## 🛠️ Tecnologias  
+## ✨ Funcionalidades
 
-- **Kotlin (Multiplatform)**  
-- **Jetpack Compose**  
-- **Firebase (Auth, Firestore, Cloud Messaging)**  
-- **Google Maps API**  
-- **Arquitetura MVVM**  
-- **Scrum como metodologia ágil**  
+- Autenticação: cadastro e login com Firebase Authentication
+- Salões em tempo real: listagem com atualização automática via Firestore
+- Agendamentos: criação, listagem por usuário e cancelamento
+- Favoritos: marcar/desmarcar salões e observar em tempo real
+- Busca de salões: por prefixo de nome (startAt/endAt)
 
----
-
-## 📊 Engenharia de Software no Projeto  
-
-Este projeto aplica princípios fundamentais de **Engenharia de Software**:
-
-- **Requisitos** bem definidos, documentados e validados (PERSEGUINE, 2016).  
-- **Qualidade** garantida por testes, métricas e boas práticas de desenvolvimento (FREITAS, 2021).  
-- **Design de Interação** centrado no usuário, priorizando usabilidade e acessibilidade (ALMEIDA; FREITAS, 2020; TEIXEIRA, 2019).  
-- **Gestão Ágil** com Scrum, garantindo entregas iterativas e alinhadas às necessidades dos usuários (SABBAGH, 2013).  
+> Próximos: notificações, imagens e analytics
 
 ---
 
-## 📱 Fluxo do Usuário  
+## 🛠️ Tecnologias
 
-```mermaid
-flowchart TD
-    A[Login/Cadastro] --> B[Busca de Salões]
-    B --> C[Visualização de Serviços]
-    C --> D[Escolha de Horário]
-    D --> E[Confirmação da marcação]
-    E --> F[Notificações de Lembrete - desenvolvimento]
-````
+- Kotlin (Android) + AndroidX (AppCompat, ConstraintLayout)
+- View Binding
+- Arquitetura MVVM (ViewModel + StateFlow)
+- Coroutines (kotlinx-coroutines-android / play-services)
+- Firebase BoM + Firestore KTX
+- Firebase Authentication (+ FirebaseUI Auth opcional)
+- Material Design
 
-# LuxConnect - Sistema de Agendamento para Barbearias
+---
+
+## 📊 Engenharia de Software no Projeto
+
+- Requisitos definidos e evolutivos
+- Qualidade com boas práticas e tratamento robusto de erros
+- MVVM para separação de responsabilidades
+- Dados reativos (Flow/StateFlow) e cache offline do Firestore
+
+---
+
+## 📱 Telas Principais
+
+- IntroActivity, SpashActivity, LoginActivity, SignUpActivity, ForgotPasswordActivity
+- MainActivity (hub), EscolhaServicoActivity, ConfirmacaoActivity
+
+## 🧠 ViewModels
+
+- SaloesViewModel, AgendamentosViewModel, UsuarioViewModel
+- FavoritosViewModel, ProcurarViewModel, EscolhaServicoViewModel, MainViewModel
+
+## 🗂️ Repositórios
+
+- RepositorioFirestore (CRUD + streams em tempo real)
+- BarberRepository, EscolhaServicoRepository
+
+---
+
+## LuxConnect - Sistema de Agendamento para Barbearias
 
 Este projeto integra Firebase Cloud Firestore para gerenciar agendamentos de serviços em barbearias.
 
-## 🔥 Integração Firebase Firestore
+### 🔥 Integração Firebase Firestore
 
-### Estrutura do Banco de Dados
-
-O sistema utiliza as seguintes coleções no Firestore:
+#### Estrutura do Banco de Dados
 
 ```
 /usuarios/{usuarioId}
 ├── nome: string
 ├── email: string  
 ├── telefone: string (opcional)
-└── dataCadastro: timestamp
+├── dataCadastro: timestamp
+└── favoritos/{salaoId}
+    └── adicionadoEm: timestamp
 
 /saloes/{salaoId}
 ├── nome: string
@@ -107,186 +110,131 @@ O sistema utiliza as seguintes coleções no Firestore:
 └── dataAgendamento: timestamp
 ```
 
-### Dependências Adicionadas
+#### Dependências (Gradle)
 
-O projeto foi configurado com Firebase BoM e dependências necessárias:
+- Firebase BoM + Firestore KTX
+- Coroutines (Android + Play Services)
+- Lifecycle ViewModel / LiveData
+- Firebase Auth (+ FirebaseUI Auth opcional)
 
-- `firebase-bom`: Gerencia versões compatíveis do Firebase
-- `firebase-firestore-ktx`: Firestore com extensões Kotlin
-- `kotlinx-coroutines-android`: Para operações assíncronas
-- `kotlinx-coroutines-play-services`: Integração coroutines com Firebase
+#### Arquitetura Implementada
 
-### Arquitetura Implementada
+1. Application Class (LuxConnectApplication.kt)
+   - Inicializa o Firebase e configura Firestore offline
+2. Modelos de Dados (Model)
+   - Usuario, Salao, Agendamento (com validações e comentários)
+3. Repositório (RepositorioFirestore.kt)
+   - CRUD, Flows em tempo real, Result pattern e favoritos
+4. ViewModels (Viewmodel)
+   - StateFlow para estados, operações assíncronas com coroutines
 
-#### 1. **Application Class** (`LuxConnectApplication.kt`)
-- Inicializa o Firebase automaticamente
-- Providencia acesso seguro ao Firestore
-- Cache offline habilitado por padrão
+---
 
-#### 2. **Modelos de Dados** (Pacote `Model`)
-- **Usuario**: Representa clientes da barbearia
-- **Salao**: Representa estabelecimentos disponíveis  
-- **Agendamento**: Representa reservas de serviços
-- Todos com comentários em português e validações
+## ▶️ Como Usar (exemplos)
 
-#### 3. **Repositório** (`RepositorioFirestore.kt`)
-- Padrão singleton para acesso ao banco
-- Operações CRUD completas com Result pattern
-- Flows para observação em tempo real
-- Tratamento de erros robusto
-
-#### 4. **ViewModels** (Pacote `Viewmodel`)
-- **SaloesViewModel**: Gerencia lista de salões
-- **AgendamentosViewModel**: Gerencia agendamentos do usuário
-- **UsuarioViewModel**: Gerencia perfil e cadastro
-- Seguem padrão MVVM com StateFlow
-
-### Como Usar
-
-#### Observar Salões em Tempo Real
+### Observar Salões em Tempo Real
 
 ```kotlin
-// Na sua Activity/Fragment
 private val saloesViewModel: SaloesViewModel by viewModels()
 
-override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    
-    // Observa mudanças na lista de salões
-    lifecycleScope.launch {
-        saloesViewModel.saloes.collect { saloes ->
-            // Atualiza a UI com a nova lista
-            atualizarListaSaloes(saloes)
-        }
-    }
-    
-    // Observa estado de carregamento
-    lifecycleScope.launch {
-        saloesViewModel.carregando.collect { carregando ->
-            mostrarIndicadorCarregamento(carregando)
-        }
+lifecycleScope.launch {
+    saloesViewModel.saloes.collect { saloes ->
+        atualizarListaSaloes(saloes)
     }
 }
 ```
 
-#### Criar um Agendamento
+### Criar um Agendamento
 
 ```kotlin
 private val agendamentosViewModel: AgendamentosViewModel by viewModels()
 
-fun criarNovoAgendamento(usuarioId: String, salaoId: String) {
-    val agendamento = Agendamento(
-        usuarioId = usuarioId,
-        salaoId = salaoId,
-        tipoServico = "Corte de Cabelo",
-        horario = Timestamp(dataEscolhida),
-        observacoes = "Preferência por corte social"
-    )
-    
-    agendamentosViewModel.criarAgendamento(agendamento)
-    
-    // Observa resultado
-    lifecycleScope.launch {
-        agendamentosViewModel.operacaoSucesso.collect { mensagem ->
-            mensagem?.let {
-                mostrarMensagemSucesso(it)
-                navegarParaConfirmacao()
-            }
-        }
-    }
-}
+val agendamento = Agendamento(
+    usuarioId = usuarioId,
+    salaoId = salaoId,
+    tipoServico = "Corte de Cabelo",
+    horario = Timestamp(dataEscolhida),
+    observacoes = "Preferência por corte social"
+)
+agendamentosViewModel.criarAgendamento(agendamento)
 ```
 
-#### Listar Agendamentos do Usuário
+### Favoritar/Desfavoritar um Salão
 
 ```kotlin
-fun carregarAgendamentosUsuario(usuarioId: String) {
-    agendamentosViewModel.carregarAgendamentosDoUsuario(usuarioId)
-    
-    lifecycleScope.launch {
-        agendamentosViewModel.agendamentos.collect { agendamentos ->
-            // Filtra apenas agendamentos ativos
-            val ativos = agendamentosViewModel.obterAgendamentosAtivos()
-            atualizarListaAgendamentos(ativos)
-        }
-    }
+viewModelScope.launch {
+    RepositorioFirestore.getInstance().alternarFavorito(usuarioId, salaoId)
 }
 ```
-
-### Regras de Segurança
-
-O arquivo `firestore.rules` implementa:
-
-- **Usuários**: Só podem editar próprios dados
-- **Salões**: Leitura pública, escrita apenas admin
-- **Agendamentos**: Usuário só acessa próprios agendamentos
-- Validações de campos obrigatórios
-- Verificação de timestamps futuros
-
-### Funcionalidades Principais
-
-#### ✅ **Implementado**
-- Inicialização automática do Firebase
-- Modelos de dados em português
-- Repositório com operações CRUD
-- ViewModels seguindo padrão MVVM
-- Cache offline automático
-- Observação em tempo real com Flow
-- Tratamento de erros robusto
-- Regras de segurança do Firestore
-- Comentários explicativos em português
-
-#### 🎯 **Recursos Avançados**
-- **Tempo Real**: Atualizações automáticas quando dados mudam
-- **Offline**: Funciona sem internet com sincronização automática
-- **Escalável**: Estrutura preparada para crescimento
-- **Seguro**: Regras de acesso rigorosas
-- **Performático**: Queries otimizadas e cache inteligente
-
-### Próximos Passos
-
-1. **Implementar Authentication**: Integrar Firebase Auth
-2. **Adicionar Imagens**: Storage para fotos de perfil e salões
-3. **Notificações**: Firebase Cloud Messaging para lembretes
-4. **Analytics**: Firebase Analytics para métricas
-5. **Busca Avançada**: Implementar busca por localização
-
-### Estrutura de Arquivos Criados
-
-```
-app/src/main/java/com/jeffersongondran/tcc_barbearialux/
-├── LuxConnectApplication.kt          # Inicialização Firebase
-├── Model/
-│   ├── Usuario.kt                    # Modelo de usuário
-│   ├── Salao.kt                      # Modelo de salão
-│   └── Agendamento.kt               # Modelo de agendamento
-├── Repository/
-│   └── RepositorioFirestore.kt      # Operações banco de dados
-├── Viewmodel/
-│   ├── SaloesViewModel.kt           # ViewModel para salões
-│   ├── AgendamentosViewModel.kt     # ViewModel para agendamentos
-│   └── UsuarioViewModel.kt          # ViewModel para usuários
-└── Utils/
-    └── ExemplosDeUso.kt            # Exemplos práticos
-
-firestore.rules                      # Regras de segurança
-```
-
-### Observações Importantes
-
-- Todos os nomes de classes, variáveis e comentários estão em português
-- Seguiu-se o padrão arquitetural MVVM já existente no projeto
-- Cache offline habilitado automaticamente (Firebase SDK mais recente)
-- Tratamento de erros com Result pattern para robustez
-- Documentação completa para facilitar manutenção
-
-## 🚀 Como Testar
-
-1. Certifique-se de que o `google-services.json` está configurado
-2. Execute o projeto no emulador ou dispositivo
-3. Use os exemplos em `ExemplosDeUso.kt` como referência
-4. Monitore dados em tempo real no Firebase Console
 
 ---
 
-**Implementação completa do Firebase Cloud Firestore realizada com sucesso!** 🎉
+### Regras de Segurança
+
+- Usuários: só editam os próprios dados
+- Salões: leitura pública, escrita apenas admin
+- Agendamentos: usuário só acessa os seus
+- Campos obrigatórios validados e horários futuros verificados
+- Subcoleção de favoritos sob cada usuário
+
+### Funcionalidades Principais
+
+- Inicialização automática do Firebase e cache offline
+- Modelos em português + documentação
+- Repositório com CRUD e Flows em tempo real
+- MVVM com StateFlow e coroutines
+- Regras de segurança do Firestore
+
+### Próximos Passos
+
+- Notificações (Firebase Cloud Messaging)
+- Imagens (Firebase Storage)
+- Analytics (Firebase Analytics)
+- Busca por localização
+
+---
+
+## 🗃️ Estrutura de Pastas (resumo)
+
+```
+app/src/main/java/com/jeffersongondran/tcc_barbearialux/
+├── LuxConnectApplication.kt
+├── Model/
+│   ├── Usuario.kt
+│   ├── Salao.kt
+│   └── Agendamento.kt
+├── Repository/
+│   ├── RepositorioFirestore.kt
+│   ├── BarberRepository.kt
+│   └── EscolhaServicoRepository.kt
+├── Viewmodel/
+│   ├── SaloesViewModel.kt
+│   ├── AgendamentosViewModel.kt
+│   ├── UsuarioViewModel.kt
+│   ├── FavoritosViewModel.kt
+│   ├── ProcurarViewModel.kt
+│   ├── EscolhaServicoViewModel.kt
+│   └── MainViewModel.kt
+└── View/
+    ├── MainActivity.kt
+    ├── LoginActivity.kt
+    ├── SignUpActivity.kt
+    ├── ForgotPasswordActivity.kt
+    ├── IntroActivity.kt
+    ├── SpashActivity.kt
+    ├── EscolhaServicoActivity.kt
+    └── ConfirmacaoActivity.kt
+
+firestore.rules
+```
+
+## 🚀 Como Testar
+
+1. Garanta o `app/google-services.json` configurado
+2. Build e execute no emulador/dispositivo
+3. Cadastre/login e teste: favoritar, buscar e agendar
+4. Acompanhe as coleções no Firebase Console em tempo real
+
+---
+
+Implementação do Firebase Cloud Firestore finalizada e alinhada ao estado atual do projeto. 🚀
